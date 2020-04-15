@@ -1,0 +1,9 @@
+opencv-python
+scikit-learn
+xgboost
+tqdm
+matplotlib
+scikit-image
+numpy
+joblib
+imblearn
