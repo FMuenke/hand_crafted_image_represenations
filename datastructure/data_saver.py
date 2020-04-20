@@ -19,7 +19,18 @@ class DataSaver:
     def get(self, i):
         return np.load(self.storage[i])
 
+    def get_special(self, i):
+        np_load_old = np.load
+        np.load = lambda *a, **k: np_load_old(*a, allow_pickle=True, **k)
+        data = np.load(self.storage[i])
+        np.load = np_load_old
+        return data
+
     def load_storage(self):
         for i in os.listdir(self.data_dir):
             if i.endswith(".npy"):
                 self.storage[i.replace(".npy", "")] = os.path.join(self.data_dir, i)
+
+    def clear_storage(self):
+        for i in self.storage:
+            os.remove(self.storage[i])
