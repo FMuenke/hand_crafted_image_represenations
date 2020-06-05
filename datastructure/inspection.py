@@ -125,6 +125,9 @@ class Inspection:
             if not os.path.isfile(img_id):
                 img_id = lb_f.replace(".txt", ".ppm")
                 img_id = os.path.join(self.images_folder, img_id)
+            if not os.path.isfile(img_id):
+                img_id = lb_f.replace(".txt", ".tif")
+                img_id = os.path.join(self.images_folder, img_id)
             tag_id = img_id
             class_names = read_classification_label_file(os.path.join(self.labels_folder, lb_f))
             img = cv2.imread(img_id)

@@ -21,6 +21,7 @@ def create_custom_labels(args_):
             lb_f = img_f.replace(".jpg", ".txt")
             lb_f = lb_f.replace(".png", ".txt")
             lb_f = lb_f.replace(".ppm", ".txt")
+            lb_f = lb_f.replace(".tif", ".txt")
             label_filepath = os.path.join(labels_dir, lb_f)
             s = ""
             for l in label.split("/"):

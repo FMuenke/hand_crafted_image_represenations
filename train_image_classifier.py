@@ -17,9 +17,9 @@ class Config:
         self.down_sample = 0.0
 
         self.class_mapping = {
-            "gas": 0,
-            "leaf_dirt": 1,
-            "outburst_0": 1,
+            "maligne": 0,
+            "benigne": 1,
+            # "outburst_0": 1,
             # "surface_patch_0": 0,
             # "surface_patch_1": 1,
         }
@@ -30,18 +30,17 @@ class Config:
                 "aggregator": "bag_of_words",
                 "complexity": [5, 10, 15, 25, 50, 75, 100, 250, 500, 750, 1000, 1250],
                 "type": "rf",
-                # "n_cluster": 50,
                 "n_estimators": 2500,
-                # "param_grid": pg.random_forrest_grid(),
+                # "param_grid": pg.support_vector_machine_grid(),
             },
-            "feature": ["gray-kaze"],
-            "sampling_method": "kaze",
-            "sampling_step": 0,
-            "sampling_window": 0,
+            "feature": ["hsv-histogram", "gray-lbp"],
+            "sampling_method": "dense",
+            "sampling_step": 15,
+            "sampling_window": 15,
             "image_size": {
                 # "roi": [0.35, 0.5, 0.5, 0.99],
-                "width": 400,
-                "height": 400,
+                "width": 512,
+                "height": 512,
                 "padding": False,
             },
         }

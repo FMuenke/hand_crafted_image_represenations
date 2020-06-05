@@ -15,6 +15,7 @@ class OpenCvDescriptor:
             "akaze": cv2.AKAZE_create(),
             "kaze": cv2.KAZE_create(),
             "brisk": cv2.BRISK_create(),
+            # "sift": cv2.SIFT_create(),
         }
         return open_cv_key_point_detectors
 

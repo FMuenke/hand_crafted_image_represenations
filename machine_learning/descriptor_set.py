@@ -62,6 +62,10 @@ class DescriptorSet:
             color_space, descriptor_type = self.descriptor_type.split("-")
             cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
             return cv.compute(image, key_point_set.get_open_cv_key_points(image))
+        if "sift" in self.descriptor_type:
+            color_space, descriptor_type = self.descriptor_type.split("-")
+            cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
+            return cv.compute(image, key_point_set.get_open_cv_key_points(image))
 
         raise ValueError("Unknown Descriptor Type {}".format(self.descriptor_type))
 
