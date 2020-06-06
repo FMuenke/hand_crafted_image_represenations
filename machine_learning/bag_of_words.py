@@ -77,7 +77,7 @@ class BagOfWords:
     def fit(self, descriptors):
         descriptors = self._remove_empty_desc(descriptors)
         descriptors = np.concatenate(descriptors, axis=0)
-        print("Fitting Bag of Words to feature space...")
+        print("Fitting Bag of Words (n_words={}) to feature space...".format(self.n_words))
         print("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
         print("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()

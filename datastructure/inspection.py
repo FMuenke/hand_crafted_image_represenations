@@ -58,7 +58,7 @@ class Inspection:
         print("Collecting Box Tags...")
         self.tags = dict()
         pool = Pool()
-        tags = pool.map(self.load_single_box_tag, os.listdir(self.labels_folder))
+        tags = pool.map(self.load_single_box_tag,  sorted(os.listdir(self.labels_folder)))
         pool.close()
         pool.join()
         for t in tags:
@@ -70,7 +70,7 @@ class Inspection:
         print("Collecting images as tags")
         self.tags = dict()
         pool = Pool()
-        tags = pool.map(self.load_single_cls_tag, os.listdir(self.labels_folder))
+        tags = pool.map(self.load_single_cls_tag, sorted(os.listdir(self.labels_folder)))
         pool.close()
         pool.join()
         for t in tags:

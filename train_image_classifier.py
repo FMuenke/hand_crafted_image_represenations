@@ -25,18 +25,18 @@ class Config:
         }
 
         self.opt = {
-            "data_split_mode": "random",
+            "data_split_mode": "fixed",
             "classifier_opt": {
                 "aggregator": "bag_of_words",
                 "complexity": [5, 10, 15, 25, 50, 75, 100, 250, 500, 750, 1000, 1250],
-                "type": "rf",
+                "type": "b_rf",
                 "n_estimators": 2500,
                 # "param_grid": pg.support_vector_machine_grid(),
             },
-            "feature": ["hsv-histogram", "gray-lbp"],
-            "sampling_method": "dense",
-            "sampling_step": 15,
-            "sampling_window": 15,
+            "feature": ["opponent-kaze"],
+            "sampling_method": "kaze",
+            "sampling_step": 0,
+            "sampling_window": 0,
             "image_size": {
                 # "roi": [0.35, 0.5, 0.5, 0.99],
                 "width": 512,
