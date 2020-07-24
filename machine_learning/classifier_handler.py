@@ -120,11 +120,6 @@ class ClassifierHandler:
             with open(save_path, "w") as f:
                 f.write(classification_report(y_test, y_pred))
 
-            try:
-                plot_roc_curve([self.classifier, "cls"], x_test, y_test, save_path[:-4]+"_roc.png")
-            except Exception as e:
-                print(e)
-
         return f1_score(y_true=y_test, y_pred=y_pred, average="macro")
 
     def _init_classifier(self, opt):

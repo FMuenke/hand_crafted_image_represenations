@@ -14,18 +14,18 @@ import utils.parameter_grid as pg
 
 class Config:
     def __init__(self, model_folder):
-        self.down_sample = 0.0
+        self.down_sample = 0.95
 
         self.class_mapping = {
-            "maligne": 0,
-            "benigne": 1,
+            "bg": 0,
+            "cobblestone": 1,
             # "outburst_0": 1,
             # "surface_patch_0": 0,
             # "surface_patch_1": 1,
         }
 
         self.opt = {
-            "data_split_mode": "fixed",
+            "data_split_mode": "random",
             "classifier_opt": {
                 "aggregator": "bag_of_words",
                 "complexity": [5, 10, 15, 25, 50, 75, 100, 250, 500, 750, 1000, 1250],
@@ -33,14 +33,14 @@ class Config:
                 "n_estimators": 2500,
                 # "param_grid": pg.support_vector_machine_grid(),
             },
-            "feature": ["opponent-kaze"],
+            "feature": ["gray-kaze"],
             "sampling_method": "kaze",
             "sampling_step": 0,
             "sampling_window": 0,
             "image_size": {
                 # "roi": [0.35, 0.5, 0.5, 0.99],
-                "width": 512,
-                "height": 512,
+                "width": 256,
+                "height": 256,
                 "padding": False,
             },
         }
@@ -121,7 +121,7 @@ def start_training(args_, cfg):
     if args_.test_folder is not None:
         test(mf, args_.test_folder, dt=args_.dataset_type)
 
-    return f_1_score
+    return best_f1_score
 
 
 def main(args_):

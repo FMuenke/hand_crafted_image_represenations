@@ -2,8 +2,6 @@ from machine_learning.fisher_vector import FisherVector
 from machine_learning.bag_of_words import BagOfWords
 from machine_learning.basic_aggregator import BasicAggregator
 
-from utils.utils import save_dict, load_dict
-
 
 class AggregatorHandler:
     def __init__(self, model_path, opt):
