@@ -107,8 +107,14 @@ class BagOfWords:
     def _bag_up_descriptors(self, descriptors):
         word_bag = np.zeros((1, self.n_words))
         if descriptors is not None:
-            descriptors = descriptors.astype(np.float)
-            words = self.k_means_clustering.predict(descriptors)
+            descriptors = descriptors.astype(np.double)
+            try:
+                words = self.k_means_clustering.predict(descriptors)
+            except Exception as e:
+                print(e)
+                print(descriptors)
+                print(descriptors.shape)
+                words = []
             for word in words:
                 word_bag[0, word] += 1
         return word_bag
