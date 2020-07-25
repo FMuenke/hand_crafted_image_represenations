@@ -110,15 +110,16 @@ class ClassifierHandler:
         y_pred = self.predict(x_test)
         print("done in %0.3fs" % (time() - t0))
 
-        print(classification_report(y_test, y_pred))
-        print("Confusion Matrix:")
-        print(confusion_matrix(y_test, y_pred))
+        s = ""
+        s += str(classification_report(y_test, y_pred))
+        s += "\nConfusion Matrix:\n"
+        s += str(confusion_matrix(y_test, y_pred))
         if save_path is not None:
             d = os.path.dirname(save_path)
             if not os.path.isdir(d):
                 os.mkdir(d)
             with open(save_path, "w") as f:
-                f.write(classification_report(y_test, y_pred))
+                f.write(s)
 
         return f1_score(y_true=y_test, y_pred=y_pred, average="macro")
 
