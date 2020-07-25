@@ -114,6 +114,7 @@ class ClassifierHandler:
         s += str(classification_report(y_test, y_pred))
         s += "\nConfusion Matrix:\n"
         s += str(confusion_matrix(y_test, y_pred))
+        print(s)
         if save_path is not None:
             d = os.path.dirname(save_path)
             if not os.path.isdir(d):
