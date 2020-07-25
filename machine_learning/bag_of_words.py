@@ -81,7 +81,7 @@ class BagOfWords:
         print("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
         print("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()
-        self.k_means_clustering.fit(descriptors)
+        self.k_means_clustering.fit(descriptors.astype("double"))
         print("done in %0.3fs" % (time() - t0))
 
     def partial_fit(self, descriptors):
@@ -107,14 +107,9 @@ class BagOfWords:
     def _bag_up_descriptors(self, descriptors):
         word_bag = np.zeros((1, self.n_words))
         if descriptors is not None:
-            descriptors = descriptors.astype(np.double)
-            try:
-                words = self.k_means_clustering.predict(descriptors)
-            except Exception as e:
-                print(e)
-                print(descriptors)
-                print(descriptors.shape)
-                words = []
+            descriptors = descriptors.astype("double")
+            # print(type(descriptors))
+            words = self.k_means_clustering.predict(descriptors)
             for word in words:
                 word_bag[0, word] += 1
         return word_bag
