@@ -6,11 +6,11 @@ from machine_learning.feature_map import FeatureMap
 
 
 class LocalBinaryPattern:
-    def __init__(self, color_space="gray", radius=7, num_points=24, resolution=64):
+    def __init__(self, color_space="gray", radius=7, num_points=24):
         self.color_space = color_space
         self.radius = radius
         self.num_points = num_points
-        self.resolution = resolution
+        self.resolution = num_points + 1
 
     def _compute(self, channels):
         lbp_maps = []

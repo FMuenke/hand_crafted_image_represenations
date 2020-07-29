@@ -7,9 +7,10 @@ from machine_learning.feature_map import FeatureMap
 
 
 class HistogramOfOrientedGradients:
-    def __init__(self, color_space="gray", orientations=64):
+    def __init__(self, color_space="gray", orientations=32, norm_option="L2HYS"):
         self.color_space = color_space
         self.orientations = orientations
+        self.norm_option = norm_option
 
     def build_f_maps(self, image):
         gx = cv2.Sobel(np.copy(image.astype(np.uint8)), cv2.CV_32F, 1, 0)
@@ -26,6 +27,22 @@ class HistogramOfOrientedGradients:
 
         return np.stack(gradient_maps, axis=2)
 
+    def norm_dc_set(self, dc, norm_option="L2HYS"):
+        eps = 1e-6
+        if norm_option == "L2HYS":
+            dc_norm = self.norm_dc_set(dc, norm_option="L2")
+            dc_norm = np.clip(dc_norm, 0, 0.2)
+            dc_norm = self.norm_dc_set(dc_norm, norm_option="L2")
+            return dc_norm
+        if norm_option == "L2":
+            num_features = dc.shape[1]
+            norm_factor = np.sqrt(np.sum(np.power(dc, 2), axis=1)) + eps
+            norm_factor = np.reshape(norm_factor, (-1, 1))
+            norm_factor = np.repeat(norm_factor, num_features, axis=1)
+            dc_norm = np.divide(dc, norm_factor)
+            return dc_norm
+        return dc
+
     def _compute(self, channels):
         f_maps = []
         for c in channels:
@@ -38,6 +55,7 @@ class HistogramOfOrientedGradients:
         for target in list_of_targets:
             f_map = FeatureMap(target)
             dc = f_map.to_descriptor_with_pooling(key_points, pooling_mode="sum")
+            dc = self.norm_dc_set(dc, norm_option=self.norm_option)
             if dc is not None:
                 dc_sets.append(dc)
         return dc_sets

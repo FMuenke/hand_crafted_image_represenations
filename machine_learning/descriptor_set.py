@@ -26,7 +26,13 @@ class DescriptorSet:
     def compute(self, image, key_point_set):
         if "lbp" in self.descriptor_type:
             color_space, descriptor_type = self.descriptor_type.split("-")
-            lbp = LocalBinaryPattern(color_space=color_space)
+            if "+" in descriptor_type:
+                descriptor_type, num_points, radius = descriptor_type.split("+")
+            else:
+                num_points, radius = 24, 7
+            lbp = LocalBinaryPattern(color_space=color_space,
+                                     num_points=int(num_points),
+                                     radius=int(radius))
             return lbp.compute(image, key_point_set.get_key_points(image))
         if "lm" in self.descriptor_type:
             color_space, descriptor_type = self.descriptor_type.split("-")
@@ -34,11 +40,22 @@ class DescriptorSet:
             return lm.compute(image, key_point_set.get_key_points(image))
         if "histogram" in self.descriptor_type:
             color_space, descriptor_type = self.descriptor_type.split("-")
-            c_s_hist = ColorSpaceHistogram(color_space=color_space)
+            if "+" in descriptor_type:
+                descriptor_type, num_bins = descriptor_type.split("+")
+            else:
+                num_bins = 64
+            c_s_hist = ColorSpaceHistogram(color_space=color_space,
+                                           resolution=int(num_bins))
             return c_s_hist.compute(image, key_point_set.get_key_points(image))
         if "hog" in self.descriptor_type:
             color_space, descriptor_type = self.descriptor_type.split("-")
-            hog = HistogramOfOrientedGradients(color_space=color_space)
+            if "+" in descriptor_type:
+                descriptor_type, num_bins, norm_option = descriptor_type.split("+")
+            else:
+                num_bins, norm_option = 64, "L2HYS"
+            hog = HistogramOfOrientedGradients(color_space=color_space,
+                                               orientations=int(num_bins),
+                                               norm_option=norm_option)
             return hog.compute(image, key_point_set.get_key_points(image))
         if "glcm" == self.descriptor_type:
             gclm = GrayCoMatrix()

@@ -201,11 +201,14 @@ class BoxTag:
             if cls in self.tag_class:
                 if cls in prediction_string:
                     result_dict[cls]["tp"] += 1
+                    result_dict["overall"]["tp"] += 1
                 else:
                     result_dict[cls]["fn"] += 1
+                    result_dict["overall"]["fn"] += 1
             else:
                 if cls in prediction_string:
                     result_dict[cls]["fp"] += 1
+                    result_dict["overall"]["fp"] += 1
         return result_dict
 
     def get_data_size(self):
