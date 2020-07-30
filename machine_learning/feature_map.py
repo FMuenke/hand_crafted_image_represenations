@@ -30,11 +30,19 @@ class FeatureMap:
         else:
             return np.concatenate(descriptors, axis=0)
 
-    def to_descriptor_with_pooling(self, key_points, pooling_mode):
+    def to_descriptor_with_pooling(self, key_points, pooling_mode, roll_to_max_first=True):
         descriptors = []
         mat_h_f_map = MatrixHandler(self.feature_map)
         for x, y, s in key_points:
             roi = mat_h_f_map.cut_roi([x, y], s)
             mat_h_roi = MatrixHandler(roi)
-            descriptors.append(mat_h_roi.global_pooling(pooling_mode=pooling_mode))
+            desc = mat_h_roi.global_pooling(pooling_mode=pooling_mode)
+            if roll_to_max_first:
+                _, num_features = desc.shape
+                max_idx = np.argmax(desc, axis=1)[0]
+                # print(max_idx)
+                # print(desc[0, max_idx[0]])
+                desc = np.roll(desc, num_features-max_idx, axis=1)
+                # print(desc)
+            descriptors.append(desc)
         return np.concatenate(descriptors, axis=0)
