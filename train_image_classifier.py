@@ -10,17 +10,14 @@ from datastructure.data_saver import DataSaver
 from test_image_classifier import test
 
 import utils.parameter_grid as pg
+from utils.utils import load_dict
 
 
 class Config:
     def __init__(self, model_folder):
         self.down_sample = 0.0
 
-        self.class_mapping = {
-            "CLASS_0": 0,
-            "CLASS_1": 1,
-            "CLASS_2": 2,
-        }
+        self.class_mapping = None
 
         self.opt = {
             "data_split_mode": "random",
@@ -33,12 +30,12 @@ class Config:
             },
             "feature": ["hsv-hog+32+L2"],
             "sampling_method": "dense",
-            "sampling_step": 6,
-            "sampling_window": 6,
+            "sampling_step": 16,
+            "sampling_window": 16,
             "image_size": {
                 # "roi": [0.35, 0.5, 0.5, 0.99],
-                "width": 128,
-                "height": 128,
+                "width": None,
+                "height": None,
                 "padding": False,
             },
         }
@@ -127,6 +124,7 @@ def start_training(args_, cfg):
 
 def main(args_):
     cfg = Config(args_.model_folder)
+    cfg.class_mapping = load_dict(args_.class_mapping)
     f_1 = start_training(args_, cfg)
 
 
@@ -135,7 +133,6 @@ def parse_args():
     parser.add_argument(
         "--dataset_folder",
         "-df",
-        default="./data/train",
         help="Path to directory with dataset",
     )
     parser.add_argument(
@@ -152,9 +149,13 @@ def parse_args():
     )
     parser.add_argument(
         "--model_folder",
-        "-m",
-        default="./test/",
+        "-model",
         help="Path to model",
+    )
+    parser.add_argument(
+        "--class_mapping",
+        "-clmp",
+        help="Path to class mapping JSON",
     )
     parser.add_argument(
         "--use_cache",
