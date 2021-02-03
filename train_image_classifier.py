@@ -28,7 +28,7 @@ class Config:
                 # "n_estimators": 5000,
                 # "param_grid": pg.support_vector_machine_grid(),
             },
-            "feature": ["hsv-hog+32+L2"],
+            "feature": ["gray-hog+8+L2"],
             "sampling_method": "dense",
             "sampling_step": 16,
             "sampling_window": 16,

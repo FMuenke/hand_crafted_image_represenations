@@ -1,6 +1,7 @@
 from machine_learning.fisher_vector import FisherVector
 from machine_learning.bag_of_words import BagOfWords
 from machine_learning.basic_aggregator import BasicAggregator
+from machine_learning.vlad import VLAD
 
 
 class AggregatorHandler:
@@ -38,3 +39,7 @@ class AggregatorHandler:
 
         if "basic_mean" == self.opt["aggregator"]:
             self.aggregator = BasicAggregator(model_path=self.model_path)
+
+        if "vlad" == self.opt["aggregator"]:
+            self.aggregator = VLAD(model_path=self.model_path,
+                                   n_words=self.opt["complexity"])
