@@ -26,9 +26,6 @@ def test(mf, df, tc=None, dt="cls"):
 
     tag_set = d_set.get_tags(classes_to_consider=tc)
 
-    tg = TagGate({"height": 0, "width": 0})
-    tag_set = tg.apply(tag_set)
-
     print("Analysis of Tags ...")
     result_dict = init_result_dict(d_set.get_class_mapping())
     for tag_id in tqdm(tag_set):

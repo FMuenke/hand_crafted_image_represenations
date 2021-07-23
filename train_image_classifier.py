@@ -28,14 +28,14 @@ class Config:
                 # "n_estimators": 5000,
                 # "param_grid": pg.support_vector_machine_grid(),
             },
-            "feature": ["gray-hog+8+L2"],
+            "feature": ["hsv-hog+8+L2"],
             "sampling_method": "dense",
             "sampling_step": 16,
             "sampling_window": 16,
             "image_size": {
                 # "roi": [0.35, 0.5, 0.5, 0.99],
-                "width": None,
-                "height": None,
+                "width": 128,
+                "height": 128,
                 "padding": False,
             },
         }
@@ -125,6 +125,7 @@ def start_training(args_, cfg):
 def main(args_):
     cfg = Config(args_.model_folder)
     cfg.class_mapping = load_dict(args_.class_mapping)
+    print(cfg.class_mapping)
     f_1 = start_training(args_, cfg)
 
 

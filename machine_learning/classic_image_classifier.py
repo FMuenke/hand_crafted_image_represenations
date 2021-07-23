@@ -32,7 +32,6 @@ class ClassicImageClassifier:
         self.classifier_path = os.path.join(self.model_path, "classifier.pkl")
 
     def new(self):
-        print("Feature Extractor was added to the machine learning pipeline")
         self.feature_extractor = FeatureExtractor(features_to_use=self._pipeline_opt["feature"],
                                                   image_height=self._pipeline_opt["image_size"]["height"],
                                                   image_width=self._pipeline_opt["image_size"]["width"],
