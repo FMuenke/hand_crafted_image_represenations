@@ -4,7 +4,7 @@ from sklearn.model_selection import ParameterGrid
 
 from train_image_classifier import start_training
 
-import utils.parameter_grid as pg
+import classic_image_classification.utils.parameter_grid as pg
 
 
 class ConfigBuilder:

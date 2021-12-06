@@ -1,7 +1,7 @@
 import argparse
 import os
 
-from utils.utils import save_dict
+from classic_image_classification.utils.utils import save_dict
 from utils.label_file_utils import read_classification_label_file
 
 

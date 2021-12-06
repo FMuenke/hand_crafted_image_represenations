@@ -1,16 +1,14 @@
 import argparse
 import os
 import copy
-from datastructure.data_set import DataSet
-from machine_learning.classic_image_classifier import ClassicImageClassifier
-from datastructure.tag_gate import TagGate
+from classic_image_classification.data_structure.data_set import DataSet
+from classic_image_classification.machine_learning.classic_image_classifier import ClassicImageClassifier
 
-from datastructure.data_saver import DataSaver
+from classic_image_classification.data_structure.data_saver import DataSaver
 
 from test_image_classifier import test
 
-import utils.parameter_grid as pg
-from utils.utils import load_dict
+from classic_image_classification.utils.utils import load_dict
 
 
 class Config:
@@ -61,15 +59,13 @@ def start_training(args_, cfg):
     split = 0.25
 
     d_set = DataSet(data_set_dir=df,
+                    tag_type=dtype,
                     class_mapping=cfg.class_mapping)
 
-    d_set.load_data(tag_type=dtype)
+    d_set.load_data()
     assert len(d_set.tags) != 0, "No Labels were found! Abort..."
 
     tag_set = d_set.get_tags()
-
-    tg = TagGate({"height": 0, "width": 0}, cfg.down_sample)
-    tag_set = tg.apply(tag_set)
 
     ml_pipeline = ClassicImageClassifier(model_path=mf,
                                          pipeline_opt=cfg.opt,
