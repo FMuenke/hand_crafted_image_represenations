@@ -10,6 +10,9 @@ from classic_image_classification.machine_learning.data_sampler import DataSampl
 from classic_image_classification.data_structure.data_set import DataSet
 
 from classic_image_classification.utils.utils import save_dict, load_dict
+from classic_image_classification.utils.statistic_utils import init_result_dict, show_results, save_results
+
+from tqdm import tqdm
 
 
 class ClassicImageClassifier:
@@ -96,11 +99,29 @@ class ClassicImageClassifier:
         score = self.classifier.evaluate(x_test, y_test, save_path=report_path)
         return score
 
-    def predict(self, tag, get_confidence=False):
-        if "roi" in self._pipeline_opt["image_size"]:
-            tag.set_roi(self._pipeline_opt["image_size"]["roi"])
-        X = self.feature_extractor.extract_x(tag.load_data())
+    def predict_image(self, image, get_confidence=False):
+        X = self.feature_extractor.extract_x(image)
         if self.aggregator.is_fitted():
             X = self.aggregator.transform([X])
             X = X[0]
         return self.classifier.predict(X, get_confidence)
+
+    def evaluate(self, data_path, tag_type, load_all=False, report_path=None):
+        ds = DataSet(data_set_dir=data_path, class_mapping=self.class_mapping, tag_type=tag_type)
+        ds.load_data()
+        if load_all:
+            tags = ds.get_tags()
+        else:
+            tags = ds.get_tags(self.class_mapping)
+        assert len(tags) != 0, "No Labels were found! Abort..."
+
+        logging.info("Running Inference ...")
+        result_dict = init_result_dict(self.class_mapping)
+        for tag_id in tqdm(tags):
+            tag = tags[tag_id]
+            y_pred = self.predict_image(tag.load_data())
+            tag.write_prediction(y_pred, report_path)
+            result_dict = tag.evaluate_prediction(y_pred, result_dict)
+
+        show_results(result_dict)
+        save_results(report_path, "image_classifier", result_dict)

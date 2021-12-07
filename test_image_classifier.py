@@ -20,9 +20,8 @@ def test(mf, df, tc=None, dt="cls"):
     ML_pipeline = EnsembleImageClassifier(mf)
     ML_pipeline.load()
 
-    d_set = DataSet(data_set_dir=df, class_mapping=ML_pipeline.class_mapping)
-    d_set.load_data(tag_type=dt)
-
+    d_set = DataSet(data_set_dir=df, class_mapping=ML_pipeline.class_mapping, tag_type=dt)
+    d_set.load_data()
     tag_set = d_set.get_tags(classes_to_consider=tc)
 
     print("Analysis of Tags ...")
