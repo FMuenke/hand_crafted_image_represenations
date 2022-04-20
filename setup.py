@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 
 REQUIRED_PACKAGES = [
       "opencv-contrib-python",
+      "opencv-python==4.2.0.32",
       "scikit-learn",
       "xgboost",
       "tqdm",

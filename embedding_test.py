@@ -8,8 +8,8 @@ def main():
     opt = {
         "aggregator": "bag_of_words",
         "complexity": 32,
-        "feature": "gray-hog+16+L2",
-        "sampling_method": "dense",
+        "feature": "gray-kaze",
+        "sampling_method": "kaze",
         "sampling_step": 16,
         "sampling_window": 8,
         "image_size": {
