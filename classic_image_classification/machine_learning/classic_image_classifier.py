@@ -120,8 +120,10 @@ class ClassicImageClassifier:
         for tag_id in tqdm(tags):
             tag = tags[tag_id]
             y_pred = self.predict_image(tag.load_data())
-            tag.write_prediction(y_pred, report_path)
+            if report_path is not None:
+                tag.write_prediction(y_pred, report_path)
             result_dict = tag.evaluate_prediction(y_pred, result_dict)
 
         show_results(result_dict)
-        save_results(report_path, "image_classifier", result_dict)
+        if report_path is not None:
+            save_results(report_path, "image_classifier", result_dict)

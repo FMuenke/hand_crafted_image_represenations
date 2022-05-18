@@ -7,7 +7,7 @@ from classic_image_classification.machine_learning.classic_image_classifier impo
 from classic_image_classification.data_structure.data_saver import DataSaver
 
 from test_image_classifier import test
-
+import numpy as np
 from classic_image_classification.utils.utils import load_dict
 
 
@@ -19,21 +19,16 @@ class Config:
 
         self.opt = {
             "data_split_mode": "random",
-            "classifier_opt": {
-                "aggregator": "bag_of_words",
-                "complexity": [8, 16, 32, 64, 128, 256, 512, 1024, 2048],
-                "type": "svm",
-                # "n_estimators": 5000,
-                # "param_grid": pg.support_vector_machine_grid(),
-            },
-            "feature": ["hsv-hog+8+L2"],
+            "aggregator": "bag_of_words",
+            "complexity": [8, 16, 32, 64, 128, 256, 512],
+            "type": "svm",
+            "feature": "hsv-hog",
             "sampling_method": "dense",
             "sampling_step": 16,
             "sampling_window": 16,
             "image_size": {
-                # "roi": [0.35, 0.5, 0.5, 0.99],
-                "width": 128,
-                "height": 128,
+                "width": 64,
+                "height": 64,
                 "padding": False,
             },
         }
@@ -42,7 +37,7 @@ class Config:
                                              self.opt["sampling_method"],
                                              self.opt["sampling_step"],
                                              self.opt["sampling_window"],
-                                             self.opt["classifier_opt"]["aggregator"])
+                                             self.opt["aggregator"])
 
         self.mf = self.mf.replace("[", "")
         self.mf = self.mf.replace("]", "")
@@ -67,8 +62,7 @@ def start_training(args_, cfg):
 
     tag_set = d_set.get_tags()
 
-    ml_pipeline = ClassicImageClassifier(model_path=mf,
-                                         pipeline_opt=cfg.opt,
+    ml_pipeline = ClassicImageClassifier(opt=cfg.opt,
                                          class_mapping=cfg.class_mapping)
 
     ml_pipeline.new()
@@ -82,8 +76,8 @@ def start_training(args_, cfg):
     best_comp = None
     best_candidate = None
 
-    if "complexity" in cfg.opt["classifier_opt"]:
-        agg_complexities = cfg.opt["classifier_opt"]["complexity"]
+    if "complexity" in cfg.opt:
+        agg_complexities = cfg.opt["complexity"]
     else:
         agg_complexities = 0
     if not type(agg_complexities) is list:
@@ -91,25 +85,26 @@ def start_training(args_, cfg):
 
     for complexity in agg_complexities:
         candidate_opt = copy.deepcopy(cfg.opt)
-        candidate_opt["classifier_opt"]["complexity"] = complexity
+        candidate_opt["complexity"] = complexity
 
-        candidate = ClassicImageClassifier(model_path=mf, pipeline_opt=candidate_opt, class_mapping=cfg.class_mapping)
+        candidate = ClassicImageClassifier(opt=candidate_opt, class_mapping=cfg.class_mapping)
         candidate.new()
 
         x = cache.get_special("x")
         y = cache.get("y")
 
         candidate.build_aggregator(x)
+        print(np.array(x).shape)
         x = candidate.aggregate(x)
 
-        f_1_score = candidate.fit(x, y, percentage=split)
+        f_1_score = candidate.fit(x, y)
         if f_1_score > best_f1_score:
             best_f1_score = f_1_score
             best_candidate = candidate
             best_comp = complexity
 
     print("Best Complexity for {} was: {}".format(cfg.opt["classifier_opt"]["aggregator"], best_comp))
-    best_candidate.save()
+    best_candidate.save(mf)
     cache.clear_storage()
 
     if args_.test_folder is not None:
@@ -120,7 +115,19 @@ def start_training(args_, cfg):
 
 def main(args_):
     cfg = Config(args_.model_folder)
-    cfg.class_mapping = load_dict(args_.class_mapping)
+    # cfg.class_mapping = load_dict(args_.class_mapping)
+    cfg.class_mapping = {
+        "speed_20": 0,
+        "speed_30": 1,
+        "speed_50": 2,
+        "speed_60": 3,
+        "speed_70": 4,
+        "speed_80": 5,
+        "speed_100": 6,
+        "speed_120": 7,
+        "speed_40": 8,
+        "bg": 9,
+    }
     print(cfg.class_mapping)
     f_1 = start_training(args_, cfg)
 

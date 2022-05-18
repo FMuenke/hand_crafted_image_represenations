@@ -65,7 +65,7 @@ def read_classification_label_file(path_to_label_file):
 
 class LabeledImage:
 
-    image_extensions = [".jpg", ".JPG", ".png", "PNG", ".jpeg"]
+    image_extensions = [".jpg", ".JPG", ".png", "PNG", ".jpeg", ".ppm"]
     label_extensions = [".txt", ".xml"]
 
     def __init__(self, base_path, data_id):

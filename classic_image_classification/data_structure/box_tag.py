@@ -51,14 +51,15 @@ class BoxTag:
         return True
 
     def compile_classes(self):
-        filtered_classes = []
-        for cls in self.tag_class:
-            if cls in self.class_mapping:
-                filtered_classes.append(cls)
+        if len(self.class_mapping) != 0:
+            filtered_classes = []
+            for cls in self.tag_class:
+                if cls in self.class_mapping:
+                    filtered_classes.append(cls)
 
-        if len(filtered_classes) == 0:
-            filtered_classes = ["bg"]
-        self.tag_class = filtered_classes
+            if len(filtered_classes) == 0:
+                filtered_classes = ["bg"]
+            self.tag_class = filtered_classes
 
     def load_data(self, surrounding=0):
         assert os.path.isfile(self.image_id), "Error: {} not found.".format(self.image_id)
@@ -97,7 +98,7 @@ class BoxTag:
         file_name = "tag"
         for cls in self.tag_class:
             file_name += "_{}".format(cls)
-        file_name += "_{}".format(os.path.basename(self.tag_id))
+        file_name += "_{}".format(os.path.basename(self.image_id))
         return os.path.join(export_folder, file_name)
 
     def export_box(self, export_folder, surrounding=0, with_text=False):
@@ -122,8 +123,6 @@ class BoxTag:
 
     def write_prediction(self, prediction, prediction_folder):
         check_n_make_dir(prediction_folder)
-        prediction_file_folder = os.path.join(prediction_folder, "prediction")
-        check_n_make_dir(prediction_file_folder)
         p_string = ""
         for p in prediction:
             if p in self.class_mapping_inv:
@@ -132,9 +131,6 @@ class BoxTag:
                 p_string += p
             p_string += "_"
         p_string = p_string[:-1]
-        box_name = "{}.txt".format(self.generate_file_name(prediction_file_folder))
-        with open(box_name, "w") as f:
-            f.write(p_string)
 
         cls_folder = os.path.join(prediction_folder, p_string)
         check_n_make_dir(cls_folder)
