@@ -19,7 +19,7 @@ class Config:
             "data_split_mode": "random",
             "aggregator": "bag_of_words",
             "complexity": [8, 16, 32, 64, 128, 256, 512],
-            "type": ["rf", "xgboost"],
+            "type": ["rf"],
             "feature": "hsv-hog",
             "sampling_method": "dense",
             "sampling_step": 16,
@@ -40,8 +40,7 @@ def start_training(args_, cfg):
 
     image_cls = OptimizingImageClassifier(cfg.opt, cfg.class_mapping)
 
-    image_cls.fit(df, dtype, load_all=False)
-    image_cls.save(mf)
+    image_cls.fit(mf, df, dtype, load_all=False)
     if args_.test_folder is not None:
         test(mf, args_.test_folder, dt=args_.dataset_type)
 

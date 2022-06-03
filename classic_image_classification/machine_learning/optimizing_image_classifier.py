@@ -46,7 +46,7 @@ class OptimizingImageClassifier:
         self.aggregator_list = [ml.Aggregator(opt) for opt in aggregator_opt_list]
         self.classifier_list = [ml.Classifier(opt, self.class_mapping) for opt in classifier_opt_list]
 
-    def fit(self, data_path, tag_type, load_all=False, report_path=None):
+    def fit(self, model_folder, data_path, tag_type, load_all=False, report_path=None):
         self.new()
         best_f1_score = 0
         best_candidate = None
@@ -72,12 +72,25 @@ class OptimizingImageClassifier:
             x_transformed_test = np.concatenate(x_transformed_test, axis=0)
 
             for cls in self.classifier_list:
+                print(x_transformed_train.shape, x_transformed_test.shape)
                 cls.fit(x_transformed_train, y_train)
                 f_1_score = cls.evaluate(x_transformed_test, y_test, print_results=False)
                 print(cls, "Score: {}".format(f_1_score))
                 if f_1_score > best_f1_score:
                     best_f1_score = f_1_score
                     best_candidate = [aggregator, cls]
+
+                    current_opt = copy.deepcopy(self.opt)
+                    for k in aggregator.opt:
+                        current_opt[k] = best_candidate[0].opt[k]
+                    for k in cls.opt:
+                        current_opt[k] = best_candidate[1].opt[k]
+
+                    self.final_classifier = ClassicImageClassifier(opt=current_opt, class_mapping=self.class_mapping)
+                    self.final_classifier.feature_extractor = self.feature_extractor
+                    self.final_classifier.aggregator = aggregator
+                    self.final_classifier.classifier = cls
+                    self.final_classifier.save(model_folder)
 
         print("Best F1-Score: {}".format(best_f1_score))
         for k in best_candidate[0].opt:
@@ -87,11 +100,3 @@ class OptimizingImageClassifier:
             print(k, self.opt[k], best_candidate[1].opt[k])
             self.opt[k] = best_candidate[1].opt[k]
 
-        self.final_classifier = ClassicImageClassifier(opt=self.opt, class_mapping=self.class_mapping)
-        self.final_classifier.feature_extractor = self.feature_extractor
-        self.final_classifier.aggregator = best_candidate[0]
-        self.final_classifier.classifier = best_candidate[1]
-
-    def save(self, model_path):
-        if self.final_classifier is not None:
-            self.final_classifier.save(model_path)

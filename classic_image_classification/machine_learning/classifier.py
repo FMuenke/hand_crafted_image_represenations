@@ -48,9 +48,9 @@ class Classifier:
 
     def fit(self, x_train, y_train):
         if "param_grid" in self.opt:
-            self.classifier.fit_inc_hyper_parameter(x_train, y_train, self.opt["param_grid"], n_iter=100)
+            self.fit_inc_hyper_parameter(x_train, y_train, self.opt["param_grid"], n_iter=100)
         else:
-            self.classifier.fit(x_train, y_train)
+            self.fit_single(x_train, y_train)
 
     def fit_inc_hyper_parameter(self, x, y, param_set, scoring='f1_macro', cv=3, n_iter=None, n_jobs=-1):
         self.new()
@@ -180,7 +180,7 @@ class Classifier:
         path_to_class_mapping = os.path.join(model_path, "class_mapping.json")
         path_to_pipeline_opt = os.path.join(model_path, "pipeline_opt.json")
         path_to_classifier = os.path.join(model_path, "classifier.pkl")
-        check_n_make_dir(model_path, clean=True)
+        check_n_make_dir(model_path, clean=False)
         save_dict(self.class_mapping, path_to_class_mapping)
         save_dict(self.opt, path_to_pipeline_opt)
         if self.classifier is not None:

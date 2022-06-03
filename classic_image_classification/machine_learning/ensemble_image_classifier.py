@@ -13,22 +13,10 @@ class EnsembleImageClassifier:
 
         self.multi_class = False
 
-    def is_classic(self, model_path):
-        if os.path.isfile(os.path.join(model_path, "classifier.pkl")):
-            return True
-        else:
-            return False
-
-    def is_cnn(self, model_path):
-        for f in os.listdir(model_path):
-            if "weights" in f:
-                return True
-        return False
-
     def load_model(self, model_path):
-        if self.is_classic(model_path):
+        if os.path.isfile(os.path.join(model_path, "classifier.pkl")):
             c = ClassicImageClassifier(model_path)
-            c.load()
+            c.load(model_path)
             k = "{}_classic".format(len(self.members))
             self.members[k] = c
 
@@ -58,11 +46,11 @@ class EnsembleImageClassifier:
         self.class_mapping = clmp
         self.class_mapping_inv = {v: k for k, v in self.class_mapping.items()}
 
-    def predict(self, tag, get_confidence=False):
+    def predict_image(self, img, get_confidence=False):
         votes = []
         confs = []
         for k in self.members:
-            y_pred, conf = self.members[k].predict(tag, get_confidence=True)
+            y_pred, conf = self.members[k].predict_image(img, get_confidence=True)
             votes.append(y_pred)
             confs.append(conf)
         votes = np.array(votes)

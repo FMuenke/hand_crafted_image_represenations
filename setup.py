@@ -16,7 +16,7 @@ REQUIRED_PACKAGES = [
 ]
 
 setup(name='classic_image_classification',
-      version='0.0.0',
+      version='1.0.0',
       description='This package is used to classify images using hand-crafted features',
       author='Friedrich Muenke',
       author_email='friedrich.muenke@me.com',

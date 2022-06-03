@@ -1,20 +1,12 @@
 import logging
-from classic_image_classification import DataSet, ClassicImageClassifier
+from classic_image_classification import ClassicImageClassifier
 
 
 def main():
 
     class_mapping = {
-        "speed_20": 0,
-        "speed_30": 1,
-        "speed_50": 2,
-        "speed_60": 3,
-        "speed_70": 4,
-        "speed_80": 5,
-        "speed_100": 6,
-        "speed_120": 7,
-        "speed_40": 8,
-        "bg": 9,
+        "cobblestone": 0,
+        "bg": 1,
     }
 
     opt = {

@@ -44,6 +44,7 @@ class ClassicImageClassifier:
         path_to_opt = os.path.join(model_path, "classifier_opt.json")
         self.opt = load_dict(path_to_opt)
         self.new()
+        print(self.aggregator)
         path_to_class_mapping = os.path.join(model_path, "class_mapping.json")
         self.class_mapping = load_dict(path_to_class_mapping)
         self.class_mapping_inv = {v: k for k, v in self.class_mapping.items()}
@@ -98,11 +99,11 @@ class ClassicImageClassifier:
         return score
 
     def predict_image(self, image, get_confidence=False):
-        X = self.feature_extractor.extract_x(image)
+        x = self.feature_extractor.extract_x(image)
         if self.aggregator.is_fitted():
-            X = self.aggregator.transform([X])
-            X = X[0]
-        return self.classifier.predict(X, get_confidence)
+            x = self.aggregator.transform([x])
+            x = x[0]
+        return self.classifier.predict(x, get_confidence)
 
     def evaluate(self, data_path, tag_type, load_all=False, report_path=None):
         ds = DataSet(data_set_dir=data_path, class_mapping=self.class_mapping, tag_type=tag_type)
@@ -112,6 +113,9 @@ class ClassicImageClassifier:
         else:
             tags = ds.get_tags(self.class_mapping)
         assert len(tags) != 0, "No Labels were found! Abort..."
+
+        if report_path is not None:
+            check_n_make_dir(report_path, clean=True)
 
         logging.info("Running Inference ...")
         result_dict = init_result_dict(self.class_mapping)
