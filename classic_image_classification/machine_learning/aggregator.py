@@ -10,6 +10,12 @@ class Aggregator:
 
         self.aggregator = None
 
+    def __str__(self):
+        if "complexity" in self.opt:
+            return "Aggregator: {} - {}".format(self.opt["aggregator"], self.opt["complexity"])
+        else:
+            return "Aggregator: {}".format(self.opt["aggregator"])
+
     def is_fitted(self):
         if self.aggregator is None:
             return False

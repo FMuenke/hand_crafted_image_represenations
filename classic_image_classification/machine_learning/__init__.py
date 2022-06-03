@@ -1,0 +1,3 @@
+from classic_image_classification.machine_learning.feature_extractor import FeatureExtractor
+from classic_image_classification.machine_learning.aggregator import Aggregator
+from classic_image_classification.machine_learning.classifier import Classifier

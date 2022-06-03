@@ -25,7 +25,7 @@ from sklearn.metrics import f1_score
 from classic_image_classification.utils.utils import check_n_make_dir, save_dict, load_dict
 
 
-class ClassifierHandler:
+class Classifier:
     def __init__(self, opt=None, class_mapping=None):
         self.opt = opt
         self.class_mapping = class_mapping
@@ -37,29 +37,31 @@ class ClassifierHandler:
         self.best_score = None
 
     def __str__(self):
-        s = ""
-        s += "Classifier: {}, Score: {}\n".format(self.opt["type"], self.best_score)
-        s += "Parameters: \n"
-        s += "{}\n".format(self.best_params)
-        return s
+        return "Classifier: {}".format(self.opt["type"])
 
-    def fit(self, x_train, y_train):
+    def fit_single(self, x_train, y_train):
         self.new()
         print("Fitting the {} to the training set".format(self.opt["type"]))
         t0 = time()
         self.classifier.fit(x_train, y_train)
         print("done in %0.3fs" % (time() - t0))
 
+    def fit(self, x_train, y_train):
+        if "param_grid" in self.opt:
+            self.classifier.fit_inc_hyper_parameter(x_train, y_train, self.opt["param_grid"], n_iter=100)
+        else:
+            self.classifier.fit(x_train, y_train)
+
     def fit_inc_hyper_parameter(self, x, y, param_set, scoring='f1_macro', cv=3, n_iter=None, n_jobs=-1):
         self.new()
         if n_iter is None:
             print(" ")
             print("Starting GridSearchCV:")
-            searcher = GridSearchCV(self.classifier, param_set, scoring, n_jobs=n_jobs, cv=cv, verbose=10, refit=True)
+            searcher = GridSearchCV(self.classifier, param_set, scoring, n_jobs=n_jobs, cv=cv, verbose=2, refit=True)
         else:
             print(" ")
             print("Starting RandomizedSearchCV:")
-            searcher = RandomizedSearchCV(self.classifier, param_set, n_iter=n_iter, cv=cv, verbose=10,
+            searcher = RandomizedSearchCV(self.classifier, param_set, n_iter=n_iter, cv=cv, verbose=2,
                                           random_state=42, n_jobs=n_jobs, scoring=scoring, refit=True)
         searcher.fit(x, y)
         self.best_params = searcher.best_params_
@@ -75,17 +77,18 @@ class ClassifierHandler:
                 return self.classifier.predict(x), 1.00
         return self.classifier.predict(x)
 
-    def evaluate(self, x_test, y_test, save_path=None):
+    def evaluate(self, x_test, y_test, save_path=None, print_results=True):
         print("Predicting on the test set")
         t0 = time()
         y_pred = self.predict(x_test)
         print("done in %0.3fs" % (time() - t0))
 
         s = ""
-        s += str(classification_report(y_test, y_pred))
+        s += str(classification_report(y_test, y_pred, zero_division=0))
         s += "\nConfusion Matrix:\n"
         s += str(confusion_matrix(y_test, y_pred))
-        print(s)
+        if print_results:
+            print(s)
         if save_path is not None:
             d = os.path.dirname(save_path)
             if not os.path.isdir(d):
@@ -182,6 +185,3 @@ class ClassifierHandler:
         save_dict(self.opt, path_to_pipeline_opt)
         if self.classifier is not None:
             joblib.dump(self.classifier, path_to_classifier)
-
-        print("machine_learning-Pipeline was saved to: {}".format(model_path))
-
