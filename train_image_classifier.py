@@ -2,6 +2,7 @@ import argparse
 import os
 import copy
 from classic_image_classification.machine_learning.optimizing_image_classifier import OptimizingImageClassifier
+from classic_image_classification.machine_learning.best_of_bag_of_words import BestOfBagOfWords
 
 from test_image_classifier import test
 import numpy as np
@@ -19,15 +20,21 @@ class Config:
             "data_split_mode": "random",
             "aggregator": "bag_of_words",
             "complexity": [8, 16, 32, 64, 128, 256, 512],
-            "type": ["rf"],
-            "feature": "hsv-hog",
+            "type": ["rf", "xgboost"],
+            "feature": ["hsv-hog", "gray-hog"],
             "sampling_method": "dense",
-            "sampling_step": 16,
-            "sampling_window": 16,
-            "image_size": {
-                "width": 256,
-                "height": 256,
-            },
+            "sampling_step": [16, 32],
+            "sampling_window": [16, 32],
+            "image_size": [
+                {
+                    "width": 256,
+                    "height": 256,
+                },
+                {
+                    "width": 128,
+                    "height": 128,
+                },
+            ]
         }
 
 
@@ -38,9 +45,9 @@ def start_training(args_, cfg):
 
     split = 0.25
 
-    image_cls = OptimizingImageClassifier(cfg.opt, cfg.class_mapping)
-
-    image_cls.fit(mf, df, dtype, load_all=False)
+    # image_cls = OptimizingImageClassifier(cfg.opt, cfg.class_mapping)
+    bob = BestOfBagOfWords(cfg.opt, cfg.class_mapping)
+    bob.fit(mf, df, dtype, load_all=False)
     if args_.test_folder is not None:
         test(mf, args_.test_folder, dt=args_.dataset_type)
 

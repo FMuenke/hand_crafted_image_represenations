@@ -2,6 +2,7 @@ import os
 import joblib
 import numpy as np
 from time import time
+import logging
 
 from xgboost import XGBClassifier
 from sklearn.svm import SVC
@@ -41,10 +42,10 @@ class Classifier:
 
     def fit_single(self, x_train, y_train):
         self.new()
-        print("Fitting the {} to the training set".format(self.opt["type"]))
+        logging.info("Fitting the {} to the training set".format(self.opt["type"]))
         t0 = time()
         self.classifier.fit(x_train, y_train)
-        print("done in %0.3fs" % (time() - t0))
+        logging.info("done in %0.3fs" % (time() - t0))
 
     def fit(self, x_train, y_train):
         if "param_grid" in self.opt:
@@ -78,10 +79,10 @@ class Classifier:
         return self.classifier.predict(x)
 
     def evaluate(self, x_test, y_test, save_path=None, print_results=True):
-        print("Predicting on the test set")
+        logging.info("Predicting on the test set")
         t0 = time()
         y_pred = self.predict(x_test)
-        print("done in %0.3fs" % (time() - t0))
+        logging.info("done in %0.3fs" % (time() - t0))
 
         s = ""
         s += str(classification_report(y_test, y_pred, zero_division=0))
@@ -174,7 +175,7 @@ class Classifier:
         self.classifier = joblib.load(path_to_classifier)
         if self.class_mapping is not None:
             self.class_mapping_inv = {v: k for k, v in self.class_mapping.items()}
-        print("Classifier was loaded!")
+        logging.info("Classifier was loaded!")
 
     def save(self, model_path):
         path_to_class_mapping = os.path.join(model_path, "class_mapping.json")

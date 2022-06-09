@@ -5,7 +5,6 @@ import logging
 from classic_image_classification.machine_learning.feature_extractor import FeatureExtractor
 from classic_image_classification.machine_learning.aggregator import Aggregator
 from classic_image_classification.machine_learning.classifier import Classifier
-from classic_image_classification.machine_learning.data_sampler import DataSampler
 from classic_image_classification.utils.data_split import split_tags
 
 from classic_image_classification.data_structure.data_set import DataSet
@@ -44,7 +43,6 @@ class ClassicImageClassifier:
         path_to_opt = os.path.join(model_path, "classifier_opt.json")
         self.opt = load_dict(path_to_opt)
         self.new()
-        print(self.aggregator)
         path_to_class_mapping = os.path.join(model_path, "class_mapping.json")
         self.class_mapping = load_dict(path_to_class_mapping)
         self.class_mapping_inv = {v: k for k, v in self.class_mapping.items()}
@@ -62,13 +60,13 @@ class ClassicImageClassifier:
         self.aggregator.save(model_path)
         self.classifier.save(model_path)
 
-        print("machine_learning-Pipeline was saved to: {}".format(model_path))
+        logging.info("Machine-Learning-Pipeline was saved to: {}".format(model_path))
 
     def extract(self, tag_set):
         return self.feature_extractor.extract_trainings_data(tag_set)
 
     def build_aggregator(self, descriptors):
-        print("Feature Aggregator was added to the machine learning pipeline")
+        logging.info("Feature Aggregator was added to the machine learning pipeline")
         self.aggregator.fit(descriptors)
 
     def aggregate(self, x):

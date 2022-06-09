@@ -3,6 +3,7 @@ import json
 import os
 from time import time
 import numpy as np
+import logging
 
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from classic_image_classification.utils.utils import check_n_make_dir
@@ -79,23 +80,23 @@ class BagOfWords:
         self.k_means_clustering = self._init_cluster_method(self.cluster_method)
         descriptors = self._remove_empty_desc(descriptors)
         descriptors = np.concatenate(descriptors, axis=0)
-        print("Fitting Bag of Words (n_words={}) to feature space...".format(self.n_words))
-        print("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
-        print("Each Vector with {} features".format(descriptors.shape[1]))
+        logging.info("Fitting Bag of Words (n_words={}) to feature space...".format(self.n_words))
+        logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
+        logging.info("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()
         self.k_means_clustering.fit(descriptors.astype("double"))
-        print("done in %0.3fs" % (time() - t0))
+        logging.info("done in %0.3fs" % (time() - t0))
 
     def partial_fit(self, descriptors):
         if self.k_means_clustering is None:
             self.k_means_clustering = self._init_cluster_method(self.cluster_method)
         descriptors = np.concatenate(descriptors, axis=0)
-        print("Fitting Bag of Words to feature space...")
-        print("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
-        print("Each Vector with {} features".format(descriptors.shape[1]))
+        logging.info("Fitting Bag of Words to feature space...")
+        logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
+        logging.info("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()
         self.k_means_clustering.partial_fit(descriptors)
-        print("done in %0.3fs" % (time() - t0))
+        logging.info("done in %0.3fs" % (time() - t0))
 
     def _translate_to_visual_words(self, vector):
         word = self.k_means_clustering.predict(vector)

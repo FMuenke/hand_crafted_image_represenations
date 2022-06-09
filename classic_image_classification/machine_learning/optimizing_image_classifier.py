@@ -1,11 +1,8 @@
 import copy
 import numpy as np
-import os
 from sklearn.model_selection import ParameterGrid, train_test_split
-from classic_image_classification.data_structure.data_saver import DataSaver
 from classic_image_classification.data_structure.data_set import DataSet
 from classic_image_classification import machine_learning as ml
-from classic_image_classification import ClassicImageClassifier
 
 from classic_image_classification.utils.data_split import split_tags
 
@@ -86,7 +83,7 @@ class OptimizingImageClassifier:
                     for k in cls.opt:
                         current_opt[k] = best_candidate[1].opt[k]
 
-                    self.final_classifier = ClassicImageClassifier(opt=current_opt, class_mapping=self.class_mapping)
+                    self.final_classifier = ml.ClassicImageClassifier(opt=current_opt, class_mapping=self.class_mapping)
                     self.final_classifier.feature_extractor = self.feature_extractor
                     self.final_classifier.aggregator = aggregator
                     self.final_classifier.classifier = cls
@@ -99,4 +96,5 @@ class OptimizingImageClassifier:
         for k in best_candidate[1].opt:
             print(k, self.opt[k], best_candidate[1].opt[k])
             self.opt[k] = best_candidate[1].opt[k]
+        return best_f1_score
 
