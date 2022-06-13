@@ -14,6 +14,8 @@ from classic_image_classification.utils.statistic_utils import init_result_dict,
 
 from tqdm import tqdm
 
+from classic_image_classification.utils.statistic_utils import plot_roc
+
 
 class ClassicImageClassifier:
     def __init__(self, opt=None, class_mapping=None):
@@ -117,13 +119,21 @@ class ClassicImageClassifier:
 
         logging.info("Running Inference ...")
         result_dict = init_result_dict(self.class_mapping)
+        y = []
+        predictions = []
+        confidences = []
         for tag_id in tqdm(tags):
             tag = tags[tag_id]
-            y_pred = self.predict_image(tag.load_data())
+            y_pred, conf = self.predict_image(tag.load_data(), get_confidence=True)
             if report_path is not None:
                 tag.write_prediction(y_pred, report_path)
+            y.append(tag.load_y())
+            predictions.append(y_pred[0])
+            confidences.append(conf)
             result_dict = tag.evaluate_prediction(y_pred, result_dict)
 
         show_results(result_dict)
+
+        plot_roc(y, predictions, confidences, self.class_mapping, report_path)
         if report_path is not None:
             save_results(report_path, "image_classifier", result_dict)

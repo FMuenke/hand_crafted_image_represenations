@@ -69,7 +69,6 @@ class OptimizingImageClassifier:
             x_transformed_test = np.concatenate(x_transformed_test, axis=0)
 
             for cls in self.classifier_list:
-                print(x_transformed_train.shape, x_transformed_test.shape)
                 cls.fit(x_transformed_train, y_train)
                 f_1_score = cls.evaluate(x_transformed_test, y_test, print_results=False)
                 print(cls, "Score: {}".format(f_1_score))

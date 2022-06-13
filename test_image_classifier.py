@@ -1,10 +1,6 @@
 import argparse
 import os
-from tqdm import tqdm
-from classic_image_classification.data_structure.data_set import DataSet
-from classic_image_classification import ClassicImageClassifier
-from classic_image_classification.utils.utils import check_n_make_dir
-from classic_image_classification.utils.statistic_utils import init_result_dict, show_results, save_results
+from classic_image_classification.machine_learning import ClassicImageClassifier
 
 
 def test(mf, df, tc=None, dt="cls"):

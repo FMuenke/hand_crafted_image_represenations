@@ -56,8 +56,8 @@ def main(args_):
     cfg = Config(args_.model_folder)
     # cfg.class_mapping = load_dict(args_.class_mapping)
     cfg.class_mapping = {
-        "cobblestone": 0,
-        "bg": 1,
+        "deformation": 0,
+        "background": 1,
     }
     print(cfg.class_mapping)
     start_training(args_, cfg)

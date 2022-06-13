@@ -1,11 +1,15 @@
 import os
 import numpy as np
+import logging
+from tqdm import tqdm
 from classic_image_classification.machine_learning.classic_image_classifier import ClassicImageClassifier
+from classic_image_classification.data_structure.data_set import DataSet
+from classic_image_classification.utils.utils import check_n_make_dir
+from classic_image_classification.utils.statistic_utils import init_result_dict, show_results, save_results
 
 
 class EnsembleImageClassifier:
-    def __init__(self, path_to_ensemble_members):
-        self.path_to_ensemble_members = path_to_ensemble_members
+    def __init__(self):
         self.class_mapping = None
         self.class_mapping_inv = None
 
@@ -20,17 +24,17 @@ class EnsembleImageClassifier:
             k = "{}_classic".format(len(self.members))
             self.members[k] = c
 
-    def load(self):
-        print("Loading Ensemble Members...")
-        self.load_model(self.path_to_ensemble_members)
-        for f in os.listdir(self.path_to_ensemble_members):
-            model_path = os.path.join(self.path_to_ensemble_members, f)
+    def load(self, path_to_ensemble_members):
+        logging.info("Loading Ensemble Members...")
+        self.load_model(path_to_ensemble_members)
+        for f in os.listdir(path_to_ensemble_members):
+            model_path = os.path.join(path_to_ensemble_members, f)
             if os.path.isdir(model_path):
                 self.load_model(model_path)
 
-        print("{} Members were Loaded:".format(len(self.members)))
+        logging.info("{} Members were Loaded:".format(len(self.members)))
         for k in self.members:
-            print("- {}".format(k))
+            logging.info("- {}".format(k))
 
         self.load_class_mapping()
 
@@ -63,6 +67,31 @@ class EnsembleImageClassifier:
             return votes[voted], np.mean(confs)
         else:
             return votes[voted]
+
+    def evaluate(self, data_path, tag_type, load_all=False, report_path=None):
+        ds = DataSet(data_set_dir=data_path, class_mapping=self.class_mapping, tag_type=tag_type)
+        ds.load_data()
+        if load_all:
+            tags = ds.get_tags()
+        else:
+            tags = ds.get_tags(self.class_mapping)
+        assert len(tags) != 0, "No Labels were found! Abort..."
+
+        if report_path is not None:
+            check_n_make_dir(report_path, clean=True)
+
+        logging.info("Running Inference ...")
+        result_dict = init_result_dict(self.class_mapping)
+        for tag_id in tqdm(tags):
+            tag = tags[tag_id]
+            y_pred = self.predict_image(tag.load_data())
+            if report_path is not None:
+                tag.write_prediction(y_pred, report_path)
+            result_dict = tag.evaluate_prediction(y_pred, result_dict)
+
+        show_results(result_dict)
+        if report_path is not None:
+            save_results(report_path, "image_classifier", result_dict)
 
 
 
