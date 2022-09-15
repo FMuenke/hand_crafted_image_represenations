@@ -21,19 +21,15 @@ class Config:
             "aggregator": "bag_of_words",
             "complexity": [8, 16, 32, 64, 128, 256, 512],
             "type": ["rf", "xgboost"],
-            "feature": ["hsv-hog", "gray-hog"],
+            "feature": ["hsv-hog", "gray-hog", "gray-lbp"],
             "sampling_method": "dense",
             "sampling_step": [16, 32],
             "sampling_window": [16, 32],
             "image_size": [
                 {
-                    "width": 256,
-                    "height": 256,
-                },
-                {
                     "width": 128,
                     "height": 128,
-                },
+                }
             ]
         }
 
@@ -56,8 +52,8 @@ def main(args_):
     cfg = Config(args_.model_folder)
     # cfg.class_mapping = load_dict(args_.class_mapping)
     cfg.class_mapping = {
-        "deformation": 0,
-        "background": 1,
+        "manhole": 0,
+        "stormdrain": 1,
     }
     print(cfg.class_mapping)
     start_training(args_, cfg)

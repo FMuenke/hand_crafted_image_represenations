@@ -52,7 +52,7 @@ class BestOfBagOfWords:
                 best_candidate = i
                 best_f1_score = score
 
-        print("Best Model: {} ({})".format(best_candidate, best_f1_score))
+        print("[RESULT] Best Model: {} ({})".format(best_candidate, best_f1_score))
         for f in os.listdir(os.path.join(model_folder, "version_{}".format(best_candidate))):
             shutil.copy(
                 os.path.join(model_folder, "version_{}".format(best_candidate), f),

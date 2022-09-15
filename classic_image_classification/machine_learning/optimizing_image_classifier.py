@@ -61,7 +61,6 @@ class OptimizingImageClassifier:
         x_test, y_test = self.feature_extractor.extract_trainings_data(test_tags)
 
         for aggregator in self.aggregator_list:
-            print(aggregator)
             x_transformed_train = aggregator.fit_transform(x_train)
             x_transformed_test = aggregator.transform(x_test)
 
@@ -71,7 +70,6 @@ class OptimizingImageClassifier:
             for cls in self.classifier_list:
                 cls.fit(x_transformed_train, y_train)
                 f_1_score = cls.evaluate(x_transformed_test, y_test, print_results=False)
-                print(cls, "Score: {}".format(f_1_score))
                 if f_1_score > best_f1_score:
                     best_f1_score = f_1_score
                     best_candidate = [aggregator, cls]
@@ -88,12 +86,12 @@ class OptimizingImageClassifier:
                     self.final_classifier.classifier = cls
                     self.final_classifier.save(model_folder)
 
-        print("Best F1-Score: {}".format(best_f1_score))
+        print("[RESULT] Best F1-Score: {}".format(best_f1_score))
         for k in best_candidate[0].opt:
-            print(k, self.opt[k], best_candidate[0].opt[k])
+            print("[RESULT] ", k, self.opt[k], " --> ", best_candidate[0].opt[k])
             self.opt[k] = best_candidate[0].opt[k]
         for k in best_candidate[1].opt:
-            print(k, self.opt[k], best_candidate[1].opt[k])
+            print("[RESULT] ", k, self.opt[k], " --> ", best_candidate[1].opt[k])
             self.opt[k] = best_candidate[1].opt[k]
         return best_f1_score
 

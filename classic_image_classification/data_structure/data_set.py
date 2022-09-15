@@ -47,7 +47,7 @@ class DataSet:
         return tags
 
     def load_directory(self, path_to_directory):
-        logging.info("Loading Tags from: {}".format(path_to_directory))
+        logging.info("[INFO] Loading Tags from: {}".format(path_to_directory))
         image_path = os.path.join(path_to_directory, "images")
         if os.path.isdir(os.path.join(path_to_directory, "images")):
             args = [[path_to_directory, img_f] for img_f in os.listdir(image_path)]
@@ -65,11 +65,10 @@ class DataSet:
             self.load_directory(os.path.join(self.data_set_dir, d))
 
     def get_tags(self, classes_to_consider="all"):
-        print("Exporting Tags...")
         tags_out = dict()
         for tag_id in self.tags:
             tag = self.tags[tag_id]
             if tag.has_relevant_classes(classes_to_consider) or classes_to_consider == "all":
                 tags_out[tag_id] = tag
-        print("{} Tags were exported.".format(len(tags_out)))
+        print("[INFO] {} Tags were exported.".format(len(tags_out)))
         return tags_out

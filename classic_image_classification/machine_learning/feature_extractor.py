@@ -56,7 +56,7 @@ class FeatureExtractor:
     def extract_trainings_data(self, tags):
         x = []
         y = []
-        print("Extracting Features: {} for Tags".format(self.features_to_use))
+        print("[INFO] Extracting Features: {} for Tags".format(self.features_to_use))
         for tag_id in tqdm(tags):
             tag_data = tags[tag_id].load_data()
             x_tag = self.extract_x(tag_data)

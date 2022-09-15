@@ -57,11 +57,11 @@ class Classifier:
         self.new()
         if n_iter is None:
             print(" ")
-            print("Starting GridSearchCV:")
+            print("[INFO] Starting GridSearchCV:")
             searcher = GridSearchCV(self.classifier, param_set, scoring, n_jobs=n_jobs, cv=cv, verbose=2, refit=True)
         else:
             print(" ")
-            print("Starting RandomizedSearchCV:")
+            print("[INFO] Starting RandomizedSearchCV:")
             searcher = RandomizedSearchCV(self.classifier, param_set, n_iter=n_iter, cv=cv, verbose=2,
                                           random_state=42, n_jobs=n_jobs, scoring=scoring, refit=True)
         searcher.fit(x, y)
