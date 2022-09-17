@@ -43,7 +43,6 @@ opt = {
       "image_size": {
           "width": 256,
           "height": 256,
-          "padding": False,
       },
   }
 ````

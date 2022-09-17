@@ -1,7 +1,7 @@
 import argparse
 import os
 
-from utils.utils import check_n_make_dir
+from classic_image_classification.utils.utils import check_n_make_dir
 import hjson
 
 from shutil import copyfile
