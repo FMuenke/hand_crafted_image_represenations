@@ -39,7 +39,7 @@ class ClassicImageClassifier:
                                                   sampling_method=self._pipeline_opt["sampling_method"],
                                                   sampling_steps=self._pipeline_opt["sampling_step"],
                                                   sampling_window=self._pipeline_opt["sampling_window"],
-                                                  padding=self._pipeline_opt["image_size"]["padding"])
+                                                  resize_option=self._pipeline_opt["image_size"]["resize_mode"])
 
         self.aggregator = AggregatorHandler(self.model_path, self._pipeline_opt)
         self.classifier = ClassifierHandler(self.model_path, self._pipeline_opt, self.class_mapping)
@@ -73,7 +73,6 @@ class ClassicImageClassifier:
             self.classifier.fit_inc_hyper_parameter(x_train, y_train, self._pipeline_opt["classifier_opt"]["param_grid"], n_iter=100)
         else:
             self.classifier.fit(x_train, y_train)
-        print(self.classifier)
         score = self.classifier.evaluate(x_test, y_test, save_path=os.path.join(self.model_path, "eval_report.txt"))
         return score
 
@@ -95,8 +94,6 @@ class ClassicImageClassifier:
         joblib.dump(self.aggregator, self.aggregator_path)
 
     def predict(self, tag, get_confidence=False):
-        if "roi" in self._pipeline_opt["image_size"]:
-            tag.set_roi(self._pipeline_opt["image_size"]["roi"])
         X = self.feature_extractor.build_x(tag.load_data())
         if self.aggregator.is_fitted():
             X = self.aggregator.transform([X])

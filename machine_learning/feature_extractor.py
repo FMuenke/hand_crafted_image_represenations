@@ -16,7 +16,7 @@ class FeatureExtractor:
                  sampling_window=20,
                  image_height=None,
                  image_width=None,
-                 padding=False,
+                 resize_option="standard",
                  ):
 
         self.features_to_use = features_to_use
@@ -24,10 +24,10 @@ class FeatureExtractor:
         self.sampling_method = sampling_method
         self.sampling_steps = sampling_steps
         self.sampling_window = sampling_window
+        self.resize_option = resize_option
 
         self.img_height = image_height
         self.img_width = image_width
-        self.padding = padding
 
     def _output_list(self, input_list, axis):
         if input_list is not None:
@@ -42,7 +42,7 @@ class FeatureExtractor:
 
     def _build_x_bag_of_words(self, image):
         kp_set = KeyPointSet(self.sampling_method, self.sampling_steps, self.sampling_window)
-        p = Preprocessor([self.img_height, self.img_width], normalize=False, padding=self.padding)
+        p = Preprocessor([self.img_height, self.img_width], normalize=False, resize_option=self.resize_option)
         image = p.apply(image)
         x = []
         for feature in self.features_to_use:
