@@ -125,7 +125,7 @@ class Classifier:
         else:
             layer_structure = (100,)
 
-        if opt["type"] in ["random_forrest", "rf"]:
+        if opt["type"] in ["random_forest", "rf"]:
             return RandomForestClassifier(n_estimators=n_estimators, class_weight="balanced", n_jobs=-1)
         elif opt["type"] == "ada_boost":
             return AdaBoostClassifier(base_estimator=b_est, n_estimators=n_estimators)
@@ -154,7 +154,7 @@ class Classifier:
                                  tree_method="hist",
                                  booster="gbtree",
                                  n_jobs=-1)
-        elif opt["type"] in ["b_random_forrest", "b_rf"]:
+        elif opt["type"] in ["b_random_forest", "b_rf"]:
             return BalancedRandomForestClassifier(n_estimators=n_estimators, n_jobs=-1)
         elif opt["type"] == "b_bagging":
             return BalancedBaggingClassifier(base_estimator=b_est, n_estimators=n_estimators)

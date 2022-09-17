@@ -76,7 +76,7 @@ class BoxTag:
 
     def load_y(self):
         assert len(self.tag_class) == 1, "Multi Classification not supported {}".format(self.tag_class)
-        y_tag = 0
+        y_tag = -1
         if self.tag_class[0] in self.class_mapping:
             y_tag = self.class_mapping[self.tag_class[0]]
         return np.array(y_tag)

@@ -45,7 +45,7 @@ def start_training(args_, cfg):
     bob = BestOfBagOfWords(cfg.opt, cfg.class_mapping)
     bob.fit(mf, df, dtype, load_all=False)
     if args_.test_folder is not None:
-        test(mf, args_.test_folder, dt=args_.dataset_type)
+        test(mf, args_.test_folder, load_all=False, dt=args_.dataset_type)
 
 
 def main(args_):

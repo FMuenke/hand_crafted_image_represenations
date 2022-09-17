@@ -44,7 +44,8 @@ def main(args_):
     data_frame = []
     for tag_id in tqdm(tag_set):
         tag = tag_set[tag_id]
-        cls_id, confidence = model.predict_image(tag.load_data(), get_confidence=True)
+        pred, confidence = model.predict_image(tag.load_data(), get_confidence=True)
+        cls_id = pred[0]
         print(cls_id, confidence)
         t_class_name = tag.tag_class[0]
         if t_class_name == "bg":

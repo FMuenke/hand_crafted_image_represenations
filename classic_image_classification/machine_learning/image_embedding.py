@@ -25,11 +25,11 @@ class ImageEmbedding:
 
         self.feature_aggregator = Aggregator(self.opt)
 
-    def fit(self, data_path, tag_type):
+    def fit(self, data_path, tag_type, classes_to_consider="all"):
         self.new()
         ds = DataSet(data_path, tag_type=tag_type)
         ds.load_data()
-        tags = ds.get_tags()
+        tags = ds.get_tags(classes_to_consider=classes_to_consider)
 
         x, _ = self.feature_extractor.extract_trainings_data(tags)
         self.feature_aggregator.fit(x)
@@ -39,11 +39,11 @@ class ImageEmbedding:
         x = self.feature_aggregator.transform(x)
         return x
 
-    def fit_transform(self, data_path, tag_type):
+    def fit_transform(self, data_path, tag_type, classes_to_consider="all"):
         self.new()
         ds = DataSet(data_path, tag_type=tag_type)
         ds.load_data()
-        tags = ds.get_tags()
+        tags = ds.get_tags(classes_to_consider=classes_to_consider)
 
         x, _ = self.feature_extractor.extract_trainings_data(tags)
         return self.feature_aggregator.fit_transform(x)

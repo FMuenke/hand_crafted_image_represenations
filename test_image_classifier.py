@@ -3,12 +3,7 @@ import os
 from classic_image_classification.machine_learning import ClassicImageClassifier
 
 
-def test(mf, df, tc=None, dt="cls"):
-
-    if tc is None:
-        load_all = True
-    else:
-        load_all = False
+def test(mf, df, load_all, dt="cls"):
 
     model = ClassicImageClassifier()
     model.load(mf)
@@ -18,9 +13,9 @@ def test(mf, df, tc=None, dt="cls"):
 def main(args_):
     df = args_.dataset_folder
     mf = args_.model_folder
-    tc = args_.target_class
+    load_background = args_.load_background
     dt = args_.dataset_type
-    test(mf, df, tc, dt)
+    test(mf, df, load_background, dt)
 
 
 def parse_args():
@@ -42,9 +37,9 @@ def parse_args():
         help="Choose Dataset Annotation Bounding-Boxes [box] or Image Labels [cls]",
     )
     parser.add_argument(
-        "--target_class",
-        "-t",
-        default=None
+        "--load_background",
+        "-bg",
+        default=False
     )
     return parser.parse_args()
 
