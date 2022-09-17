@@ -127,6 +127,7 @@ class VLAD:
                 V[i] = np.sum(X[predictedLabels == i, :] - centers[i], axis=0)
 
         V = V.flatten()
+        V = V + 1e-5
         # power normalization, also called square-rooting normalization
         V = np.sign(V) * np.sqrt(np.abs(V))
 
