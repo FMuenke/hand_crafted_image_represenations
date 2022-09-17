@@ -28,13 +28,11 @@ def parse_args():
     parser.add_argument(
         "--dataset_folder",
         "-df",
-        default="./data/train",
         help="Path to directory with predictions",
     )
     parser.add_argument(
         "--model_folder",
         "-m",
-        default="./test/",
         help="Path to model",
     )
     parser.add_argument(
