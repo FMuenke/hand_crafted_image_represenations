@@ -66,7 +66,6 @@ def main(args_):
     od.fit(mf, data_path_known=df, data_path_test=tf, tag_type=dt)
 
 
-
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(

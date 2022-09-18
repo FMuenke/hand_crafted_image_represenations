@@ -1,11 +1,7 @@
 import argparse
-import os
-import copy
-from classic_image_classification.machine_learning.optimizing_image_classifier import OptimizingImageClassifier
 from classic_image_classification.machine_learning.best_of_bag_of_words import BestOfBagOfWords
 
 from test_image_classifier import test
-import numpy as np
 from classic_image_classification.utils.utils import load_dict
 
 
@@ -50,12 +46,7 @@ def start_training(args_, cfg):
 
 def main(args_):
     cfg = Config(args_.model_folder)
-    # cfg.class_mapping = load_dict(args_.class_mapping)
-    cfg.class_mapping = {
-        "manhole": 0,
-        "stormdrain": 1,
-    }
-    print(cfg.class_mapping)
+    cfg.class_mapping = load_dict(args_.class_mapping)
     start_training(args_, cfg)
 
 

@@ -32,7 +32,7 @@ opt = {
       "data_split_mode": "random",
       "classifier_opt": {
           "aggregator": "bag_of_words",
-          "complexity": [8, 16, 32, 64, 128, 256, 512, 1024, 2048],
+          "complexity": [8, 16, 32, 64, 128, 256, 512, 1024],
           "type": "random_forrest",
           "n_estimators": 5000,
       },

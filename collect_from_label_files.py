@@ -1,5 +1,6 @@
 import argparse
 import os
+from classic_image_classification.utils.utils import save_dict
 
 
 def collect_labels_from_dir(df, list_of_labels):
@@ -25,11 +26,17 @@ def collect_labels(df):
             list_of_labels = collect_labels_from_dir(path_to_df, list_of_labels)
 
     s = ""
+    label_json = {}
     for i, label in enumerate(list_of_labels):
         s += "\"{}\": {},\n".format(label, i)
+        label_json[label] = i
 
     with open(os.path.join(df, "label_list.txt"), "w") as f:
         f.write(s)
+
+    save_dict(label_json, os.path.join(df, "class_mapping.json"))
+
+
 
 
 
@@ -43,5 +50,4 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    df = args.data_folder
-    collect_labels(df)
+    collect_labels(args.data_folder)
