@@ -10,10 +10,11 @@ def main(args_):
 
     opt = {
         "data_split_mode": "random",
-        "data_split_ratio": 0.2,
+        "data_split_ratio": 0.0,
         "aggregator": "bag_of_words",
         "complexity": 1024,
-        "type": "svm",
+        "type": "rf",
+        "n_estimators": 1000,
         "feature": "hsv-hog+32+L2",
         "sampling_method": "dense",
         "sampling_step": 4,

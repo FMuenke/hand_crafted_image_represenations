@@ -58,7 +58,8 @@ class Classifier:
         if n_iter is None:
             print(" ")
             print("[INFO] Starting GridSearchCV:")
-            searcher = GridSearchCV(self.classifier, param_set, scoring, n_jobs=n_jobs, cv=cv, verbose=2, refit=True)
+            searcher = GridSearchCV(self.classifier, param_set,
+                                    scoring=scoring, n_jobs=n_jobs, cv=cv, verbose=2, refit=True)
         else:
             print(" ")
             print("[INFO] Starting RandomizedSearchCV:")

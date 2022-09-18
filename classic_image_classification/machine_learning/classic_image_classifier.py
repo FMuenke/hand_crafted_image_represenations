@@ -84,18 +84,13 @@ class ClassicImageClassifier:
             tags = ds.get_tags(self.class_mapping)
         assert len(tags) != 0, "No Labels were found! Abort..."
 
-        train_tags, test_tags = split_tags(tags)
-        x_train, y_train = self.feature_extractor.extract_trainings_data(train_tags)
-        x_test, y_test = self.feature_extractor.extract_trainings_data(test_tags)
+        x_train, y_train = self.feature_extractor.extract_trainings_data(tags)
         x_train = self.aggregator.fit_transform(x_train)
-        x_test = self.aggregator.transform(x_test)
-
         x_train = np.concatenate(x_train, axis=0)
-        x_test = np.concatenate(x_test, axis=0)
 
         self.classifier.fit(x_train, y_train)
         logging.info(self.classifier)
-        score = self.classifier.evaluate(x_test, y_test, save_path=report_path)
+        score = self.classifier.evaluate(x_train, y_train, save_path=report_path)
         return score
 
     def predict_image(self, image, get_confidence=False):
