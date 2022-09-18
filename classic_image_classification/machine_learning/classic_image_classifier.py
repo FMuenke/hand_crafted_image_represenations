@@ -86,7 +86,7 @@ class ClassicImageClassifier:
 
         train_tags, test_tags = split_tags(tags)
         x_train, y_train = self.feature_extractor.extract_trainings_data(train_tags)
-        x_test, y_test = self.feature_extractor.extract_trainings_data(train_tags)
+        x_test, y_test = self.feature_extractor.extract_trainings_data(test_tags)
         x_train = self.aggregator.fit_transform(x_train)
         x_test = self.aggregator.transform(x_test)
 

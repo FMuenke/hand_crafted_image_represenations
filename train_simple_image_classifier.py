@@ -12,15 +12,15 @@ def main(args_):
         "data_split_mode": "random",
         "data_split_ratio": 0.2,
         "aggregator": "bag_of_words",
-        "complexity": 32,
+        "complexity": 1024,
         "type": "svm",
-        "feature": "hsv-hog",
+        "feature": "hsv-hog+32+L2",
         "sampling_method": "dense",
-        "sampling_step": 16,
-        "sampling_window": 16,
+        "sampling_step": 4,
+        "sampling_window": 8,
         "image_size": {
-            "width": 64,
-            "height": 64,
+            "width": 32,
+            "height": 32,
         },
     }
 
