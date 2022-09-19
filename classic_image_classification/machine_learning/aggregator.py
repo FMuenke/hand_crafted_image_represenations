@@ -36,15 +36,14 @@ class Aggregator:
     def new(self):
         if "bag_of_words" == self.opt["aggregator"]:
             self.aggregator = BagOfWords(n_words=self.opt["complexity"])
-
-        if "fisher_vector" == self.opt["aggregator"]:
+        elif "fisher_vector" == self.opt["aggregator"]:
             self.aggregator = FisherVector(n_components=self.opt["complexity"])
-
-        if "basic_mean" == self.opt["aggregator"]:
+        elif "basic_mean" == self.opt["aggregator"]:
             self.aggregator = BasicAggregator()
-
-        if "vlad" == self.opt["aggregator"]:
+        elif "vlad" == self.opt["aggregator"]:
             self.aggregator = VLAD(n_words=self.opt["complexity"])
+        else:
+            raise Exception("Unknown Option for Aggregator: {}".format(self.opt["aggregator"]))
 
     def save(self, path):
         self.aggregator.save(path)
