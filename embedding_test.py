@@ -2,9 +2,9 @@ import pandas as pd
 import os
 from classic_image_classification import ImageEmbedding
 import argparse
-import umap
 import cv2
-from sklearn.cluster import KMeans
+from tqdm import tqdm
+from umap import UMAP
 import numpy as np
 from classic_image_classification import DataSet
 import seaborn as sns
@@ -15,60 +15,40 @@ from classic_image_classification.utils.utils import check_n_make_dir
 
 def main(args_):
     path = args_.dataset_folder
-    result_path = args_.result_folder
-    check_n_make_dir(result_path)
     opt = {
         "aggregator": "bag_of_words",
         "complexity": 128,
-        "feature": "hsv-hog+32+L2",
+        "feature": "hsv-hog",
         "sampling_method": "dense",
-        "sampling_step": 16,
+        "sampling_step": 4,
         "sampling_window": 16,
         "image_size": {
-            "width": 256,
-            "height": 256,
+            "width": 32,
+            "height": 32,
         }
     }
     img_emb = ImageEmbedding(opt)
     x = img_emb.fit_transform(data_path=path, tag_type="cls")
-    x = np.array(x)
-    x = x[:, 0, :]
-    print(x.shape)
+    x = np.concatenate(x, axis=0)
 
-    reducer = umap.UMAP(n_components=2)
-    reducer.fit(x)
-
-    clustering = KMeans()
-    clustering.fit(x)
+    projection = UMAP(n_components=4, n_jobs=-1)
+    x_proj = projection.fit_transform(x)
 
     ds = DataSet(data_set_dir=path, tag_type="cls")
     ds.load_data()
     tags = ds.get_tags()
-    print(len(tags))
 
-    df = []
+    df = {"name": []}
     for t_id in tqdm(tags):
-        data = tags[t_id].load_data()
-        x = img_emb.transform(data)
-        x = x[0]
-        x_red = reducer.transform(x)
-        x_red = x_red[0]
+        df["name"].append(tags[t_id].tag_class[0])
 
-        x_cl = clustering.predict(x)
-        cluster_path = os.path.join(result_path, str(x_cl[0]))
-        check_n_make_dir(cluster_path)
-        df.append({
-            "name": tags[t_id].tag_class[0],
-            "f1": x_red[0], "f2": x_red[1],
-            "cluster": x_cl[0],
-        })
-        img_path = os.path.join(cluster_path, str(t_id) + "-" + tags[t_id].tag_class[0] + ".jpg")
-        print(img_path)
-        cv2.imwrite(img_path, data)
+    list_of_variables = []
+    for i in range(x_proj.shape[1]):
+        list_of_variables.append("x{}".format(i+1))
+        df["x{}".format(i+1)] = x_proj[:, i]
 
     df = pd.DataFrame(df)
-    print(df)
-    sns.scatterplot(data=df, x="f1", y="f2", hue="cluster", style="name")
+    sns.pairplot(data=df, vars=list_of_variables, hue="name", kind="kde")
     plt.show()
 
 
