@@ -1,4 +1,5 @@
 import joblib
+import logging
 from time import time
 import os
 import numpy as np
@@ -27,13 +28,13 @@ class FisherVector:
 
     def fit(self, descriptors):
         descriptors = np.concatenate(descriptors, axis=0)
-        print("Fitting Gaussian Mixture Model to feature space...")
-        print("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
-        print("Each Vector with {} features".format(descriptors.shape[1]))
+        logging.info("Fitting Gaussian Mixture Model to feature space...")
+        logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
+        logging.info("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()
         self.gmm = GaussianMixture(n_components=self.n_components, covariance_type='diag')
         self.gmm.fit(descriptors)
-        print("done in %0.3fs" % (time() - t0))
+        logging.info("done in %0.3fs" % (time() - t0))
 
     def fisher_vector(self, descriptors):
         x = np.atleast_2d(descriptors)

@@ -1,4 +1,5 @@
 import copy
+import joblib
 import numpy as np
 from sklearn.model_selection import ParameterGrid
 from classic_image_classification.data_structure.data_set import DataSet
@@ -6,36 +7,55 @@ from classic_image_classification import machine_learning as ml
 
 import os
 import shutil
-from classic_image_classification.utils.utils import check_n_make_dir
+from classic_image_classification.utils.utils import check_n_make_dir, save_dict, load_dict
 
-from sklearn.ensemble import IsolationForest
+from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.neighbors import LocalOutlierFactor
 
 from sklearn.metrics import roc_auc_score
 
 
-class OutlierByDistanceMultiClass:
+class OutlierByRandomForest:
     def __init__(self):
-        self.remover = None
+        self.model = None
 
     def fit(self, x, y):
-        unique_y = np.unique(y)
-        self.remover = {}
-        for uy in unique_y:
-            self.remover[uy] = OutlierByDistance()
-            ux = x[y == uy, :]
-            self.remover[uy].fit(ux)
+        self.model = RandomForestClassifier(n_jobs=-1)
+        self.model.fit(x, y)
 
     def score_sample(self, x):
-        sep_dist = []
-        for uy in self.remover:
-            u_dist = self.remover[uy].compute_distance(x)
-            u_dist = np.expand_dims(u_dist, axis=1)
-            sep_dist.append(u_dist)
+        proba = self.model.predict_proba(x)
+        return np.max(proba, axis=1)
 
-        sep_dist = np.concatenate(sep_dist, axis=1)
-        min_dist = np.min(sep_dist, axis=1)
-        return min_dist * -1
+    def load(self, path):
+        path_to_model = os.path.join(path, "outlier_model.pkl")
+        self.model = joblib.load(path_to_model)
+
+    def save(self, path):
+        path_to_model = os.path.join(path, "outlier_model.pkl")
+        if self.model is not None:
+            joblib.dump(self.model, path_to_model)
+
+
+class OutlierByIsolationForest:
+    def __init__(self):
+        self.model = None
+
+    def fit(self, x, y):
+        self.model = IsolationForest(n_jobs=-1)
+        self.model.fit(x)
+
+    def score_sample(self, x):
+        return self.model.score_samples(x)
+
+    def load(self, path):
+        path_to_model = os.path.join(path, "outlier_model.pkl")
+        self.model = joblib.load(path_to_model)
+
+    def save(self, path):
+        path_to_model = os.path.join(path, "outlier_model.pkl")
+        if self.model is not None:
+            joblib.dump(self.model, path_to_model)
 
 
 class OutlierByDistance:
@@ -68,6 +88,23 @@ class OutlierByDistance:
         prediction[distance <= self.max_distance] = 1
         return prediction
 
+    def save(self, path):
+        param_path = os.path.join(path, "outlier_parameters.json")
+        np.save(os.path.join(path, "outlier_param_x_mean.npy"), self.x_mean)
+        np.save(os.path.join(path, "outlier_param_x_std.npy"), self.x_std)
+        save_dict({
+            "max_dist": int(self.max_distance),
+            "min_dist": int(self.min_distance),
+        }, param_path)
+
+    def load(self, path):
+        param_path = os.path.join(path, "outlier_parameters.json")
+        param = load_dict(param_path)
+        self.x_mean = np.load(os.path.join(path, "outlier_param_x_mean.npy"))
+        self.x_std = np.load(os.path.join(path, "outlier_param_x_std.npy"))
+        self.max_distance = int(param["max_dist"])
+        self.min_distance = int(param["min_dist"])
+
 
 class OutlierDetector:
     def __init__(self, opt, class_mapping):
@@ -81,6 +118,7 @@ class OutlierDetector:
         self.remover_list = None
         self.remover = None
 
+        self.final_aggregator = None
         self.final_remover = None
 
     def new(self):
@@ -107,7 +145,7 @@ class OutlierDetector:
             LocalOutlierFactor(novelty=True, n_jobs=-1),
             OutlierByDistance(),
         ]
-        self.remover = OutlierByDistance()
+        self.remover = OutlierByRandomForest()
 
     def fit(self, model_folder, data_path_known, data_path_test, tag_type, report_path=None):
         self.new()
@@ -138,16 +176,25 @@ class OutlierDetector:
             if score > best_score:
                 best_score = score
                 best_candidate = aggregator
-
+                self.final_aggregator = aggregator
+                self.final_remover = self.remover
                 current_opt = copy.deepcopy(self.opt)
                 for k in aggregator.opt:
                     current_opt[k] = best_candidate.opt[k]
+                self.save(model_folder, current_opt)
 
         print("[RESULT] Best AUROC-Score: {}".format(best_score))
         for k in best_candidate.opt:
             print("[RESULT] ", k, self.opt[k], " --> ", best_candidate.opt[k])
             self.opt[k] = best_candidate.opt[k]
         return best_score
+
+    def save(self, path, current_opt):
+        check_n_make_dir(path)
+        path_to_opt = os.path.join(path, "outlier_detector_opt.json")
+        save_dict(current_opt, path_to_opt)
+        self.final_aggregator.save(path)
+        self.final_remover.save(path)
 
 
 class OutlierDetectorSearch:
@@ -157,7 +204,7 @@ class OutlierDetectorSearch:
 
         self.feature_opt = ["feature", "sampling_method", "sampling_step", "sampling_window", "image_size"]
 
-        self.image_classifier = None
+        self.model_list = None
 
     def new(self):
 
@@ -174,7 +221,7 @@ class OutlierDetectorSearch:
                 if k not in opt:
                     opt[k] = self.opt[k]
 
-        self.image_classifier = [OutlierDetector(opt, self.class_mapping) for opt in feature_opt_list]
+        self.model_list = [OutlierDetector(opt, self.class_mapping) for opt in feature_opt_list]
 
     def fit(self, model_folder, data_path_known, data_path_test, tag_type, report_path=None):
         self.new()
@@ -184,8 +231,8 @@ class OutlierDetectorSearch:
 
         check_n_make_dir(model_folder)
 
-        for i, cls in enumerate(self.image_classifier):
-            score = cls.fit(
+        for i, model in enumerate(self.model_list):
+            score = model.fit(
                 os.path.join(model_folder, "version_{}".format(i)),
                 data_path_known,
                 data_path_test,
@@ -197,7 +244,7 @@ class OutlierDetectorSearch:
                 best_candidate = i
                 best_score = score
 
-        print("[RESULT] Best Model: {} ({})".format(best_candidate, best_score))
+        print("[FINAL-RESULT] Best Model: {} ({})".format(best_candidate, best_score))
         for f in os.listdir(os.path.join(model_folder, "version_{}".format(best_candidate))):
             shutil.copy(
                 os.path.join(model_folder, "version_{}".format(best_candidate), f),

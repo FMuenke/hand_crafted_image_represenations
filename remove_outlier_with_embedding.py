@@ -38,18 +38,17 @@ class Config:
 
         self.opt = {
             "data_split_mode": "random",
-            "aggregator": "bag_of_words",
-            "complexity": [8, 16, 32, 64, 128, 256, 512],
-            "type": ["rf", "xgboost"],
-            "feature": ["hsv-hog"],
+            "aggregator": ["basic_mean"],
+            "complexity": [4],
+            "feature": ["hsv-hog+64+L2HYS", "hsv-hog+32+L2"],
             "sampling_method": "dense",
-            "sampling_step": [16, 32],
-            "sampling_window": [32],
+            "sampling_step": [8, 16, 32],
+            "sampling_window": [32, 64],
             "image_size": [
                 {
                     "width": 128,
                     "height": 128,
-                }
+                },
             ]
         }
 

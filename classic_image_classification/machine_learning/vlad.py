@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import logging
 
 from time import time
 from sklearn.cluster import MiniBatchKMeans, KMeans
@@ -79,20 +80,20 @@ class VLAD:
         self.k_means_clustering = self._init_cluster_method(self.cluster_method)
         descriptors = self._remove_empty_desc(descriptors)
         descriptors = np.concatenate(descriptors, axis=0)
-        print("Fitting Visual Dictionary (n_words={}) to feature space...".format(self.n_words))
-        print("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
-        print("Each Vector with {} features".format(descriptors.shape[1]))
+        logging.info("Fitting Visual Dictionary (n_words={}) to feature space...".format(self.n_words))
+        logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
+        logging.info("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()
         self.k_means_clustering.fit(descriptors.astype("double"))
-        print("done in %0.3fs" % (time() - t0))
+        logging.info("done in %0.3fs" % (time() - t0))
 
     def partial_fit(self, descriptors):
         if self.k_means_clustering is None:
             self.k_means_clustering = self._init_cluster_method(self.cluster_method)
         descriptors = np.concatenate(descriptors, axis=0)
-        print("Fitting VLAD to feature space...")
-        print("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
-        print("Each Vector with {} features".format(descriptors.shape[1]))
+        logging.info("Fitting VLAD to feature space...")
+        logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
+        logging.info("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()
         self.k_means_clustering.partial_fit(descriptors)
         print("done in %0.3fs" % (time() - t0))

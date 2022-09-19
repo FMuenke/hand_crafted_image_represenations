@@ -1,4 +1,5 @@
 import numpy as np
+import logging
 from classic_image_classification.utils.utils import check_n_make_dir, save_dict, load_dict
 import os
 
@@ -31,15 +32,15 @@ class BasicAggregator:
         return aggregates
 
     def fit(self, descriptors):
-        print("Basic Aggregator is fitting...")
+        logging.info("Basic Aggregator is fitting...")
         descriptor = descriptors[0]
         self.n_features = descriptor.shape[1]
-        print("Basic Aggregator was fitted. Descriptors with {} features".format(descriptor.shape[1]))
+        logging.info("Basic Aggregator was fitted. Descriptors with {} features".format(descriptor.shape[1]))
 
     def save(self, model_path):
         check_n_make_dir(model_path)
         save_file_parameters = os.path.join(model_path, "aggregator-parameters.json")
-        save_dict({"n_features": self.n_features}, save_file_parameters)
+        save_dict({"n_features": int(self.n_features)}, save_file_parameters)
 
     def load(self, model_path):
         save_file_parameters = os.path.join(model_path, "aggregator-parameters.json")

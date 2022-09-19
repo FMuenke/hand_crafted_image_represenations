@@ -34,9 +34,20 @@ class FeatureExtractor:
 
     def describe_sampling(self):
         if self.sampling_method == "dense":
-            return "{} - DENSE: W:{}/S:{}".format(self.features_to_use, self.sampling_window, self.sampling_steps)
+            return "{} - IMG:{}/{} DENSE: W:{}/S:{}".format(
+                self.features_to_use,
+                self.img_height,
+                self.img_width,
+                self.sampling_window,
+                self.sampling_steps
+            )
         else:
-            return "{} - {}".format(self.features_to_use, self.sampling_method)
+            return "{} - IMG:{}/{} - {}".format(
+                self.features_to_use,
+                self.img_height,
+                self.img_width,
+                self.sampling_method
+            )
 
     def resize(self, image, image_size):
         img_h = ImageHandler(image)
