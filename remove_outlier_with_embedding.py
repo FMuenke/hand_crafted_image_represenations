@@ -7,7 +7,7 @@ from classic_image_classification.machine_learning import ClassicImageClassifier
 from classic_image_classification.machine_learning import ImageEmbedding
 from classic_image_classification.utils.utils import check_n_make_dir
 
-from classic_image_classification.machine_learning.outlier_detector import OutlierDetectorSearch
+from classic_image_classification.machine_learning.outlier_detector import OutlierDetectorSearch, OutlierDetector
 
 from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import LocalOutlierFactor
@@ -40,10 +40,10 @@ class Config:
             "data_split_mode": "random",
             "aggregator": ["basic_mean"],
             "complexity": [4],
-            "feature": ["hsv-hog+64+L2HYS", "hsv-hog+32+L2"],
+            "feature": ["hsv-hog+16+L2", "hsv-hog+32+L2", "hsv-hog+64+L2", "hsv-hog+128+L2"],
             "sampling_method": "dense",
-            "sampling_step": [8, 16, 32],
-            "sampling_window": [32, 64],
+            "sampling_step": [16],
+            "sampling_window": [32],
             "image_size": [
                 {
                     "width": 128,
@@ -61,8 +61,12 @@ def main(args_):
 
     cfg = Config(mf)
 
-    od = OutlierDetectorSearch(cfg.opt, cfg.class_mapping)
-    od.fit(mf, data_path_known=df, data_path_test=tf, tag_type=dt)
+    od_search = OutlierDetectorSearch(cfg.opt, cfg.class_mapping)
+    od_search.fit(mf, data_path_known=df, data_path_test=tf, tag_type=dt)
+
+    od = OutlierDetector()
+    od.load(mf)
+    od.evaluate(tf, tag_type=dt, results_path=mf)
 
 
 def parse_args():

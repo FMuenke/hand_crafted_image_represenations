@@ -8,11 +8,12 @@ from classic_image_classification import machine_learning as ml
 import os
 import shutil
 from classic_image_classification.utils.utils import check_n_make_dir, save_dict, load_dict
+from classic_image_classification.utils.outlier_removal import get_best_threshold
 
 from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.neighbors import LocalOutlierFactor
 
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, classification_report
 
 
 class OutlierByRandomForest:
@@ -107,6 +108,73 @@ class OutlierByDistance:
 
 
 class OutlierDetector:
+    def __init__(self, opt=None, class_mapping=None):
+        self.opt = opt
+        self.class_mapping = class_mapping
+        self.class_mapping_inv = None
+
+        self.feature_extractor = None
+        self.aggregator = None
+        self.remover = None
+
+    def new(self):
+        self.feature_extractor = ml.FeatureExtractor(
+            features_to_use=self.opt["feature"],
+            image_height=self.opt["image_size"]["height"],
+            image_width=self.opt["image_size"]["width"],
+            sampling_method=self.opt["sampling_method"],
+            sampling_steps=self.opt["sampling_step"],
+            sampling_window=self.opt["sampling_window"]
+        )
+        self.aggregator = ml.Aggregator(self.opt)
+        self.remover = OutlierByRandomForest()
+
+    def load(self, path):
+        path_to_opt = os.path.join(path, "outlier_detector_opt.json")
+        self.opt = load_dict(path_to_opt)
+        path_to_class_mapping = os.path.join(path, "class_mapping.json")
+        self.class_mapping = load_dict(path_to_class_mapping)
+        self.class_mapping_inv = {v: k for k, v in self.class_mapping.items()}
+        self.new()
+        self.aggregator.load(path)
+        self.remover.load(path)
+
+    def evaluate(self, data_path_test, tag_type, results_path):
+        print("[INFO] EVALUATING...")
+        ds_test = DataSet(data_path_test, tag_type, self.class_mapping)
+        ds_test.load_data()
+        tags_test = ds_test.get_tags(classes_to_consider="all")
+
+        x_test, y_test = self.feature_extractor.extract_trainings_data(tags_test)
+        y_test = np.array(y_test)
+        y_test[y_test != -1] = 1
+
+        x_transformed_test = self.aggregator.transform(x_test)
+        x_transformed_test = np.concatenate(x_transformed_test, axis=0)
+        y_rm = self.remover.score_sample(x_transformed_test)
+        score = roc_auc_score(y_test, y_rm)
+        best_threshold = get_best_threshold(y_rm, y_test)
+        print("[RESULT]: AUROC {} / THRESHOLD: {}".format(score, best_threshold))
+
+        remove_status = np.zeros(y_rm.shape)
+        remove_status[y_rm >= best_threshold] = 1
+        remove_status[y_rm < best_threshold] = -1
+        print(classification_report(y_test, remove_status))
+
+        path_wrongly_accepted = os.path.join(results_path, "wrongly_accepted")
+        check_n_make_dir(path_wrongly_accepted)
+        path_wrongly_rejected = os.path.join(results_path, "wrongly_rejected")
+        check_n_make_dir(path_wrongly_rejected)
+        for tag_id in tags_test:
+            tag = tags_test[tag_id]
+            if remove_status[tag_id] == -1 and y_test[tag_id] == 1:
+                tag.export_box(path_wrongly_rejected)
+
+            if remove_status[tag_id] == 1 and y_test[tag_id] == -1:
+                tag.export_box(path_wrongly_accepted)
+
+
+class OutlierDetectorAggregatorSearch:
     def __init__(self, opt, class_mapping):
         self.opt = opt
         self.class_mapping = class_mapping
@@ -193,6 +261,8 @@ class OutlierDetector:
         check_n_make_dir(path)
         path_to_opt = os.path.join(path, "outlier_detector_opt.json")
         save_dict(current_opt, path_to_opt)
+        path_to_class_mapping = os.path.join(path, "class_mapping.json")
+        save_dict(self.class_mapping, path_to_class_mapping)
         self.final_aggregator.save(path)
         self.final_remover.save(path)
 
@@ -221,7 +291,7 @@ class OutlierDetectorSearch:
                 if k not in opt:
                     opt[k] = self.opt[k]
 
-        self.model_list = [OutlierDetector(opt, self.class_mapping) for opt in feature_opt_list]
+        self.model_list = [OutlierDetectorAggregatorSearch(opt, self.class_mapping) for opt in feature_opt_list]
 
     def fit(self, model_folder, data_path_known, data_path_test, tag_type, report_path=None):
         self.new()

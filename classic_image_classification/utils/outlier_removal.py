@@ -37,8 +37,8 @@ def get_curve_online(known, novel, stypes = ['Bas'], tpr_best=None, fpr_best=Non
                     fp[stype][l+1] = fp[stype][l]
 
             if tpr_best and fpr_best:
-              if tp[stype][l+1]/tp[stype][0] == tpr_best and fp[stype][l+1]/fp[stype][0] == fpr_best:
-                  best_threshold = novel[n]
+                if tp[stype][l+1]/tp[stype][0] == tpr_best and fp[stype][l+1]/fp[stype][0] == fpr_best:
+                    best_threshold = novel[n]
         tpr95_pos = np.abs(tp[stype] / num_k - .95).argmin()
         tnr_at_tpr95[stype] = 1. - fp[stype][tpr95_pos] / num_n
     return tp, fp, tnr_at_tpr95, best_threshold
@@ -47,7 +47,7 @@ def get_curve_online(known, novel, stypes = ['Bas'], tpr_best=None, fpr_best=Non
 def get_best_threshold(score, status):
 
     x1 = score[status == 1]
-    x2 = score[status == 0]
+    x2 = score[status == -1]
 
     # get TP, FP, TNR@TPR95; TPR and FPR
     tp, fp, tnr_at_tpr95, _ = get_curve_online(x1, x2, ['Bas'])
