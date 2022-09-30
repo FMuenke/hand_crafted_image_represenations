@@ -7,6 +7,7 @@ import logging
 from xgboost import XGBClassifier
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
+from sklearn.gaussian_process import GaussianProcessClassifier, kernels
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, ExtraTreesClassifier
 from sklearn.neural_network import MLPClassifier
@@ -128,6 +129,8 @@ class Classifier:
 
         if opt["type"] in ["random_forest", "rf"]:
             return RandomForestClassifier(n_estimators=n_estimators, class_weight="balanced", n_jobs=-1)
+        elif opt["type"] in ["gp", "gaussian_process"]:
+            return GaussianProcessClassifier((1.0 * kernels.RBF(1.0)), n_jobs=-1)
         elif opt["type"] == "ada_boost":
             return AdaBoostClassifier(base_estimator=b_est, n_estimators=n_estimators)
         elif opt["type"] in ["logistic_regression", "lr"]:
