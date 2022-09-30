@@ -62,13 +62,13 @@ class KeyPointSet:
             open_cv_key_points = self.mask_open_cv_key_points(open_cv_key_points)
         if len(open_cv_key_points) == 0:
             height, width = image.shape[:2]
-            open_cv_key_points.append(cv2.KeyPoint(int(width/2), int(height/2), self.sampling_window, _class_id=0))
+            open_cv_key_points.append(cv2.KeyPoint(int(width/2), int(height/2), self.sampling_window))
         return open_cv_key_points
 
     def _key_points_to_open_cv_key_points(self, key_points):
         open_cv_key_points = []
         for x, y, s in key_points:
-            open_cv_key_points.append(cv2.KeyPoint(x, y, s, _class_id=0))
+            open_cv_key_points.append(cv2.KeyPoint(x, y, s))
         return open_cv_key_points
 
     def _open_cv_key_points_to_key_points(self, open_cv_key_points):

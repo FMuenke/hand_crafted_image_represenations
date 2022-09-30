@@ -38,12 +38,13 @@ class Config:
 
         self.opt = {
             "data_split_mode": "random",
-            "aggregator": ["basic_mean"],
-            "complexity": [4],
-            "feature": ["hsv-hog+16+L2", "hsv-hog+32+L2", "hsv-hog+64+L2", "hsv-hog+128+L2"],
+            "method": "by_classifier",
+            "aggregator": ["bag_of_words"],
+            "complexity": [64, 128, 256, 512, 1024],
+            "feature": ["gray-sift", "rgb-sift"],
             "sampling_method": "dense",
             "sampling_step": [16],
-            "sampling_window": [32],
+            "sampling_window": [16, 32],
             "image_size": [
                 {
                     "width": 128,

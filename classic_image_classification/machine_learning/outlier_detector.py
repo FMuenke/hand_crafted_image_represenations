@@ -11,9 +11,34 @@ from classic_image_classification.utils.utils import check_n_make_dir, save_dict
 from classic_image_classification.utils.outlier_removal import get_best_threshold
 
 from sklearn.ensemble import IsolationForest, RandomForestClassifier
-from sklearn.neighbors import LocalOutlierFactor
+from sklearn.gaussian_process import GaussianProcessClassifier, kernels
 
 from sklearn.metrics import roc_auc_score, classification_report
+
+
+class OutlierByGaussianProcess:
+    def __init__(self):
+        self.model = None
+
+    def __str__(self):
+        return "OutlierByGaussianProcess"
+
+    def fit(self, x, y):
+        self.model = GaussianProcessClassifier((1.0 * kernels.RBF(1.0)), n_jobs=-1)
+        self.model.fit(x, y)
+
+    def score_sample(self, x):
+        proba = self.model.predict_proba(x)
+        return np.max(proba, axis=1)
+
+    def load(self, path):
+        path_to_model = os.path.join(path, "outlier_model.pkl")
+        self.model = joblib.load(path_to_model)
+
+    def save(self, path):
+        path_to_model = os.path.join(path, "outlier_model.pkl")
+        if self.model is not None:
+            joblib.dump(self.model, path_to_model)
 
 
 class OutlierByRandomForest:
@@ -65,6 +90,9 @@ class OutlierByDistance:
         self.x_std = None
         self.max_distance = None
         self.min_distance = None
+
+    def __str__(self):
+        return "OutlierByDistance"
 
     def compute_distance(self, x):
         distance = np.square((x - self.x_mean) / self.x_std)
@@ -127,7 +155,10 @@ class OutlierDetector:
             sampling_window=self.opt["sampling_window"]
         )
         self.aggregator = ml.Aggregator(self.opt)
-        self.remover = OutlierByRandomForest()
+        if self.opt["method"] == "by_classifier":
+            self.remover = OutlierByGaussianProcess()
+        else:
+            self.remover = OutlierByDistance()
 
     def load(self, path):
         path_to_opt = os.path.join(path, "outlier_detector_opt.json")
@@ -208,12 +239,10 @@ class OutlierDetectorAggregatorSearch:
         aggregator_opt_list = list(ParameterGrid({k: self.opt[k] for k in self.aggregator_opt if k in self.opt}))
 
         self.aggregator_list = [ml.Aggregator(opt) for opt in aggregator_opt_list]
-        self.remover_list = [
-            IsolationForest(n_jobs=-1),
-            LocalOutlierFactor(novelty=True, n_jobs=-1),
-            OutlierByDistance(),
-        ]
-        self.remover = OutlierByRandomForest()
+        if self.opt["method"] == "by_classifier":
+            self.remover = OutlierByGaussianProcess()
+        else:
+            self.remover = OutlierByDistance()
 
     def fit(self, model_folder, data_path_known, data_path_test, tag_type, report_path=None):
         self.new()
@@ -237,10 +266,10 @@ class OutlierDetectorAggregatorSearch:
             x_transformed_test = aggregator.transform(x_test)
             x_transformed = np.concatenate(x_transformed, axis=0)
             x_transformed_test = np.concatenate(x_transformed_test, axis=0)
-
             self.remover.fit(x_transformed, y)
             y_rm = self.remover.score_sample(x_transformed_test)
             score = roc_auc_score(y_test, y_rm)
+            print("RUN: {} / {} - AUROC: {}".format(aggregator, self.remover, round(score, 3)))
             if score > best_score:
                 best_score = score
                 best_candidate = aggregator
