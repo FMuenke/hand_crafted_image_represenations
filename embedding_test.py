@@ -4,7 +4,7 @@ from classic_image_classification import ImageEmbedding
 import argparse
 import cv2
 from tqdm import tqdm
-from umap import UMAP
+from sklearn.decomposition import PCA
 import numpy as np
 from classic_image_classification import DataSet
 import seaborn as sns
@@ -31,7 +31,7 @@ def main(args_):
     x = img_emb.fit_transform(data_path=path, tag_type="cls")
     x = np.concatenate(x, axis=0)
 
-    projection = UMAP(n_components=4, n_jobs=-1)
+    projection = PCA(n_components=4)
     x_proj = projection.fit_transform(x)
 
     ds = DataSet(data_set_dir=path, tag_type="cls")
