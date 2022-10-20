@@ -185,12 +185,18 @@ class OutlierDetector:
         y_rm = self.remover.score_sample(x_transformed_test)
         score = roc_auc_score(y_test, y_rm)
         best_threshold = get_best_threshold(y_rm, y_test)
-        print("[RESULT]: AUROC {} / THRESHOLD: {}".format(score, best_threshold))
+
+        s = ""
+        s += "[RESULT]: AUROC {} / THRESHOLD: {}\n\n".format(score, best_threshold)
 
         remove_status = np.zeros(y_rm.shape)
         remove_status[y_rm >= best_threshold] = 1
         remove_status[y_rm < best_threshold] = -1
-        print(classification_report(y_test, remove_status))
+        s += str(classification_report(y_test, remove_status))
+
+        print(s)
+        with open(os.path.join(results_path, "outlier_report.txt"), "w") as f:
+            f.write(s)
 
         path_wrongly_accepted = os.path.join(results_path, "wrongly_accepted")
         check_n_make_dir(path_wrongly_accepted)
