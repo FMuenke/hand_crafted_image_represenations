@@ -22,7 +22,7 @@ class HistogramOfOrientedGradients:
         gy = cv2.Sobel(np.copy(image.astype(np.uint8)), cv2.CV_32F, 0, 1)
         mag, ang = cv2.cartToPolar(gx, gy)
         ang_sorted = ang / (2 * np.pi) * self.orientations
-        ang_sorted = ang_sorted.astype(np.int)
+        ang_sorted = ang_sorted.astype(np.int64)
 
         gradient_maps = []
         for ori_idx in range(self.orientations):

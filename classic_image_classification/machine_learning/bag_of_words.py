@@ -24,8 +24,11 @@ class BagOfWords:
 
     def _init_cluster_method(self, cluster_method):
         if cluster_method == "MiniBatchKMeans":
-            k_means_clustering = MiniBatchKMeans(n_clusters=self.n_words,
-                                                 init_size=2*self.n_words)
+            k_means_clustering = MiniBatchKMeans(
+                n_init="auto",
+                n_clusters=self.n_words,
+                init_size=2*self.n_words
+            )
         elif cluster_method == "KMeans":
             k_means_clustering = KMeans(n_clusters=self.n_words)
         else:

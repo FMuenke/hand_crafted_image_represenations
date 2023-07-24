@@ -5,6 +5,9 @@ import multiprocessing
 from skimage.feature import haar_like_feature
 from skimage.transform import integral_image
 
+from classic_image_classification.data_structure.image_handler import ImageHandler
+from classic_image_classification.data_structure.matrix_handler import MatrixHandler
+
 
 def basic_haar_features(roi):
     try:
@@ -27,9 +30,6 @@ if __name__ == "__main__":
     fh = basic_haar_features(img_ii)
     print(fh)
     print(len(fh))
-
-from classic_image_classification.data_structure.image_handler import ImageHandler
-from classic_image_classification.data_structure.matrix_handler import MatrixHandler
 
 
 class Haar:

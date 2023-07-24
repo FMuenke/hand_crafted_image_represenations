@@ -22,27 +22,5 @@ The data set should be separated in train and test folder. In ech folder should 
 Open the train_image_classifier.py file and set the configurations as wanted. Run the training command and specify the location of the data set and the location of the model once it is trained.
 
 ````bash
-python train_image_classifier.py -df PATH_TO_DATA_SET_TRAIN --model_folder PATH_TO_SAVE_MODEL_TO
-````
-
-If in doubt choose the following configurations for classification:
-
-````python
-opt = {
-      "data_split_mode": "random",
-      "classifier_opt": {
-          "aggregator": "bag_of_words",
-          "complexity": [8, 16, 32, 64, 128, 256, 512, 1024],
-          "type": "random_forrest",
-          "n_estimators": 5000,
-      },
-      "feature": ["hsv-kaze],
-      "sampling_method": "kaze",
-      "sampling_step": 0,
-      "sampling_window": 0,
-      "image_size": {
-          "width": 256,
-          "height": 256,
-      },
-  }
+python train_image_classifier.py -df PATH_TO_DATA_SET_TRAIN --model_folder PATH_TO_SAVE_MODEL_TO -clmp PATH_TO_CLASSMAPPING.JSON
 ````

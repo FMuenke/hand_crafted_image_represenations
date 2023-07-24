@@ -34,7 +34,7 @@ class GrayCoMatrix:
         regions_of_interest = []
         mat_h = MatrixHandler(image)
         mat_reduced = self.levels * mat_h.normalize()
-        mat_h = MatrixHandler(mat_reduced.astype(np.int))
+        mat_h = MatrixHandler(mat_reduced.astype(np.int64))
         for x, y, roi_size in key_points:
             regions_of_interest.append(mat_h.cut_roi([x, y], roi_size))
         return regions_of_interest

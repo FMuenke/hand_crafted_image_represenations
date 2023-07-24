@@ -17,10 +17,10 @@ class Config:
             "aggregator": "bag_of_words",
             "complexity": [8, 16, 32, 64, 128, 256, 512],
             "type": ["xgboost"],
-            "feature": ["hsv-hog"],
+            "feature": ["hsv-hog", "gray-hog"],
             "sampling_method": "dense",
-            "sampling_step": [16, 32],
-            "sampling_window": [16, 32],
+            "sampling_step": [8, 16, 32],
+            "sampling_window": [8, 16, 32],
             "image_size": [
                 {
                     "width": 128,
@@ -33,13 +33,12 @@ class Config:
 def start_training(args_, cfg):
     df = args_.dataset_folder
     mf = cfg.mf
-    dtype = args_.dataset_type
 
     split = 0.25
 
     # image_cls = OptimizingImageClassifier(cfg.opt, cfg.class_mapping)
     bob = BestOfBagOfWords(cfg.opt, cfg.class_mapping)
-    bob.fit(mf, df, dtype, load_all=False)
+    bob.fit(mf, df, args_.dataset_type, load_all=False)
     if args_.test_folder is not None:
         test(mf, args_.test_folder, load_all=False, dt=args_.dataset_type)
 
