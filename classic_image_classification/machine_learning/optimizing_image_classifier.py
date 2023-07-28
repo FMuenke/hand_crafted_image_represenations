@@ -55,7 +55,7 @@ class OptimizingImageClassifier:
         else:
             tags = ds.get_tags(self.class_mapping)
 
-        train_tags, test_tags = split_tags(tags)
+        train_tags, test_tags = split_tags(tags, mode=self.opt["data_split_mode"])
 
         x_train, y_train = self.feature_extractor.extract_trainings_data(train_tags)
         x_test, y_test = self.feature_extractor.extract_trainings_data(test_tags)

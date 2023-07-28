@@ -1,5 +1,5 @@
 import argparse
-from classic_image_classification.machine_learning.best_of_bag_of_words import BestOfBagOfWords
+from classic_image_classification.machine_learning import BestOfBagOfWords
 
 from test_image_classifier import test
 from classic_image_classification.utils.utils import load_dict
@@ -19,8 +19,8 @@ class Config:
             "type": ["xgboost"],
             "feature": ["hsv-hog", "gray-hog"],
             "sampling_method": "dense",
-            "sampling_step": [8, 16, 32],
-            "sampling_window": [8, 16, 32],
+            "sampling_step": [16, 32],
+            "sampling_window": [16, 32],
             "image_size": [
                 {
                     "width": 128,
@@ -33,8 +33,6 @@ class Config:
 def start_training(args_, cfg):
     df = args_.dataset_folder
     mf = cfg.mf
-
-    split = 0.25
 
     # image_cls = OptimizingImageClassifier(cfg.opt, cfg.class_mapping)
     bob = BestOfBagOfWords(cfg.opt, cfg.class_mapping)

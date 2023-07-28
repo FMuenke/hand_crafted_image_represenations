@@ -31,7 +31,7 @@ class BestOfBagOfWords:
 
         self.image_classifier = [ml.OptimizingImageClassifier(opt, self.class_mapping) for opt in feature_opt_list]
 
-    def fit(self, model_folder, data_path, tag_type, load_all=False, report_path=None):
+    def fit(self, model_folder, data_path, tag_type="cls", load_all=False, report_path=None):
         self.new()
 
         best_f1_score = 0
