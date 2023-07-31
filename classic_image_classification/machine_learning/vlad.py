@@ -25,7 +25,8 @@ class VLAD:
     def _init_cluster_method(self, cluster_method):
         if cluster_method == "MiniBatchKMeans":
             k_means_clustering = MiniBatchKMeans(n_clusters=self.n_words,
-                                                 init_size=2 * self.n_words)
+                                                 init_size=2 * self.n_words,
+                                                 n_init="auto")
         elif cluster_method == "KMeans":
             k_means_clustering = KMeans(n_clusters=self.n_words)
         else:
@@ -83,6 +84,7 @@ class VLAD:
         logging.info("Fitting Visual Dictionary (n_words={}) to feature space...".format(self.n_words))
         logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
         logging.info("Each Vector with {} features".format(descriptors.shape[1]))
+        self.parameters["n_features"] = descriptors.shape[1]
         t0 = time()
         self.k_means_clustering.fit(descriptors.astype("double"))
         logging.info("done in %0.3fs" % (time() - t0))
@@ -110,29 +112,22 @@ class VLAD:
         return word_bags
 
     def transform_single(self, descriptors):
-        X = np.array(descriptors)
-        predictedLabels = self.k_means_clustering.predict(X)
-        centers = self.k_means_clustering.cluster_centers_
-        labels = self.k_means_clustering.labels_
-        k = self.k_means_clustering.n_clusters
+        if descriptors is None:
+            return np.zeros((1, self.n_words*self.parameters["n_features"]))
+        descriptors = np.array(descriptors, dtype=np.float64)
+        visual_words = self.k_means_clustering.cluster_centers_
 
-        m, d = X.shape
-        V = np.zeros([k, d])
-        # computing the differences
+        # Step 2: Vector Quantization (Compute residuals)
+        labels = self.k_means_clustering.predict(descriptors)
+        residuals = [descriptors[i] - visual_words[labels[i]] for i in range(len(descriptors))]
 
-        # for all the clusters (visual words)
-        for i in range(k):
-            # if there is at least one descriptor in that cluster
-            if np.sum(predictedLabels == i) > 0:
-                # add the diferences
-                V[i] = np.sum(X[predictedLabels == i, :] - centers[i], axis=0)
+        # Step 3: Aggregation (Sum residuals to get VLAD representation)
+        vlad_representation = np.zeros((self.n_words, descriptors.shape[1]))
+        for i in range(len(residuals)):
+            vlad_representation[labels[i]] += residuals[i]
 
-        V = V.flatten()
-        V = V + 1e-5
-        # power normalization, also called square-rooting normalization
-        V = np.sign(V) * np.sqrt(np.abs(V))
-
-        # L2 normalization
-
-        V = V / np.sqrt(np.dot(V, V))
-        return np.reshape(V, (1, -1))
+        # L2-normalization
+        vlad_representation = vlad_representation.flatten()
+        vlad_representation /= np.sqrt(np.sum(vlad_representation ** 2))
+        vlad_representation = np.reshape(vlad_representation, (1, -1))
+        return vlad_representation

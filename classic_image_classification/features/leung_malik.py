@@ -39,6 +39,8 @@ class LeungMalik:
         return dc_sets
 
     def compute(self, image, key_points):
+        if len(key_points) == 0:
+            return None
         img_h = ImageHandler(image)
         channels = img_h.prepare_image_for_processing(self.color_space)
         feature_tensors = self._compute(channels)

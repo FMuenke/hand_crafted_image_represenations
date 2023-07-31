@@ -29,6 +29,11 @@ class ClassicImageClassifier:
         self.classifier = None
 
     def new(self):
+        if "sampling_step" not in self.opt:
+            self.opt["sampling_step"] = 20
+        if "sampling_window" not in self.opt:
+            self.opt["sampling_window"] = 20
+
         self.feature_extractor = FeatureExtractor(
             features_to_use=self.opt["feature"],
             image_height=self.opt["image_size"]["height"],

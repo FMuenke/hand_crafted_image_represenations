@@ -6,6 +6,19 @@ from classic_image_classification.machine_learning.key_point_set import KeyPoint
 from classic_image_classification.data_structure.image_handler import ImageHandler
 
 
+def validate_feature_extraction_settings(sampling_method, features_to_use):
+    if sampling_method not in ["kaze", "akaze"] and "kaze" in features_to_use:
+        print("[WARNING] Features KAZE are only compatible with KAZE key points")
+        print("[WARNING] Sampling Method was changed to - kaze -")
+        return "kaze", features_to_use
+
+    if sampling_method == "sift" and "sift" not in features_to_use:
+        print("[WARNING] Sampling Method SIFT is only compatible with SIFT features")
+        print("[WARNING] Sampling Method was changed to - kaze -")
+        return "kaze", features_to_use
+    return sampling_method, features_to_use
+
+
 class FeatureExtractor:
     def __init__(self,
                  features_to_use,
@@ -17,6 +30,8 @@ class FeatureExtractor:
                  image_width=None,
                  resize_option="standard",
                  ):
+
+        sampling_method, features_to_use = validate_feature_extraction_settings(sampling_method, features_to_use)
         if type(features_to_use) is not list():
             features_to_use = [features_to_use]
         self.features_to_use = features_to_use

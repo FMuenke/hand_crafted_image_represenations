@@ -109,17 +109,17 @@ def plot_roc(y, predictions, confidences, class_mapping, mf):
             })
 
     df = pd.DataFrame(results)
-    plt.subplot(311)
+    fig, axes = plt.subplots(3, 1, figsize=(16, 8))
     plt.title("CONFIDENCE - CHARACTERISTIC")
-    sns.lineplot(data=df, x="confidence", y="precision", hue="cls")
-    plt.subplot(312)
-    sns.lineplot(data=df, x="confidence", y="recall", hue="cls")
-    plt.subplot(313)
-    sns.lineplot(data=df, x="confidence", y="f1-score", hue="cls")
+    sns.lineplot(data=df, x="confidence", y="precision", hue="cls", ax=axes[0])
+    sns.lineplot(data=df, x="confidence", y="recall", hue="cls", ax=axes[1])
+    axes[1].get_legend().remove()
+    sns.lineplot(data=df, x="confidence", y="f1-score", hue="cls", ax=axes[2])
+    axes[2].get_legend().remove()
     plt.grid()
     plt.tight_layout()
     plt.savefig(os.path.join(mf, "confidence_characteristic.png"))
-    plt.show()
+    plt.close()
 
     precision_report = ""
     for cls, cls_group in df.groupby("cls"):

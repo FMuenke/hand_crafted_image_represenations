@@ -31,6 +31,8 @@ class FeatureMap:
             return np.concatenate(descriptors, axis=0)
 
     def to_descriptor_with_pooling(self, key_points, pooling_mode, roll_to_max_first=True):
+        if len(key_points) == 0:
+            return np.array([])
         descriptors = []
         mat_h_f_map = MatrixHandler(self.feature_map)
         for x, y, s in key_points:

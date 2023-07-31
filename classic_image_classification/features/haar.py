@@ -51,6 +51,8 @@ class Haar:
         return regions_of_interest
 
     def compute(self, image, key_points):
+        if len(key_points) == 0:
+            return None
         img_h = ImageHandler(image)
         regions_of_interest = self._build_regions_of_interest(img_h.integral(), key_points)
 

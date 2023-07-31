@@ -25,6 +25,7 @@ class KeyPointSet:
     def _build_open_cv_key_point_detectors(self):
         open_cv_key_point_detectors = {
             "orb": cv2.ORB_create(),
+            "sift": cv2.SIFT_create(),
             "akaze": cv2.AKAZE_create(),
             "kaze": cv2.KAZE_create(),
             "brisk": cv2.BRISK_create(),
@@ -60,9 +61,6 @@ class KeyPointSet:
             height, width = image.shape[:2]
             self.mask = cv2.resize(self.mask, (width, height), cv2.INTER_NEAREST)
             open_cv_key_points = self.mask_open_cv_key_points(open_cv_key_points)
-        if len(open_cv_key_points) == 0:
-            height, width = image.shape[:2]
-            open_cv_key_points.append(cv2.KeyPoint(int(width/2), int(height/2), self.sampling_window))
         return open_cv_key_points
 
     def _key_points_to_open_cv_key_points(self, key_points):
@@ -89,6 +87,9 @@ class KeyPointSet:
     def get_open_cv_key_points(self, image):
         if self.key_point_mode == "dense":
             key_points = self._define_dense_key_point_grid(image)
+            open_cv_key_points = self._key_points_to_open_cv_key_points(key_points)
+        elif self.key_point_mode == "one":
+            key_points = self._get_one_key_point(image)
             open_cv_key_points = self._key_points_to_open_cv_key_points(key_points)
         else:
             open_cv_key_points = self._detect_open_cv_key_points(image)

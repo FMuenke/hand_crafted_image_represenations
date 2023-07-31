@@ -75,8 +75,9 @@ class BagOfWords:
         """
         descriptors_out = []
         for desc in descriptors:
-            if desc is not None:
-                descriptors_out.append(desc)
+            if desc is None:
+                continue
+            descriptors_out.append(desc)
         return descriptors_out
 
     def fit(self, descriptors):
@@ -116,7 +117,6 @@ class BagOfWords:
         word_bag = np.zeros((1, self.n_words))
         if descriptors is not None:
             descriptors = descriptors.astype("double")
-            # print(type(descriptors))
             words = self.k_means_clustering.predict(descriptors)
             for word in words:
                 word_bag[0, word] += 1

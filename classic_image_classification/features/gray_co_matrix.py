@@ -14,19 +14,19 @@ class GrayCoMatrix:
         self.pool_count = multiprocessing.cpu_count()
 
     def _compute_for_roi(self, roi):
-        g = feature.greycomatrix(roi,
+        g = feature.graycomatrix(roi,
                                  self.distances,
                                  self.angles,
                                  levels=self.levels,
                                  normed=True,
                                  symmetric=True)
         desc = [
-            np.expand_dims(feature.greycoprops(g, 'contrast').ravel(), axis=0),
-            np.expand_dims(feature.greycoprops(g, "dissimilarity").ravel(), axis=0),
-            np.expand_dims(feature.greycoprops(g, "homogeneity").ravel(), axis=0),
-            np.expand_dims(feature.greycoprops(g, "ASM").ravel(), axis=0),
-            np.expand_dims(feature.greycoprops(g, "energy").ravel(), axis=0),
-            np.expand_dims(feature.greycoprops(g, "correlation").ravel(), axis=0),
+            np.expand_dims(feature.graycoprops(g, 'contrast').ravel(), axis=0),
+            np.expand_dims(feature.graycoprops(g, "dissimilarity").ravel(), axis=0),
+            np.expand_dims(feature.graycoprops(g, "homogeneity").ravel(), axis=0),
+            np.expand_dims(feature.graycoprops(g, "ASM").ravel(), axis=0),
+            np.expand_dims(feature.graycoprops(g, "energy").ravel(), axis=0),
+            np.expand_dims(feature.graycoprops(g, "correlation").ravel(), axis=0),
         ]
         return np.concatenate(desc, axis=1)
 

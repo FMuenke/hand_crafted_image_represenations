@@ -14,13 +14,13 @@ class Config:
 
         self.opt = {
             "data_split_mode": "random",
-            "aggregator": "bag_of_words",
-            "complexity": [8, 16, 32, 64, 128, 256, 512],
+            "aggregator": ["bag_of_words"],
+            "complexity": [16, 32, 64, 128, 256, 512],
             "type": ["xgboost"],
-            "feature": ["hsv-hog", "gray-hog"],
-            "sampling_method": "dense",
-            "sampling_step": [16, 32],
-            "sampling_window": [16, 32],
+            "feature": ["gray-sift", "hsv-sift"],
+            "sampling_method": ["sift", "kaze"],
+            "sampling_step": [16],
+            "sampling_window": [16],
             "image_size": [
                 {
                     "width": 128,

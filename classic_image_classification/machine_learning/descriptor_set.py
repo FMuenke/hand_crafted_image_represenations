@@ -4,8 +4,6 @@ from classic_image_classification.features.leung_malik import LeungMalik
 from classic_image_classification.features.color_space_histogram import ColorSpaceHistogram
 from classic_image_classification.features.open_cv_descriptor import OpenCvDescriptor
 from classic_image_classification.features.histogram_of_oriented_gradients import HistogramOfOrientedGradients
-from classic_image_classification.features.gray_co_matrix import GrayCoMatrix
-from classic_image_classification.features.haar import Haar
 
 
 class DescriptorSet:
@@ -57,12 +55,6 @@ class DescriptorSet:
                                                orientations=int(num_bins),
                                                norm_option=norm_option)
             return hog.compute(image, key_point_set.get_key_points(image))
-        if "glcm" == self.descriptor_type:
-            gclm = GrayCoMatrix()
-            return gclm.compute(image, key_point_set.get_key_points(image))
-        if "haar" == self.descriptor_type:
-            haar = Haar()
-            return haar.compute(image, key_point_set.get_key_points(image))
         if "kaze" in self.descriptor_type:
             color_space, descriptor_type = self.descriptor_type.split("-")
             cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
