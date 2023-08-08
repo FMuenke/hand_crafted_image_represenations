@@ -47,8 +47,8 @@ class Config:
             "sampling_window": [16, 32],
             "image_size": [
                 {
-                    "width": 128,
-                    "height": 128,
+                    "width": 64,
+                    "height": 64,
                 },
             ]
         }

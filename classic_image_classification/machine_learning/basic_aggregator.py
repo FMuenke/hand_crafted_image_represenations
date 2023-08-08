@@ -5,7 +5,8 @@ import os
 
 
 class BasicAggregator:
-    def __init__(self):
+    def __init__(self, variant):
+        self.variant = variant
         self.n_features = None
 
     def is_fitted(self):
@@ -13,6 +14,13 @@ class BasicAggregator:
             return False
         else:
             return True
+
+    def aggregate(self, descriptors):
+        if self.variant == "global_avg":
+            return np.mean(descriptors, axis=0)
+        if self.variant == "global_max":
+            return np.max(descriptors, axis=0)
+        raise "UNKNOWN AGGREGATOR : {}".format(self.variant)
 
     def transform(self, desc_sets):
         aggregates = []
@@ -25,7 +33,7 @@ class BasicAggregator:
                 x[0, :] = descriptors[0]
             else:
                 descriptors = np.stack(descriptors, axis=0)
-                descriptors = np.mean(descriptors, axis=0)
+                descriptors = self.aggregate(descriptors)
                 x = np.zeros((1, self.n_features))
                 x[0, :] = descriptors
             aggregates.append(x)

@@ -45,7 +45,10 @@ class OptimizingImageClassifier:
         aggregator_opt_list = list(ParameterGrid({k: self.opt[k] for k in self.aggregator_opt if k in self.opt}))
         classifier_opt_list = list(ParameterGrid({k: self.opt[k] for k in self.classifier_opt if k in self.opt}))
 
-        self.aggregator_list = [ml.Aggregator(opt) for opt in aggregator_opt_list]
+        self.aggregator_list = [ml.Aggregator(opt) for opt in aggregator_opt_list if "global_" not in opt["aggregator"]]
+        for agg in self.opt["aggregator"]:
+            if "global_" in agg:
+                self.aggregator_list.append(ml.Aggregator({"aggregator": agg}))
         self.classifier_list = [ml.Classifier(opt, self.class_mapping) for opt in classifier_opt_list]
 
     def fit(self, model_folder, data_path, tag_type, load_all=False, report_path=None):

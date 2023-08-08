@@ -100,12 +100,11 @@ Features are separated into color-space and feature-type: *COLOR-FEATURE*
 ###### Color Options: gray, hsv, opponent, rgb, RGB
 
 ###### Features:
-- hog: Histogram of Oriented Gradients. Define options with: hog+NUMBINS+NORMALIZATION ("L2", "L2HYS"). E.g. hog+64+L2
+- hog: Histogram of Oriented Gradients. Define options with: hog+SIZE+NORMALIZATION ("L1", "L1SQRT", "L2", "L2HYS") ("TINY", "SMALL", "BIG", "HUGE"). E.g. hog+SMALL+L2
 - glcm: Gray Level Co-Matrix
 - lbp: Local Binary Pattern. Define options with: lbp+NPOINTS+RADIUS. E.g. lbp+24+7
 - lm: Leung Malik Filter Bank
 - histogram: Histogram of Values. Define options with: histogram+NUMBINS. E.g. histogram+32
-- haar: Haar-Features
 - OpenCV Descriptors: [kaze, akaze, sift, orb, brisk]
 
 
@@ -114,7 +113,7 @@ Features are separated into color-space and feature-type: *COLOR-FEATURE*
   - sampling_step: Distance between Features
   - sampling_window: Size of window to compute the Feature from
 - one: Compute the Feature from the full image
-- OpenCV KeyPoint Detectors: [orb, akaze, brisk]
+- OpenCV KeyPoint Detectors: [orb, akaze, brisk, sift]
 
 #### Aggregator (aggregator)
 Based on previous setting for each image are multiple feature vectors (descriptors) computed.
@@ -123,7 +122,8 @@ As representation for an image they need to be summarized (aggregated) into one 
 - bag_of_words: Summarize all descriptors as a bag of words
 - fisher_vector: Summarize all descriptors as a Fisher Vector
 - vlad: Summarize all descriptors with the VLAD algorithm
-- basic_mean: Compute the average of all descriptors
+- global_avg: Compute the average of all descriptors
+- global_max: Compute the maximum of all descriptors
 
 
 #### Aggregator Complexity (complexity)

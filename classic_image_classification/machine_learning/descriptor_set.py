@@ -48,11 +48,11 @@ class DescriptorSet:
         if "hog" in self.descriptor_type:
             color_space, descriptor_type = self.descriptor_type.split("-")
             if "+" in descriptor_type:
-                descriptor_type, num_bins, norm_option = descriptor_type.split("+")
+                descriptor_type, cfg, norm_option = descriptor_type.split("+")
             else:
-                num_bins, norm_option = 64, "L2HYS"
+                cfg, norm_option = "SMALL", "L2HYS"
             hog = HistogramOfOrientedGradients(color_space=color_space,
-                                               orientations=int(num_bins),
+                                               config=cfg,
                                                norm_option=norm_option)
             return hog.compute(image, key_point_set.get_key_points(image))
         if "kaze" in self.descriptor_type:

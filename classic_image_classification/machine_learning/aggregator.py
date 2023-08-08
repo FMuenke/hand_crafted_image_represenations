@@ -4,9 +4,15 @@ from classic_image_classification.machine_learning.basic_aggregator import Basic
 from classic_image_classification.machine_learning.vlad import VLAD
 
 
+def format_aggregator_settings(opt):
+    if opt["aggregator"] in ["global_avg", "global_max"]:
+        opt["complexity"] = None
+    return opt
+
+
 class Aggregator:
     def __init__(self, opt):
-        self.opt = opt
+        self.opt = format_aggregator_settings(opt)
 
         self.aggregator = None
 
@@ -38,8 +44,8 @@ class Aggregator:
             self.aggregator = BagOfWords(n_words=self.opt["complexity"])
         elif "fisher_vector" == self.opt["aggregator"]:
             self.aggregator = FisherVector(n_components=self.opt["complexity"])
-        elif "basic_mean" == self.opt["aggregator"]:
-            self.aggregator = BasicAggregator()
+        elif self.opt["aggregator"] in ["global_avg", "global_max"]:
+            self.aggregator = BasicAggregator(self.opt["aggregator"])
         elif "vlad" == self.opt["aggregator"]:
             self.aggregator = VLAD(n_words=self.opt["complexity"])
         else:

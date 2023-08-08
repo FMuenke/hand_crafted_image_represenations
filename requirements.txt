@@ -6,5 +6,4 @@ matplotlib
 scikit-image
 numpy
 joblib
-imblearn
 seaborn
