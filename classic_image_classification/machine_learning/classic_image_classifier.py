@@ -5,7 +5,6 @@ import logging
 from classic_image_classification.machine_learning.feature_extractor import FeatureExtractor
 from classic_image_classification.machine_learning.aggregator import Aggregator
 from classic_image_classification.machine_learning.classifier import Classifier
-from classic_image_classification.utils.data_split import split_tags
 
 from classic_image_classification.data_structure.data_set import DataSet
 

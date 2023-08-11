@@ -66,7 +66,6 @@ class FisherVector:
 
         # Compute the means and covariances of the GMM components
         means = self.gmm.means_
-        covariances = self.gmm.covariances_
 
         # Compute the FV using the Fisher Vector formula
         fv = np.zeros((self.n_components, 2 * descriptor_dim))

@@ -76,4 +76,3 @@ class KeyPointSet:
         else:
             open_cv_key_points = self._detect_open_cv_key_points(image)
         return open_cv_key_points
-

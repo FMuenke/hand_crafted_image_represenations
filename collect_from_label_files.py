@@ -10,10 +10,10 @@ def collect_labels_from_dir(df, list_of_labels):
             lb_file_name = os.path.join(lb_dir, lb_file)
             if lb_file_name.endswith(".txt"):
                 with open(lb_file_name) as lf:
-                    for l in lf:
-                        l = l.replace("\n", "")
-                        if l not in list_of_labels:
-                            list_of_labels.append(l)
+                    for lab in lf:
+                        lab = lab.replace("\n", "")
+                        if lab not in list_of_labels:
+                            list_of_labels.append(lab)
     return list_of_labels
 
 
@@ -35,9 +35,6 @@ def collect_labels(df):
         f.write(s)
 
     save_dict(label_json, os.path.join(df, "class_mapping.json"))
-
-
-
 
 
 def parse_args():

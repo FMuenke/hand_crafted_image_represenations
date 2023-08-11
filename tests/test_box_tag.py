@@ -1,5 +1,4 @@
 import unittest
-import cv2
 import numpy as np
 from classic_image_classification.data_structure.box_tag import BoxTag
 

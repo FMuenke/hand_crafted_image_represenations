@@ -1,6 +1,6 @@
 import copy
 import numpy as np
-from sklearn.model_selection import ParameterGrid, train_test_split
+from sklearn.model_selection import ParameterGrid
 from classic_image_classification.data_structure.data_set import DataSet
 from classic_image_classification import machine_learning as ml
 
@@ -102,4 +102,3 @@ class OptimizingImageClassifier:
             print("[RESULT] ", k, self.opt[k], " --> ", best_candidate[1].opt[k])
             self.opt[k] = best_candidate[1].opt[k]
         return best_f1_score
-

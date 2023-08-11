@@ -18,34 +18,54 @@ from sklearn.metrics import f1_score
 from classic_image_classification.utils.utils import check_n_make_dir, save_dict, load_dict
 
 
-def init_classifier(opt):
-    n_estimators = 200
-    max_iter = 10000
+def init_ensembles(clf_type):
+    if clf_type == "rf":
+        return RandomForestClassifier(n_estimators=200, class_weight="balanced", n_jobs=-1)
+    elif clf_type == "ada_boost":
+        return AdaBoostClassifier(n_estimators=200)
+    elif clf_type == "extra_tree":
+        return ExtraTreesClassifier(n_estimators=200, class_weight="balanced", n_jobs=-1)
+    return RandomForestClassifier(n_estimators=200, class_weight="balanced", n_jobs=-1)
 
-    if opt["type"] in ["random_forest", "rf"]:
-        return RandomForestClassifier(n_estimators=n_estimators, class_weight="balanced", n_jobs=-1)
-    elif opt["type"] in ["gp", "gaussian_process"]:
-        return GaussianProcessClassifier((1.0 * kernels.RBF(1.0)), n_jobs=-1)
-    elif opt["type"] == "ada_boost":
-        return AdaBoostClassifier(n_estimators=n_estimators)
-    elif opt["type"] in ["logistic_regression", "lr"]:
-        return LogisticRegression(class_weight='balanced', max_iter=max_iter)
-    elif opt["type"] in ["support_vector_machine", "svm"]:
-        return SVC(kernel='rbf', class_weight='balanced', gamma="scale")
-    elif opt["type"] in ["multilayer_perceptron", "mlp"]:
-        return MLPClassifier(hidden_layer_sizes=(64,), max_iter=max_iter)
-    elif opt["type"] in ["mlp_x"]:
-        return MLPClassifier(hidden_layer_sizes=(128, 64), max_iter=max_iter)
-    elif opt["type"] in ["mlp_xx"]:
-        return MLPClassifier(hidden_layer_sizes=(256, 128, 64), max_iter=max_iter)
-    elif opt["type"] in ["knn_3"]:
+
+def init_knn(clf_type):
+    if clf_type == "knn_3":
         return KNeighborsClassifier(n_neighbors=3)
-    elif opt["type"] in ["knn_5"]:
+    elif clf_type == "knn_5":
         return KNeighborsClassifier(n_neighbors=5)
-    elif opt["type"] in ["knn_7"]:
+    elif clf_type == "knn_7":
         return KNeighborsClassifier(n_neighbors=7)
-    elif opt["type"] == "extra_tree":
-        return ExtraTreesClassifier(n_estimators=n_estimators, class_weight="balanced", n_jobs=-1)
+    return KNeighborsClassifier()
+
+
+def init_mlp(clf_type):
+    max_iter = 10000
+    if clf_type == "mlp":
+        return MLPClassifier(hidden_layer_sizes=(64,), max_iter=max_iter)
+    elif clf_type == "mlp_x":
+        return MLPClassifier(hidden_layer_sizes=(128, 64), max_iter=max_iter)
+    elif clf_type == "mlp_xx":
+        return MLPClassifier(hidden_layer_sizes=(256, 128, 64), max_iter=max_iter)
+    return MLPClassifier(max_iter=max_iter)
+
+
+def init_other(clf_type):
+    if clf_type == "gp":
+        return GaussianProcessClassifier((1.0 * kernels.RBF(1.0)), n_jobs=-1)
+    elif clf_type == "lr":
+        return LogisticRegression(class_weight='balanced', max_iter=10000)
+    elif clf_type == "svm":
+        return SVC(kernel='rbf', class_weight='balanced', gamma="scale")
+    return LogisticRegression(class_weight='balanced', max_iter=10000)
+
+
+def init_classifier(opt):
+    if "rf" in opt["type"]:
+        return init_ensembles(opt["type"])
+    elif "knn" in opt["type"]:
+        return init_knn(opt["type"])
+    elif opt["type"] in ["gp", "svm", "lr"]:
+        return init_other(opt["type"])
     else:
         raise ValueError("type: {} not recognised".format(opt["type"]))
 
@@ -73,11 +93,8 @@ class Classifier:
 
     def predict(self, x, get_confidence=False):
         if get_confidence:
-            try:
-                prob = self.classifier.predict_proba(x)
-                return [np.argmax(prob)], np.max(prob)
-            except:
-                return self.classifier.predict(x), 1.00
+            prob = self.classifier.predict_proba(x)
+            return [np.argmax(prob)], np.max(prob)
         return self.classifier.predict(x)
 
     def evaluate(self, x_test, y_test, save_path=None, print_results=True):

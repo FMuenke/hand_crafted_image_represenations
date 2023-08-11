@@ -355,5 +355,3 @@ class OutlierDetectorSearch:
                 os.path.join(model_folder, "version_{}".format(best_candidate), f),
                 os.path.join(model_folder, f))
         return best_score
-
-

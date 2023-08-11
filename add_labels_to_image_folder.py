@@ -7,7 +7,6 @@ def create_custom_labels(args_):
     labels_dir = os.path.join(images_dir.replace("images", "labels"))
 
     label = args_.label
-    #box = [0.35, 0.6, 0.5, 0.99]
 
     print("Creating Labels")
     print(images_dir)
@@ -24,8 +23,8 @@ def create_custom_labels(args_):
             lb_f = lb_f.replace(".tif", ".txt")
             label_filepath = os.path.join(labels_dir, lb_f)
             s = ""
-            for l in label.split("/"):
-                s += "{}\n".format(l)
+            for lab in label.split("/"):
+                s += "{}\n".format(lab)
             with open(label_filepath, "w") as lb:
                 lb.write(s)
 

@@ -1,23 +1,9 @@
 import argparse
 import os
-import numpy as np
-from tqdm import tqdm
-from classic_image_classification.data_structure.data_set import DataSet
-from classic_image_classification.machine_learning import ClassicImageClassifier
-from classic_image_classification.machine_learning import ImageEmbedding
-from classic_image_classification.utils.utils import check_n_make_dir
-
-from classic_image_classification.machine_learning.outlier_detector import OutlierDetectorSearch, OutlierDetector
-
-from sklearn.ensemble import IsolationForest
-from sklearn.neighbors import LocalOutlierFactor
-
-import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from sklearn.metrics import roc_auc_score, classification_report
-from classic_image_classification.utils.outlier_removal import get_best_threshold
+from classic_image_classification.machine_learning.outlier_detector import OutlierDetectorSearch, OutlierDetector
 
 
 def make_displot(data_frame, key, model_folder):
@@ -31,8 +17,8 @@ class Config:
         self.down_sample = 0.0
 
         self.class_mapping = {
-            "manhole": 0,
-            "stormdrain": 1,
+            "cls_0": 0,
+            "cls_1": 1,
         }
         self.mf = model_folder
 

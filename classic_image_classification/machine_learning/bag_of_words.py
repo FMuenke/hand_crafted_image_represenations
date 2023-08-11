@@ -129,4 +129,3 @@ class BagOfWords:
             word_bag = self._bag_up_descriptors(descriptors)
             word_bags.append(word_bag)
         return word_bags
-

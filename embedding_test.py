@@ -1,16 +1,12 @@
 import pandas as pd
-import os
 from classic_image_classification import ImageEmbedding
 import argparse
-import cv2
 from tqdm import tqdm
 from sklearn.decomposition import PCA
 import numpy as np
 from classic_image_classification import DataSet
 import seaborn as sns
 import matplotlib.pyplot as plt
-
-from classic_image_classification.utils.utils import check_n_make_dir
 
 
 def main(args_):

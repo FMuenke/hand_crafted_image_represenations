@@ -39,8 +39,7 @@ def read_txt_file(path_to_src_file, path_to_img_file):
             else:
                 continue
 
-            im = Image.open(path_to_img_file)
-            width, height = im.size
+            width, height = imagesize.get(path_to_img_file)
             x1_prz = float(x1_prz) * width
             y1_prz = float(y1_prz) * height
             x2_prz = float(x2_prz) * width
@@ -102,5 +101,3 @@ class LabeledImage:
             return read_classification_label_file(self.label_file)
         else:
             raise Exception("UNEXPECTED EXTENSION: {}".format(self.label_file))
-
-

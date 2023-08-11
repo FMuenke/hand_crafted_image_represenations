@@ -43,26 +43,11 @@ class DescriptorSet:
                                                config=cfg,
                                                norm_option=norm_option)
             return hog.compute(image, key_point_set.get_key_points(image))
-        if "kaze" in self.descriptor_type:
-            color_space, descriptor_type = self.descriptor_type.split("-")
-            cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
-            return cv.compute(image, key_point_set.get_open_cv_key_points(image))
-        if "akaze" in self.descriptor_type:
-            color_space, descriptor_type = self.descriptor_type.split("-")
-            cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
-            return cv.compute(image, key_point_set.get_open_cv_key_points(image))
-        if "brisk" in self.descriptor_type:
-            color_space, descriptor_type = self.descriptor_type.split("-")
-            cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
-            return cv.compute(image, key_point_set.get_open_cv_key_points(image))
-        if "orb" in self.descriptor_type:
-            color_space, descriptor_type = self.descriptor_type.split("-")
-            cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
-            return cv.compute(image, key_point_set.get_open_cv_key_points(image))
-        if "sift" in self.descriptor_type:
-            color_space, descriptor_type = self.descriptor_type.split("-")
-            cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
-            return cv.compute(image, key_point_set.get_open_cv_key_points(image))
+
+        for feat in ["kaze", "akaze", "sift", "brisk", "orb"]:
+            if feat in self.descriptor_type:
+                color_space, descriptor_type = self.descriptor_type.split("-")
+                cv = OpenCvDescriptor(descriptor_type=descriptor_type, color_space=color_space)
+                return cv.compute(image, key_point_set.get_open_cv_key_points(image))
 
         raise ValueError("Unknown Descriptor Type {}".format(self.descriptor_type))
-

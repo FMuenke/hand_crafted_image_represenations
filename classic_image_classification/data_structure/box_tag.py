@@ -1,5 +1,5 @@
 import cv2
-from PIL import Image
+import imagesize
 import os
 import numpy as np
 
@@ -158,6 +158,5 @@ class BoxTag:
         return result_dict
 
     def get_data_size(self):
-        im = Image.open(self.image_id)
-        width, height = im.size
+        width, height = imagesize.get(self.image_id)
         return height, width

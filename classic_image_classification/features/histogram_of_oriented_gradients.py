@@ -61,5 +61,3 @@ class HistogramOfOrientedGradients:
             return dc_sets[0]
         else:
             return np.concatenate(dc_sets, axis=1)
-
-

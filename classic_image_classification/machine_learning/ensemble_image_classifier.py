@@ -92,7 +92,3 @@ class EnsembleImageClassifier:
         show_results(result_dict)
         if report_path is not None:
             save_results(report_path, "image_classifier", result_dict)
-
-
-
-
