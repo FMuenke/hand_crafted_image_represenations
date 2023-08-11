@@ -62,6 +62,8 @@ def init_other(clf_type):
 def init_classifier(opt):
     if "rf" in opt["type"]:
         return init_ensembles(opt["type"])
+    elif "mlp" in opt["type"]:
+        return init_mlp(opt["type"])
     elif "knn" in opt["type"]:
         return init_knn(opt["type"])
     elif opt["type"] in ["gp", "svm", "lr"]:

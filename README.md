@@ -42,7 +42,7 @@ opt = {
     "data_split_mode": "random",                  # How to split data into train and test
     "aggregator": "bag_of_words",                 # Define aggregation ["bag_of_words", "vlad", ...]
     "complexity": [8, 16, 32, 64, 128, 256, 512], # Define the complexity (numer of clusters) of the aggregation
-    "type": ["mlp", "mlp_x"],                     # Which classifier should be used [random_forrest, xgboost, ...]
+    "type": ["mlp", "mlp_x"],                     # Which classifier should be used [mlp, rf, svm, ...]
     "feature": ["hsv-hog", "gray-hog"],           # Which Features should be tested
     "sampling_method": "dense",                   # How to sample features
     "sampling_step": [16, 32],                    # Option for dense-sampling: step size
@@ -129,3 +129,16 @@ As representation for an image they need to be summarized (aggregated) into one 
 #### Aggregator Complexity (complexity)
 For some aggregation methods [bag_of_words, fisher_vector, vlad] the complexity can be set. 
 It represents the amount of distinct clusters to summarize features.
+
+
+#### Classifier
+The classifier used to make the final classification
+- lr: Logistic Regression
+- svm: Support Vector Machine
+- mlp: Multi-Layer-Perceptron, Neurons: (64)
+- mlp_x: Multi-Layer-Perceptron, Neurons: (128, 64)
+- mlp_xx: Multi-Layer-Perceptron, Neurons: (256, 128, 64)
+- rf: Random Forrest
+- knn_3: K-Nearest Neighbours (N=3)
+- knn_5: K-Nearest Neighbours (N=5)
+- knn_7: K-Nearest Neighbours (N=7)
