@@ -1,6 +1,6 @@
 from classic_image_classification.machine_learning.fisher_vector import FisherVector
 from classic_image_classification.machine_learning.bag_of_words import BagOfWords
-from classic_image_classification.machine_learning.basic_aggregator import BasicAggregator
+from classic_image_classification.machine_learning.global_aggregator import GlobalAggregator
 from classic_image_classification.machine_learning.vlad import VLAD
 
 
@@ -45,7 +45,7 @@ class Aggregator:
         elif "fisher_vector" == self.opt["aggregator"]:
             self.aggregator = FisherVector(n_components=self.opt["complexity"])
         elif self.opt["aggregator"] in ["global_avg", "global_max"]:
-            self.aggregator = BasicAggregator(self.opt["aggregator"])
+            self.aggregator = GlobalAggregator(self.opt["aggregator"])
         elif "vlad" == self.opt["aggregator"]:
             self.aggregator = VLAD(n_words=self.opt["complexity"])
         else:

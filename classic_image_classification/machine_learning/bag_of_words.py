@@ -9,11 +9,26 @@ from sklearn.cluster import KMeans, MiniBatchKMeans
 from classic_image_classification.utils.utils import check_n_make_dir
 
 
+def remove_empty_desc(descriptors):
+    """
+    Empty descriptors can not be used to find visual words
+    and are deleted before building visual word dictionary
+    Args:
+        descriptors: list of descriptors sets per image can contain None
+
+    Returns:
+        filtered list of descriptors sets per image CANNOT contain None
+    """
+    descriptors_out = []
+    for desc in descriptors:
+        if desc is None:
+            continue
+        descriptors_out.append(desc)
+    return descriptors_out
+
+
 class BagOfWords:
-    def __init__(self,
-                 n_words=100,
-                 cluster_method="MiniBatchKMeans",
-                 normalize=False):
+    def __init__(self, n_words=100, cluster_method="MiniBatchKMeans", normalize=False):
 
         self.n_words = n_words
         self.parameters = dict()
@@ -64,25 +79,9 @@ class BagOfWords:
             with open(save_file_parameters) as json_file:
                 self.parameters = json.load(json_file)
 
-    def _remove_empty_desc(self, descriptors):
-        """
-        Empty descriptors can not be used to find visual words and are deleted before building visual word dictionary
-        Args:
-            descriptors:
-
-        Returns:
-
-        """
-        descriptors_out = []
-        for desc in descriptors:
-            if desc is None:
-                continue
-            descriptors_out.append(desc)
-        return descriptors_out
-
     def fit(self, descriptors):
         self.k_means_clustering = self._init_cluster_method(self.cluster_method)
-        descriptors = self._remove_empty_desc(descriptors)
+        descriptors = remove_empty_desc(descriptors)
         descriptors = np.concatenate(descriptors, axis=0)
         logging.info("Fitting Bag of Words (n_words={}) to feature space...".format(self.n_words))
         logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))

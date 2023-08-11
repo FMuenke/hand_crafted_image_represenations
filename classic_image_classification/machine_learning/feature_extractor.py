@@ -76,17 +76,6 @@ class FeatureExtractor:
             return img_h.resize(height=height, width=width)
         return img_h.resize(height=image_size[0], width=image_size[1])
 
-    def _output_list(self, input_list, axis):
-        if input_list is not None:
-            if len(input_list) == 0:
-                return None
-            elif len(input_list) == 1:
-                return input_list[0]
-            else:
-                return np.concatenate(input_list, axis=axis)
-        else:
-            return None
-
     def extract_trainings_data(self, tags):
         x = []
         y = []
@@ -108,7 +97,12 @@ class FeatureExtractor:
         for feature in self.features_to_use:
             dc_set = DescriptorSet(feature)
             dc_x = dc_set.compute(image, kp_set)
-            if dc_x is not None:
-                x.append(dc_x)
-        return self._output_list(x, axis=1)
+            if dc_x is None:
+                continue
+            x.append(dc_x)
+        if len(x) == 0:
+            return None
+        if len(x) == 1:
+            return x[0]
+        return np.concatenate(x, axis=1)
 

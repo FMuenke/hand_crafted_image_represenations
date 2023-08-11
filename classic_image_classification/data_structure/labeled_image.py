@@ -1,6 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
-from PIL import Image
+import imagesize
 
 
 def get_file_name(base_path, data_id, extensions):
@@ -81,8 +81,7 @@ class LabeledImage:
     def get_image_size(self):
         if self.image_file is None:
             raise Exception("NO IMAGE FILE AVAILABLE")
-        im = Image.open(self.image_file)
-        width, height = im.size
+        width, height = imagesize.get(self.image_file)
         return height, width
 
     def load_boxes(self):

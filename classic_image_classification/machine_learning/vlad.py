@@ -6,6 +6,8 @@ from time import time
 from sklearn.cluster import MiniBatchKMeans, KMeans
 import json
 import joblib
+
+from classic_image_classification.machine_learning.bag_of_words import remove_empty_desc
 from classic_image_classification.utils.utils import check_n_make_dir
 
 
@@ -62,24 +64,9 @@ class VLAD:
             with open(save_file_parameters) as json_file:
                 self.parameters = json.load(json_file)
 
-    def _remove_empty_desc(self, descriptors):
-        """
-        Empty descriptors can not be used to find visual words and are deleted before building visual word dictionary
-        Args:
-            descriptors:
-
-        Returns:
-
-        """
-        descriptors_out = []
-        for desc in descriptors:
-            if desc is not None:
-                descriptors_out.append(desc)
-        return descriptors_out
-
     def fit(self, descriptors):
         self.k_means_clustering = self._init_cluster_method(self.cluster_method)
-        descriptors = self._remove_empty_desc(descriptors)
+        descriptors = remove_empty_desc(descriptors)
         descriptors = np.concatenate(descriptors, axis=0)
         logging.info("Fitting Visual Dictionary (n_words={}) to feature space...".format(self.n_words))
         logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))

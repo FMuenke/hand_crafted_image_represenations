@@ -17,8 +17,7 @@ class FeatureMap:
         for x, y, s in key_points:
             roi = mat.cut_roi([x, y], s)
             desc, bins = np.histogram(roi.ravel(),
-                                      range=[0,
-                                             resolution],
+                                      range=[0, resolution],
                                       bins=resolution,
                                       density=True)
             desc = np.reshape(desc, (1, -1))
@@ -42,9 +41,6 @@ class FeatureMap:
             if roll_to_max_first:
                 _, num_features = desc.shape
                 max_idx = np.argmax(desc, axis=1)[0]
-                # print(max_idx)
-                # print(desc[0, max_idx[0]])
                 desc = np.roll(desc, num_features-max_idx, axis=1)
-                # print(desc)
             descriptors.append(desc)
         return np.concatenate(descriptors, axis=0)

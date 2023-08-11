@@ -4,7 +4,7 @@ from classic_image_classification.utils.utils import check_n_make_dir, save_dict
 import os
 
 
-class BasicAggregator:
+class GlobalAggregator:
     def __init__(self, variant):
         self.variant = variant
         self.n_features = None
@@ -20,6 +20,11 @@ class BasicAggregator:
             return np.mean(descriptors, axis=0)
         if self.variant == "global_max":
             return np.max(descriptors, axis=0)
+        if self.variant == "global_std":
+            return np.concatenate([
+                np.mean(descriptors, axis=0),
+                np.std(descriptors, axis=0)
+            ])
         raise "UNKNOWN AGGREGATOR : {}".format(self.variant)
 
     def transform(self, desc_sets):
@@ -30,9 +35,11 @@ class BasicAggregator:
                 x = np.zeros((1, self.n_features))
             elif len(descriptors) == 1:
                 x = np.zeros((1, self.n_features))
-                x[0, :] = descriptors[0]
+                if self.variant == "global_std":
+                    x[0, :] = np.concatenate([descriptors[0], np.zeros(int(self.n_features / 2))])
+                else:
+                    x[0, :] = descriptors[0]
             else:
-                descriptors = np.stack(descriptors, axis=0)
                 descriptors = self.aggregate(descriptors)
                 x = np.zeros((1, self.n_features))
                 x[0, :] = descriptors
@@ -40,10 +47,13 @@ class BasicAggregator:
         return aggregates
 
     def fit(self, descriptors):
-        logging.info("Basic Aggregator is fitting...")
+        logging.info("Global Aggregator is fitting...")
         descriptor = descriptors[0]
-        self.n_features = descriptor.shape[1]
-        logging.info("Basic Aggregator was fitted. Descriptors with {} features".format(descriptor.shape[1]))
+        if self.variant == "global_std":
+            self.n_features = descriptor.shape[1] * 2
+        else:
+            self.n_features = descriptor.shape[1]
+        logging.info("Global Aggregator was fitted. Descriptors with {} features".format(descriptor.shape[1]))
 
     def save(self, model_path):
         check_n_make_dir(model_path)

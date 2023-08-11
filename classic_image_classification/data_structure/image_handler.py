@@ -68,7 +68,7 @@ class ImageHandler:
 
     def rgb(self):
         eps = 1e-6
-        self.image = self.image.astype(np.float)
+        self.image = self.image.astype(np.float64)
         B = self.image[:, :, 0] + eps
         G = self.image[:, :, 1] + eps
         R = self.image[:, :, 2] + eps
@@ -78,7 +78,7 @@ class ImageHandler:
         r = 255 * np.expand_dims(r, axis=2)
         b = 255 * np.expand_dims(b, axis=2)
         g = 255 * np.expand_dims(g, axis=2)
-        return np.concatenate([r, b, g], axis=2).astype(np.int)
+        return np.concatenate([r, b, g], axis=2).astype(np.int32)
 
     def normalize(self):
         image = np.copy(self.image)
@@ -107,7 +107,6 @@ class ImageHandler:
         height, width = self.image.shape[:2]
         mask = cv2.resize(mask, (int(width), int(height)), interpolation=cv2.INTER_NEAREST)
         return cv2.addWeighted(self.image.astype(np.uint8), 0.5, mask.astype(np.uint8), 0.5, 0)
-        #return mask
 
     def write(self, write_path: str):
         if not write_path.endswith(".jpg"):
@@ -119,4 +118,3 @@ class ImageHandler:
         mask = cv2.resize(image, (int(width), int(height)), interpolation=cv2.INTER_CUBIC)
         border = 255 * np.ones((height, 10, 3))
         self.transformed_img = np.concatenate([self.transformed_img, border, mask], axis=1)
-        #print(self.image.shape)

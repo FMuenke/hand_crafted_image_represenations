@@ -161,9 +161,3 @@ class BoxTag:
         im = Image.open(self.image_id)
         width, height = im.size
         return height, width
-
-    def remove(self):
-        os.remove(self.image_id)
-        label_id = self.image_id.replace("images", "labels")
-        label_id = label_id.replace(".jpg", ".txt")
-        os.remove(label_id)

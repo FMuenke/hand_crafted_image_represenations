@@ -60,7 +60,7 @@ class DataSet:
                     self.tags[len(self.tags)] = t
 
     def load_data(self):
-        print("[INFO] Loading data...")
+        logging.info("[INFO] Loading data...")
         self.load_directory(self.data_set_dir)
         for d in os.listdir(self.data_set_dir):
             self.load_directory(os.path.join(self.data_set_dir, d))
@@ -71,5 +71,5 @@ class DataSet:
             tag = self.tags[tag_id]
             if tag.has_relevant_classes(classes_to_consider) or classes_to_consider == "all":
                 tags_out[tag_id] = tag
-        print("[INFO] {} instances were loaded.".format(len(tags_out)))
+        logging.info("[INFO] {} instances were loaded.".format(len(tags_out)))
         return tags_out

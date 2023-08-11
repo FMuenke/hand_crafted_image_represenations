@@ -6,6 +6,7 @@ import numpy as np
 import json
 from sklearn.mixture import GaussianMixture
 
+from classic_image_classification.machine_learning.bag_of_words import remove_empty_desc
 from classic_image_classification.utils.utils import check_n_make_dir
 
 
@@ -14,21 +15,6 @@ class FisherVector:
         self.gmm = None
         self.n_components = n_components
         self.parameters = dict()
-
-    def _remove_empty_desc(self, descriptors):
-        """
-        Empty descriptors can not be used to find visual words and are deleted before building visual word dictionary
-        Args:
-            descriptors:
-
-        Returns:
-
-        """
-        descriptors_out = []
-        for desc in descriptors:
-            if desc is not None:
-                descriptors_out.append(desc)
-        return descriptors_out
 
     def save(self, model_path):
         save_file_gmm = os.path.join(model_path, "gaussian_mixture.pkl")
@@ -55,7 +41,7 @@ class FisherVector:
                 self.parameters = json.load(json_file)
 
     def fit(self, descriptors):
-        descriptors = self._remove_empty_desc(descriptors)
+        descriptors = remove_empty_desc(descriptors)
         descriptors = np.concatenate(descriptors, axis=0)
         logging.info("Fitting Gaussian Mixture Model to feature space...")
         logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))

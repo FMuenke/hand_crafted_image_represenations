@@ -1,4 +1,3 @@
-import numpy as np
 from classic_image_classification.features.local_binary_pattern import LocalBinaryPattern
 from classic_image_classification.features.leung_malik import LeungMalik
 from classic_image_classification.features.color_space_histogram import ColorSpaceHistogram
@@ -9,17 +8,6 @@ from classic_image_classification.features.histogram_of_oriented_gradients impor
 class DescriptorSet:
     def __init__(self, descriptor_type):
         self.descriptor_type = descriptor_type
-
-    def _output_list(self, input_list, axis):
-        if input_list is not None:
-            if len(input_list) == 0:
-                return None
-            elif len(input_list) == 1:
-                return input_list[0]
-            else:
-                return np.concatenate(input_list, axis=axis)
-        else:
-            return None
 
     def compute(self, image, key_point_set):
         if "lbp" in self.descriptor_type:

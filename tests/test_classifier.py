@@ -1,0 +1,42 @@
+import unittest
+import numpy as np
+from classic_image_classification.machine_learning.classifier import Classifier
+
+
+class TestClassifier(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.x_train = np.random.rand(100, 10)
+        cls.y_train = np.random.randint(0, 2, size=100)
+        cls.x_test = np.random.rand(20, 10)
+        cls.y_test = np.random.randint(0, 2, size=20)
+
+    def test_fit(self):
+        classifier = Classifier()
+        classifier.opt = {"type": "logistic_regression"}  # You can set other options as needed
+        classifier.fit(self.x_train, self.y_train)
+        self.assertIsNotNone(classifier.classifier)
+
+    def test_predict(self):
+        classifier = Classifier()
+        classifier.opt = {"type": "logistic_regression"}  # You can set other options as needed
+        classifier.fit(self.x_train, self.y_train)
+        predictions = classifier.predict(self.x_test)
+        self.assertEqual(predictions.shape, self.y_test.shape)
+
+    def test_evaluate(self):
+        classifier = Classifier()
+        classifier.opt = {"type": "logistic_regression"}  # You can set other options as needed
+        classifier.fit(self.x_train, self.y_train)
+        f1_macro = classifier.evaluate(self.x_test, self.y_test, print_results=False)
+        self.assertIsInstance(f1_macro, float)
+
+    def test_new(self):
+        classifier = Classifier()
+        classifier.opt = {"type": "logistic_regression"}  # You can set other options as needed
+        classifier.new()
+        self.assertIsNotNone(classifier.classifier)
+
+
+if __name__ == "__main__":
+    unittest.main()

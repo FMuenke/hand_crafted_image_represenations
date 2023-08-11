@@ -1,6 +1,6 @@
 opencv-contrib-python
 scikit-learn
-xgboost
+imagesize
 tqdm
 matplotlib
 scikit-image
