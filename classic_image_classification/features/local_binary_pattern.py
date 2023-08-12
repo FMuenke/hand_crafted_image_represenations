@@ -15,7 +15,7 @@ class LocalBinaryPattern:
     def _compute(self, channels):
         lbp_maps = []
         for c in channels:
-            lbp_map = feature.local_binary_pattern(c,
+            lbp_map = feature.local_binary_pattern(c.astype(np.int32),
                                                    self.num_points,
                                                    self.radius,
                                                    method="uniform")

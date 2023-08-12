@@ -16,7 +16,7 @@ class Config:
             "data_split_mode": "random",
             "aggregator": ["vlad"],
             "complexity": [16, 32, 64, 128],
-            "type": ["mlp_xx", "nc"],
+            "type": ["knn_3", "nc"],
             "feature": ["gray-sift", "hsv-sift"],
             "sampling_method": ["kaze"],
             # "sampling_step": [16],
@@ -34,7 +34,6 @@ def start_training(args_, cfg):
     df = args_.dataset_folder
     mf = cfg.mf
 
-    # image_cls = OptimizingImageClassifier(cfg.opt, cfg.class_mapping)
     bob = BestOfBagOfWords(cfg.opt, cfg.class_mapping)
     bob.fit(mf, df, args_.dataset_type, load_all=False)
     if args_.test_folder is not None:

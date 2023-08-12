@@ -13,6 +13,8 @@ class DataSet:
         self.class_mapping = class_mapping
         self.tag_type = tag_type
 
+        self.load_data()
+
     def load_labeled_image(self, args):
         base_dir, img_f = args
         tags = []
@@ -66,10 +68,10 @@ class DataSet:
             self.load_directory(os.path.join(self.data_set_dir, d))
 
     def get_tags(self, classes_to_consider="all"):
-        tags_out = dict()
+        tags_out = []
         for tag_id in self.tags:
             tag = self.tags[tag_id]
             if tag.has_relevant_classes(classes_to_consider) or classes_to_consider == "all":
-                tags_out[tag_id] = tag
+                tags_out.append(tag)
         logging.info("[INFO] {} instances were loaded.".format(len(tags_out)))
         return tags_out

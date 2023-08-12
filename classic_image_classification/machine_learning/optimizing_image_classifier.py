@@ -57,7 +57,6 @@ class OptimizingImageClassifier:
         best_candidate = None
 
         ds = DataSet(data_path, tag_type, self.class_mapping)
-        ds.load_data()
         if load_all:
             tags = ds.get_tags()
         else:

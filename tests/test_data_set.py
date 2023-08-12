@@ -24,22 +24,15 @@ class TestDataSet(unittest.TestCase):
         self.assertTrue(len(self.data_set.tags) > 0)
 
     def test_load_data(self):
-        self.data_set.load_data()
         self.assertTrue(len(self.data_set.tags) > 0)
 
     def test_get_tags_all_classes(self):
-        self.data_set.load_data()
         tags = self.data_set.get_tags()
         self.assertTrue(len(tags) > 0)
 
     def test_get_tags_specific_classes(self):
-        self.data_set.load_data()
         tags = self.data_set.get_tags(classes_to_consider=["0"])
         self.assertTrue(len(tags) > 0)
-
-    def test_get_tags_no_tags(self):
-        tags = self.data_set.get_tags()
-        self.assertTrue(len(tags) == 0)
 
 
 if __name__ == '__main__':

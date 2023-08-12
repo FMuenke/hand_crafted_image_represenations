@@ -80,10 +80,10 @@ class FeatureExtractor:
         x = []
         y = []
         print("[INFO] Extracting Features: [{}] for Tags".format(self.describe_sampling()))
-        for tag_id in tqdm(tags):
-            tag_data = tags[tag_id].load_data()
+        for tag in tqdm(tags):
+            tag_data = tag.load_data()
             x_tag = self.extract_x(tag_data)
-            y_tag = tags[tag_id].load_y()
+            y_tag = tag.load_y()
 
             x.append(x_tag)
             y.append(y_tag)

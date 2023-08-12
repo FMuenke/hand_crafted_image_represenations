@@ -81,7 +81,6 @@ class ClassicImageClassifier:
     def fit(self, data_path, tag_type, load_all=False, report_path=None):
         self.new()
         ds = DataSet(data_path, class_mapping=self.class_mapping, tag_type=tag_type)
-        ds.load_data()
         if load_all:
             tags = ds.get_tags()
         else:
@@ -106,7 +105,6 @@ class ClassicImageClassifier:
 
     def evaluate(self, data_path, tag_type, load_all=False, report_path=None):
         ds = DataSet(data_set_dir=data_path, class_mapping=self.class_mapping, tag_type=tag_type)
-        ds.load_data()
         if load_all:
             tags = ds.get_tags()
         else:
@@ -121,8 +119,7 @@ class ClassicImageClassifier:
         y = []
         predictions = []
         confidences = []
-        for tag_id in tqdm(tags):
-            tag = tags[tag_id]
+        for tag in tqdm(tags):
             y_pred, conf = self.predict_image(tag.load_data(), get_confidence=True)
             if report_path is not None:
                 tag.write_prediction(y_pred, report_path)

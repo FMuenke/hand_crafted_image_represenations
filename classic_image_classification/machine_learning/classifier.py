@@ -94,6 +94,8 @@ class Classifier:
 
     def predict(self, x, get_confidence=False):
         if get_confidence:
+            if self.opt["type"] in ["nc"]:
+                return self.classifier.predict(x), 1.0
             prob = self.classifier.predict_proba(x)
             return [np.argmax(prob)], np.max(prob)
         return self.classifier.predict(x)

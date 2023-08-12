@@ -1,12 +1,20 @@
-import pandas as pd
+import cv2
+import os
+
+import numpy as np
+
 from classic_image_classification import ImageEmbedding
 import argparse
-from tqdm import tqdm
-from sklearn.decomposition import PCA
-import numpy as np
-from classic_image_classification import DataSet
-import seaborn as sns
-import matplotlib.pyplot as plt
+
+
+def build_result_image(image, list_of_tags):
+    image = cv2.resize(image, (256, 256), interpolation=cv2.INTER_AREA)
+    border = np.zeros((256, 10, 3))
+    for tag in list_of_tags:
+        data = tag.load_data()
+        data = cv2.resize(data, (256, 256), interpolation=cv2.INTER_AREA)
+        image = np.concatenate([image, border, data], axis=1)
+    return image
 
 
 def main(args_):
@@ -14,38 +22,28 @@ def main(args_):
     opt = {
         "aggregator": "bag_of_words",
         "complexity": 128,
-        "feature": "hsv-hog",
+        "feature": "hsv-sift",
         "sampling_method": "dense",
-        "sampling_step": 4,
+        "sampling_step": 16,
         "sampling_window": 16,
         "image_size": {
-            "width": 32,
-            "height": 32,
+            "width": 128,
+            "height": 128,
         }
     }
     img_emb = ImageEmbedding(opt)
-    x = img_emb.fit_transform(data_path=path, tag_type="cls")
-    x = np.concatenate(x, axis=0)
 
-    projection = PCA(n_components=4)
-    x_proj = projection.fit_transform(x)
+    img_emb.register_data_set(data_path=path, tag_type="cls")
 
-    ds = DataSet(data_set_dir=path, tag_type="cls")
-    ds.load_data()
-    tags = ds.get_tags()
+    image = cv2.imread("/Users/fmuenke/datasets/abs-halteverbot/query.jpeg")
 
-    df = {"name": []}
-    for t_id in tqdm(tags):
-        df["name"].append(tags[t_id].tag_class[0])
+    res_match, res_mismatch = img_emb.query(image)
 
-    list_of_variables = []
-    for i in range(x_proj.shape[1]):
-        list_of_variables.append("x{}".format(i+1))
-        df["x{}".format(i+1)] = x_proj[:, i]
+    matches = build_result_image(image, res_match)
+    cv2.imwrite("/Users/fmuenke/datasets/abs-halteverbot/answer.jpeg", matches)
 
-    df = pd.DataFrame(df)
-    sns.pairplot(data=df, vars=list_of_variables, hue="name", kind="kde")
-    plt.show()
+    mismatch = build_result_image(image, res_mismatch)
+    cv2.imwrite("/Users/fmuenke/datasets/abs-halteverbot/answer_mismatch.jpeg", mismatch)
 
 
 def parse_args():

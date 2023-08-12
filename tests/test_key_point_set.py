@@ -59,11 +59,12 @@ class TestKeyPoints(unittest.TestCase):
         self.assertEqual(len(key_points), 1)
 
     def test_key_point_set_open_cv(self):
-        kp_set = KeyPointSet("sift")  # Change to the desired detector
-        image = cv2.cvtColor(self.image, cv2.COLOR_GRAY2BGR)  # Convert to color image
-        open_cv_key_points = kp_set.get_open_cv_key_points(image)
-        self.assertTrue(isinstance(open_cv_key_points, tuple))
-        self.assertTrue(isinstance(open_cv_key_points[0], cv2.KeyPoint))
+        for sampling in ["sift", "kaze", "orb"]:
+            kp_set = KeyPointSet(sampling)
+            image = cv2.cvtColor(self.image, cv2.COLOR_GRAY2BGR)  # Convert to color image
+            open_cv_key_points = kp_set.get_open_cv_key_points(image)
+            self.assertTrue(isinstance(open_cv_key_points, tuple))
+            self.assertTrue(isinstance(open_cv_key_points[0], cv2.KeyPoint))
 
 
 if __name__ == '__main__':

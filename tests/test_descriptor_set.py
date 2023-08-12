@@ -10,7 +10,7 @@ class TestDescriptorSet(unittest.TestCase):
         self.key_point_set = KeyPointSet("dense", sampling_steps=50, sampling_window=10)
 
     def test_compute_lbp(self):
-        descriptor_set = DescriptorSet("gray-lbp+24+7")
+        descriptor_set = DescriptorSet("opponent-lbp+24+7")
         descriptors = descriptor_set.compute(self.image, self.key_point_set)
         self.assertIsNotNone(descriptors)
 
@@ -29,8 +29,13 @@ class TestDescriptorSet(unittest.TestCase):
         descriptors = descriptor_set.compute(self.image, self.key_point_set)
         self.assertIsNotNone(descriptors)
 
-    def test_compute_cv_descriptor(self):
-        descriptor_set = DescriptorSet("gray-sift")
+    def test_compute_cv_descriptor_sift(self):
+        descriptor_set = DescriptorSet("RGB-sift")
+        descriptors = descriptor_set.compute(self.image, self.key_point_set)
+        self.assertIsNotNone(descriptors)
+
+    def test_compute_cv_descriptor_orb(self):
+        descriptor_set = DescriptorSet("RGB-orb")
         descriptors = descriptor_set.compute(self.image, self.key_point_set)
         self.assertIsNotNone(descriptors)
 
