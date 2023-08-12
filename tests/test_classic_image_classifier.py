@@ -38,10 +38,12 @@ class TestClassicImageClassifier(unittest.TestCase):
         self.assertIsNotNone(self.classifier.aggregator)
         self.assertIsNotNone(self.classifier.classifier)
 
-    def test_fit(self):
+    def test_fit_and_eval(self):
         with patch('classic_image_classification.machine_learning.feature_extractor.tqdm', notqdm):
-            with patch('builtins.print'):
-                self.classifier.fit(data_path=self.path, tag_type="cls")
+            with patch('classic_image_classification.machine_learning.classic_image_classifier.tqdm', notqdm):
+                with patch('builtins.print'):
+                    self.classifier.fit(data_path=self.path, tag_type="cls")
+                    self.classifier.evaluate(data_path=self.path, tag_type="cls")
 
 
 if __name__ == "__main__":

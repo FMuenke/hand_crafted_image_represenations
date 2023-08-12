@@ -15,15 +15,9 @@ def split_random(list_of_tags, ratio=0.2):
 
 
 def split_fixed(list_of_tags, ratio=0.2):
-    train_tags = []
-    test_tags = []
-
-    for i, tag in enumerate(list_of_tags):
-        if i / 100 >= ratio:
-            train_tags.append(tag)
-        else:
-            test_tags.append(tag)
-
+    n_tags = len(list_of_tags)
+    train_tags = list_of_tags[int(ratio * n_tags):]
+    test_tags = list_of_tags[:int(ratio * n_tags)]
     return train_tags, test_tags
 
 

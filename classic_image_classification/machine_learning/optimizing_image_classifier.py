@@ -13,7 +13,7 @@ class OptimizingImageClassifier:
         self.class_mapping = class_mapping
 
         self.aggregator_opt = ["aggregator", "complexity"]
-        self.classifier_opt = ["type", "n_estimators"]
+        self.classifier_opt = ["type"]
 
         self.feature_extractor = None
         self.aggregator_list = None
@@ -77,7 +77,7 @@ class OptimizingImageClassifier:
             for cls in self.classifier_list:
                 cls.fit(x_transformed_train, y_train)
                 f_1_score = cls.evaluate(x_transformed_test, y_test, print_results=False)
-                if f_1_score > best_f1_score:
+                if f_1_score >= best_f1_score:
                     best_f1_score = f_1_score
                     best_candidate = [aggregator, cls]
 
@@ -95,9 +95,13 @@ class OptimizingImageClassifier:
 
         print("[RESULT] Best F1-Score: {}".format(best_f1_score))
         for k in best_candidate[0].opt:
+            if k not in self.opt:
+                continue
             print("[RESULT] ", k, self.opt[k], " --> ", best_candidate[0].opt[k])
             self.opt[k] = best_candidate[0].opt[k]
         for k in best_candidate[1].opt:
+            if k not in self.opt:
+                continue
             print("[RESULT] ", k, self.opt[k], " --> ", best_candidate[1].opt[k])
             self.opt[k] = best_candidate[1].opt[k]
         return best_f1_score

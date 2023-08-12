@@ -130,6 +130,6 @@ class ClassicImageClassifier:
 
         show_results(result_dict)
 
-        plot_roc(y, predictions, confidences, self.class_mapping, report_path)
         if report_path is not None:
+            plot_roc(y, predictions, confidences, self.class_mapping, report_path)
             save_results(report_path, "image_classifier", result_dict)
