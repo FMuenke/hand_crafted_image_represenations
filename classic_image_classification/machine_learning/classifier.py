@@ -9,7 +9,7 @@ from sklearn.gaussian_process import GaussianProcessClassifier, kernels
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, ExtraTreesClassifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
 
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
@@ -46,6 +46,8 @@ def init_mlp(clf_type):
         return MLPClassifier(hidden_layer_sizes=(128, 64), max_iter=max_iter)
     elif clf_type == "mlp_xx":
         return MLPClassifier(hidden_layer_sizes=(256, 128, 64), max_iter=max_iter)
+    elif clf_type == "mlp_xxx":
+        return MLPClassifier(hidden_layer_sizes=(512, 256, 128, 64), max_iter=max_iter)
     return MLPClassifier(max_iter=max_iter)
 
 
@@ -56,7 +58,9 @@ def init_other(clf_type):
         return LogisticRegression(class_weight='balanced', max_iter=10000)
     elif clf_type == "svm":
         return SVC(kernel='rbf', class_weight='balanced', gamma="scale")
-    return LogisticRegression(class_weight='balanced', max_iter=10000)
+    elif clf_type == "nc":
+        return NearestCentroid()
+    raise Exception("Unknown Classifier Option: {}.".format(clf_type))
 
 
 def init_classifier(opt):
@@ -66,10 +70,8 @@ def init_classifier(opt):
         return init_mlp(opt["type"])
     elif "knn" in opt["type"]:
         return init_knn(opt["type"])
-    elif opt["type"] in ["gp", "svm", "lr"]:
-        return init_other(opt["type"])
     else:
-        raise ValueError("type: {} not recognised".format(opt["type"]))
+        return init_other(opt["type"])
 
 
 class Classifier:
@@ -79,9 +81,6 @@ class Classifier:
         self.class_mapping_inv = None
 
         self.classifier = None
-
-        self.best_params = None
-        self.best_score = None
 
     def __str__(self):
         return "Classifier: {}".format(self.opt["type"])

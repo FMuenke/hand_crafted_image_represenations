@@ -14,17 +14,17 @@ class Config:
 
         self.opt = {
             "data_split_mode": "random",
-            "aggregator": ["bag_of_words"],
-            "complexity": [128, 256, 512, 1024, 2048],
-            "type": ["mlp_x", "mlp_xx"],
+            "aggregator": ["vlad"],
+            "complexity": [16, 32, 64, 128],
+            "type": ["mlp_xx", "nc"],
             "feature": ["gray-sift", "hsv-sift"],
             "sampling_method": ["kaze"],
             # "sampling_step": [16],
             # "sampling_window": [32],
             "image_size": [
                 {
-                    "width": 128,
-                    "height": 128,
+                    "width": 256,
+                    "height": 256,
                 }
             ]
         }
