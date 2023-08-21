@@ -6,7 +6,7 @@ import logging
 
 from sklearn.svm import SVC
 from sklearn.gaussian_process import GaussianProcessClassifier, kernels
-from sklearn.linear_model import LogisticRegressionCV
+from sklearn.linear_model import LogisticRegressionCV, LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
@@ -61,7 +61,9 @@ def init_other(clf_type):
     if clf_type == "gp":
         return GaussianProcessClassifier((1.0 * kernels.RBF(1.0)), n_jobs=-1)
     elif clf_type == "lr":
-        return LogisticRegressionCV(class_weight='balanced', max_iter=10000)
+        return LogisticRegression(class_weight='balanced', max_iter=10000)
+    elif clf_type == "lr_cv":
+        return LogisticRegression(class_weight='balanced', max_iter=10000)
     elif clf_type == "svm":
         return SVC(kernel='rbf', class_weight='balanced', gamma="scale")
     elif clf_type == "nc":

@@ -6,8 +6,8 @@ from classic_image_classification.machine_learning.classifier import Classifier
 class TestClassifier(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.x_train = np.random.rand(100, 10)
-        cls.y_train = np.random.randint(0, 2, size=100)
+        cls.x_train = np.random.rand(200, 10)
+        cls.y_train = np.random.randint(0, 2, size=200)
         cls.x_test = np.random.rand(20, 10)
         cls.y_test = np.random.randint(0, 2, size=20)
 

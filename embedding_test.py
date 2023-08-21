@@ -43,7 +43,7 @@ def main(args_):
     for i, tag in enumerate(tags):
         cv2.imwrite(os.path.join(result_folder, "sample_{}.jpeg".format(i)), tag.load_data())
 
-    image = cv2.imread(os.path.join(result_folder, "query.jpeg"))
+    image = cv2.imread(args_.query_image)
 
     res_match, res_mismatch = img_emb.query(image)
 
@@ -64,6 +64,11 @@ def parse_args():
     parser.add_argument(
         "--result_folder",
         "-rf",
+        help="Path to store results",
+    )
+    parser.add_argument(
+        "--query_image",
+        "-q",
         help="Path to store results",
     )
     return parser.parse_args()
