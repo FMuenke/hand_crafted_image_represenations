@@ -15,16 +15,14 @@ class Config:
         self.opt = {
             "data_split_mode": "random",
             "aggregator": ["vlad"],
-            "complexity": [16, 32, 64, 128],
-            "type": ["knn_3", "nc"],
-            "feature": ["gray-sift", "hsv-sift"],
-            "sampling_method": ["kaze"],
-            # "sampling_step": [16],
-            # "sampling_window": [32],
+            "complexity": [16, 32, 64],
+            "type": ["mlp"],
+            "feature": ["hsv-sift"],
+            "sampling_method": ["dense"],
             "image_size": [
                 {
-                    "width": 256,
-                    "height": 256,
+                    "width": None,
+                    "height": None,
                 }
             ]
         }

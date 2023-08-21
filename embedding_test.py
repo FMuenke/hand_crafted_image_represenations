@@ -19,6 +19,8 @@ def build_result_image(image, list_of_tags):
 
 def main(args_):
     path = args_.dataset_folder
+    result_folder = args_.result_folder
+
     opt = {
         "aggregator": "bag_of_words",
         "complexity": 128,
@@ -34,16 +36,22 @@ def main(args_):
     img_emb = ImageEmbedding(opt)
 
     img_emb.register_data_set(data_path=path, tag_type="cls")
+    img_emb.show(os.path.join(result_folder, "plot.jpeg"))
 
-    image = cv2.imread("/Users/fmuenke/datasets/abs-halteverbot/query.jpeg")
+    tags = img_emb.sample(5)
+
+    for i, tag in enumerate(tags):
+        cv2.imwrite(os.path.join(result_folder, "sample_{}.jpeg".format(i)), tag.load_data())
+
+    image = cv2.imread(os.path.join(result_folder, "query.jpeg"))
 
     res_match, res_mismatch = img_emb.query(image)
 
     matches = build_result_image(image, res_match)
-    cv2.imwrite("/Users/fmuenke/datasets/abs-halteverbot/answer.jpeg", matches)
+    cv2.imwrite(os.path.join(result_folder, "answer.jpeg"), matches)
 
     mismatch = build_result_image(image, res_mismatch)
-    cv2.imwrite("/Users/fmuenke/datasets/abs-halteverbot/answer_mismatch.jpeg", mismatch)
+    cv2.imwrite(os.path.join(result_folder, "answer_mismatch.jpeg"), mismatch)
 
 
 def parse_args():

@@ -6,8 +6,8 @@ import logging
 
 from sklearn.svm import SVC
 from sklearn.gaussian_process import GaussianProcessClassifier, kernels
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, ExtraTreesClassifier
+from sklearn.linear_model import LogisticRegressionCV
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
 
@@ -19,12 +19,16 @@ from classic_image_classification.utils.utils import check_n_make_dir, save_dict
 
 
 def init_ensembles(clf_type):
-    if clf_type == "rf":
+    if clf_type == "rf_100":
+        return RandomForestClassifier(n_estimators=100, class_weight="balanced", n_jobs=-1)
+    elif clf_type == "rf_200":
         return RandomForestClassifier(n_estimators=200, class_weight="balanced", n_jobs=-1)
-    elif clf_type == "ada_boost":
-        return AdaBoostClassifier(n_estimators=200)
-    elif clf_type == "extra_tree":
-        return ExtraTreesClassifier(n_estimators=200, class_weight="balanced", n_jobs=-1)
+    elif clf_type == "rf_500":
+        return RandomForestClassifier(n_estimators=500, class_weight="balanced", n_jobs=-1)
+    elif clf_type == "rf_1000":
+        return RandomForestClassifier(n_estimators=1000, class_weight="balanced", n_jobs=-1)
+    elif clf_type == "rf_2000":
+        return RandomForestClassifier(n_estimators=2000, class_weight="balanced", n_jobs=-1)
     return RandomForestClassifier(n_estimators=200, class_weight="balanced", n_jobs=-1)
 
 
@@ -35,6 +39,8 @@ def init_knn(clf_type):
         return KNeighborsClassifier(n_neighbors=5)
     elif clf_type == "knn_7":
         return KNeighborsClassifier(n_neighbors=7)
+    elif clf_type == "knn_9":
+        return KNeighborsClassifier(n_neighbors=9)
     return KNeighborsClassifier()
 
 
@@ -55,7 +61,7 @@ def init_other(clf_type):
     if clf_type == "gp":
         return GaussianProcessClassifier((1.0 * kernels.RBF(1.0)), n_jobs=-1)
     elif clf_type == "lr":
-        return LogisticRegression(class_weight='balanced', max_iter=10000)
+        return LogisticRegressionCV(class_weight='balanced', max_iter=10000)
     elif clf_type == "svm":
         return SVC(kernel='rbf', class_weight='balanced', gamma="scale")
     elif clf_type == "nc":
@@ -94,7 +100,7 @@ class Classifier:
 
     def predict(self, x, get_confidence=False):
         if get_confidence:
-            if self.opt["type"] in ["nc"]:
+            if self.opt["type"] in ["nc", "svm"]:
                 return self.classifier.predict(x), 1.0
             prob = self.classifier.predict_proba(x)
             return [np.argmax(prob)], np.max(prob)
