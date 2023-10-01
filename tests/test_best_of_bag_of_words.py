@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from classic_image_classification.machine_learning.best_of_bag_of_words import BestOfBagOfWords
+from hand_crafted_image_representations.machine_learning.best_of_bag_of_words import BestOfBagOfWords
 
 
 def notqdm(iterable, *args, **kwargs):
@@ -38,7 +38,7 @@ class TestBestOfBagOfWords(unittest.TestCase):
         load_all = False
         report_path = "path/to/reports"
 
-        with patch('classic_image_classification.machine_learning.feature_extractor.tqdm', notqdm):
+        with patch('hand_crafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
             with patch('builtins.print'):
                 best_f1_score = self.best_of_bag_of_words.fit(model_folder, data_path, tag_type, load_all, report_path)
                 self.assertIsNotNone(best_f1_score)

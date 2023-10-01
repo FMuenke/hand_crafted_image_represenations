@@ -1,8 +1,8 @@
 import numpy as np
 from skimage import feature
 
-from classic_image_classification.data_structure.image_handler import ImageHandler
-from classic_image_classification.machine_learning.feature_map import FeatureMap
+from hand_crafted_image_representations.data_structure.image_handler import ImageHandler
+from hand_crafted_image_representations.machine_learning.feature_map import FeatureMap
 
 
 class LocalBinaryPattern:

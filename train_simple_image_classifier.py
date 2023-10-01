@@ -1,7 +1,7 @@
 import logging
 import argparse
-from classic_image_classification import ClassicImageClassifier
-from classic_image_classification.utils.utils import load_dict
+from hand_crafted_image_representations import ClassicImageClassifier
+from hand_crafted_image_representations.utils.utils import load_dict
 
 
 def main(args_):

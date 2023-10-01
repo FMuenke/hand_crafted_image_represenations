@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from classic_image_classification.data_structure.image_handler import ImageHandler
+from hand_crafted_image_representations.data_structure.image_handler import ImageHandler
 
 
 class OpenCvDescriptor:

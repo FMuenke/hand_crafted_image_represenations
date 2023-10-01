@@ -1,9 +1,9 @@
 import numpy as np
 from tqdm import tqdm
 
-from classic_image_classification.machine_learning.descriptor_set import DescriptorSet
-from classic_image_classification.machine_learning.key_point_set import KeyPointSet
-from classic_image_classification.data_structure.image_handler import ImageHandler
+from hand_crafted_image_representations.machine_learning.descriptor_set import DescriptorSet
+from hand_crafted_image_representations.machine_learning.key_point_set import KeyPointSet
+from hand_crafted_image_representations.data_structure.image_handler import ImageHandler
 
 
 def validate_feature_extraction_settings(sampling_method, features_to_use):

@@ -1,10 +1,10 @@
 import copy
 import numpy as np
 from sklearn.model_selection import ParameterGrid
-from classic_image_classification.data_structure.data_set import DataSet
-from classic_image_classification import machine_learning as ml
+from hand_crafted_image_representations.data_structure.data_set import DataSet
+from hand_crafted_image_representations import machine_learning as ml
 
-from classic_image_classification.utils.data_split import split_tags
+from hand_crafted_image_representations.utils.data_split import split_tags
 
 
 class OptimizingImageClassifier:

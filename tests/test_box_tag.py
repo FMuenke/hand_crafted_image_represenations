@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from classic_image_classification.data_structure.box_tag import BoxTag
+from hand_crafted_image_representations.data_structure.box_tag import BoxTag
 
 
 class TestBoxTag(unittest.TestCase):

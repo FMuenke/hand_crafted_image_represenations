@@ -3,7 +3,7 @@ import os
 
 import numpy as np
 
-from classic_image_classification import ImageEmbedding
+from hand_crafted_image_representations import ImageEmbedding
 import argparse
 
 

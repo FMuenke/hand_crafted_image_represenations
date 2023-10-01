@@ -1,7 +1,7 @@
 import os
 import logging
-from classic_image_classification.data_structure.box_tag import BoxTag
-from classic_image_classification.data_structure.labeled_image import LabeledImage
+from hand_crafted_image_representations.data_structure.box_tag import BoxTag
+from hand_crafted_image_representations.data_structure.labeled_image import LabeledImage
 
 from multiprocessing import Pool
 

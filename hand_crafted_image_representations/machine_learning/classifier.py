@@ -15,7 +15,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import f1_score
 
-from classic_image_classification.utils.utils import check_n_make_dir, save_dict, load_dict
+from hand_crafted_image_representations.utils.utils import check_n_make_dir, save_dict, load_dict
 
 
 def init_ensembles(clf_type):

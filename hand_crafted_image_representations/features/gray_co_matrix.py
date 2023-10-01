@@ -2,8 +2,8 @@ import numpy as np
 import multiprocessing
 from skimage import feature
 
-from classic_image_classification.data_structure.image_handler import ImageHandler
-from classic_image_classification.data_structure.matrix_handler import MatrixHandler
+from hand_crafted_image_representations.data_structure.image_handler import ImageHandler
+from hand_crafted_image_representations.data_structure.matrix_handler import MatrixHandler
 
 
 class GrayCoMatrix:

@@ -1,19 +1,19 @@
-from classic_image_classification.utils.utils import check_n_make_dir
+from hand_crafted_image_representations.utils.utils import check_n_make_dir
 import os
 import numpy as np
 import logging
-from classic_image_classification.machine_learning.feature_extractor import FeatureExtractor
-from classic_image_classification.machine_learning.aggregator import Aggregator
-from classic_image_classification.machine_learning.classifier import Classifier
+from hand_crafted_image_representations.machine_learning.feature_extractor import FeatureExtractor
+from hand_crafted_image_representations.machine_learning.aggregator import Aggregator
+from hand_crafted_image_representations.machine_learning.classifier import Classifier
 
-from classic_image_classification.data_structure.data_set import DataSet
+from hand_crafted_image_representations.data_structure.data_set import DataSet
 
-from classic_image_classification.utils.utils import save_dict, load_dict
-from classic_image_classification.utils.statistic_utils import init_result_dict, show_results, save_results
+from hand_crafted_image_representations.utils.utils import save_dict, load_dict
+from hand_crafted_image_representations.utils.statistic_utils import init_result_dict, show_results, save_results
 
 from tqdm import tqdm
 
-from classic_image_classification.utils.statistic_utils import plot_roc
+from hand_crafted_image_representations.utils.statistic_utils import plot_roc
 
 
 class ClassicImageClassifier:

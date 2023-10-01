@@ -8,12 +8,12 @@ import os
 from sklearn.decomposition import PCA
 from sklearn.cluster import MiniBatchKMeans
 
-from classic_image_classification.utils.utils import save_dict, load_dict, check_n_make_dir
+from hand_crafted_image_representations.utils.utils import save_dict, load_dict, check_n_make_dir
 
-from classic_image_classification.machine_learning.feature_extractor import FeatureExtractor
-from classic_image_classification.machine_learning.aggregator import Aggregator
+from hand_crafted_image_representations.machine_learning.feature_extractor import FeatureExtractor
+from hand_crafted_image_representations.machine_learning.aggregator import Aggregator
 
-from classic_image_classification.data_structure.data_set import DataSet
+from hand_crafted_image_representations.data_structure.data_set import DataSet
 
 
 class ImageEmbedding:

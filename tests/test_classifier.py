@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from classic_image_classification.machine_learning.classifier import Classifier
+from hand_crafted_image_representations.machine_learning.classifier import Classifier
 
 
 class TestClassifier(unittest.TestCase):

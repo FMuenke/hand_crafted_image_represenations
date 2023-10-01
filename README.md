@@ -29,9 +29,8 @@ python train_image_classifier.py -df PATH_TO_DATA_SET_TRAIN --model_folder PATH_
 ## Example
 The training can be further customized. As shown in the following code snippet:
 
-
 ````python
-from classic_image_classification.machine_learning import BestOfBagOfWords
+from hand_crafted_image_representations.machine_learning import BestOfBagOfWords
 
 # The Best of Bag of Words Classifier is the most general classifier.
 # It includes an automatic parameter search.
@@ -39,33 +38,32 @@ from classic_image_classification.machine_learning import BestOfBagOfWords
 # 1. Define options
 
 opt = {
-    "data_split_mode": "random",                  # How to split data into train and test
-    "aggregator": "bag_of_words",                 # Define aggregation ["bag_of_words", "vlad", ...]
-    "complexity": [8, 16, 32, 64, 128, 256, 512], # Define the complexity (numer of clusters) of the aggregation
-    "type": ["mlp", "mlp_x"],                     # Which classifier should be used [mlp, rf, svm, ...]
-    "feature": ["hsv-sift", "gray-sift"],         # Which Features should be tested
-    "sampling_method": "dense",                   # How to sample features
-    "sampling_step": [16, 32],                    # Option for dense-sampling: step size
-    "sampling_window": [16, 32],                  # Option for dense-sampling: window size
-    "image_size": [                               # Resize the image (otherwise set to None)
-        {
-            "width": 128,
-            "height": 128,
-        }
-    ]
+  "data_split_mode": "random",  # How to split data into train and test
+  "aggregator": "bag_of_words",  # Define aggregation ["bag_of_words", "vlad", ...]
+  "complexity": [8, 16, 32, 64, 128, 256, 512],  # Define the complexity (numer of clusters) of the aggregation
+  "type": ["mlp", "mlp_x"],  # Which classifier should be used [mlp, rf, svm, ...]
+  "feature": ["hsv-sift", "gray-sift"],  # Which Features should be tested
+  "sampling_method": "dense",  # How to sample features
+  "sampling_step": [16, 32],  # Option for dense-sampling: step size
+  "sampling_window": [16, 32],  # Option for dense-sampling: window size
+  "image_size": [  # Resize the image (otherwise set to None)
+    {
+      "width": 128,
+      "height": 128,
+    }
+  ]
 }
 
 # 2. Define Classes for the classifier
 
 class_mapping = {
-    "cls_1": 0,
-    "cls_2": 1,
-    # ...
+  "cls_1": 0,
+  "cls_2": 1,
+  # ...
 }
 
-
-MODEL_FOLDER="/Path/to/model"
-PATH_TO_DATASET="/Path/to/folder/with/training/data"
+MODEL_FOLDER = "/Path/to/model"
+PATH_TO_DATASET = "/Path/to/folder/with/training/data"
 
 bob = BestOfBagOfWords(opt, class_mapping)
 bob.fit(MODEL_FOLDER, PATH_TO_DATASET)
@@ -76,11 +74,11 @@ To further evaluate and use the classifier, simply load it from the folder it wa
 
 ````python
 import os
-from classic_image_classification.machine_learning import ClassicImageClassifier
+from hand_crafted_image_representations.machine_learning import ClassicImageClassifier
 
-MODEL_FOLDER="/Path/to/model"
-PATH_TO_DATASET="/Path/to/folder/with/training/data"
-PATH_TO_VISUALIZE_RESULTS=os.path.join(MODEL_FOLDER, "image_classification")
+MODEL_FOLDER = "/Path/to/model"
+PATH_TO_DATASET = "/Path/to/folder/with/training/data"
+PATH_TO_VISUALIZE_RESULTS = os.path.join(MODEL_FOLDER, "image_classification")
 
 model = ClassicImageClassifier()
 model.load(MODEL_FOLDER)

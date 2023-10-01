@@ -1,6 +1,6 @@
 import argparse
 import os
-from classic_image_classification.utils.utils import save_dict
+from hand_crafted_image_representations.utils.utils import save_dict
 
 
 def collect_labels_from_dir(df, list_of_labels):

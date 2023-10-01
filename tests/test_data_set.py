@@ -1,6 +1,6 @@
 import unittest
 import os
-from classic_image_classification.data_structure.data_set import DataSet
+from hand_crafted_image_representations.data_structure.data_set import DataSet
 
 
 class TestDataSet(unittest.TestCase):

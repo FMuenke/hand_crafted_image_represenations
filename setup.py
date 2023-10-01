@@ -16,7 +16,7 @@ REQUIRED_PACKAGES = [
       "imblearn",
 ]
 
-setup(name='classic_image_classification',
+setup(name='hand_crafted_image_representations',
       version='1.0.0',
       description='This package is used to classify images using hand-crafted features',
       author='Friedrich Muenke',

@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from classic_image_classification.data_structure.matrix_handler import MatrixHandler
+from hand_crafted_image_representations.data_structure.matrix_handler import MatrixHandler
 
 
 class TestMatrixHandler(unittest.TestCase):
