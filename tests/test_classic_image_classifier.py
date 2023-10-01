@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from unittest.mock import patch
-from hand_crafted_image_representations.machine_learning.classic_image_classifier import ClassicImageClassifier
+from handcrafted_image_representations.machine_learning.classic_image_classifier import ClassicImageClassifier
 
 
 def notqdm(iterable, *args, **kwargs):
@@ -39,8 +39,8 @@ class TestClassicImageClassifier(unittest.TestCase):
         self.assertIsNotNone(self.classifier.classifier)
 
     def test_fit_and_eval(self):
-        with patch('hand_crafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
-            with patch('hand_crafted_image_representations.machine_learning.classic_image_classifier.tqdm', notqdm):
+        with patch('handcrafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
+            with patch('handcrafted_image_representations.machine_learning.classic_image_classifier.tqdm', notqdm):
                 with patch('builtins.print'):
                     self.classifier.fit(data_path=self.path, tag_type="cls")
                     self.classifier.evaluate(data_path=self.path, tag_type="cls")

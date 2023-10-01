@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from hand_crafted_image_representations.data_structure.image_handler import ImageHandler
+from handcrafted_image_representations.data_structure.image_handler import ImageHandler
 
 
 class TestImageHandler(unittest.TestCase):

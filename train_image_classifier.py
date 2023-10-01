@@ -1,8 +1,8 @@
 import argparse
-from hand_crafted_image_representations.machine_learning import BestOfBagOfWords
+from handcrafted_image_representations.machine_learning import BestOfBagOfWords
 
 from test_image_classifier import test
-from hand_crafted_image_representations.utils.utils import load_dict
+from handcrafted_image_representations.utils.utils import load_dict
 
 
 class Config:

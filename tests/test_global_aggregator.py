@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from hand_crafted_image_representations.machine_learning.global_aggregator import GlobalAggregator
+from handcrafted_image_representations.machine_learning.global_aggregator import GlobalAggregator
 
 
 def create_test_descriptors():

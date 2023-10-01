@@ -2,13 +2,13 @@ import copy
 import joblib
 import numpy as np
 from sklearn.model_selection import ParameterGrid
-from hand_crafted_image_representations.data_structure.data_set import DataSet
-from hand_crafted_image_representations import machine_learning as ml
+from handcrafted_image_representations.data_structure.data_set import DataSet
+from handcrafted_image_representations import machine_learning as ml
 
 import os
 import shutil
-from hand_crafted_image_representations.utils.utils import check_n_make_dir, save_dict, load_dict
-from hand_crafted_image_representations.utils.outlier_removal import get_best_threshold
+from handcrafted_image_representations.utils.utils import check_n_make_dir, save_dict, load_dict
+from handcrafted_image_representations.utils.outlier_removal import get_best_threshold
 
 from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.gaussian_process import GaussianProcessClassifier, kernels

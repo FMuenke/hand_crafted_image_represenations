@@ -5,8 +5,8 @@ import multiprocessing
 from skimage.feature import haar_like_feature
 from skimage.transform import integral_image
 
-from hand_crafted_image_representations.data_structure.image_handler import ImageHandler
-from hand_crafted_image_representations.data_structure.matrix_handler import MatrixHandler
+from handcrafted_image_representations.data_structure.image_handler import ImageHandler
+from handcrafted_image_representations.data_structure.matrix_handler import MatrixHandler
 
 
 def basic_haar_features(roi):

@@ -1,7 +1,7 @@
 import unittest
 import cv2
 import numpy as np
-from hand_crafted_image_representations.machine_learning.key_point_set import (
+from handcrafted_image_representations.machine_learning.key_point_set import (
     key_points_to_open_cv_key_points,
     open_cv_key_points_to_key_points,
     build_open_cv_key_point_detectors,

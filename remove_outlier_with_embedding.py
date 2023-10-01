@@ -3,7 +3,7 @@ import os
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from hand_crafted_image_representations.machine_learning.outlier_detector import OutlierDetectorSearch, OutlierDetector
+from handcrafted_image_representations.machine_learning.outlier_detector import OutlierDetectorSearch, OutlierDetector
 
 
 def make_displot(data_frame, key, model_folder):

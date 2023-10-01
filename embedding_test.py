@@ -3,7 +3,7 @@ import os
 
 import numpy as np
 
-from hand_crafted_image_representations import ImageEmbedding
+from handcrafted_image_representations import ImageEmbedding
 import argparse
 
 

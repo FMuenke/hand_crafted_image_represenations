@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 from skimage.transform import integral_image
 
-from hand_crafted_image_representations.data_structure.matrix_handler import MatrixHandler
+from handcrafted_image_representations.data_structure.matrix_handler import MatrixHandler
 
 
 class ImageHandler:

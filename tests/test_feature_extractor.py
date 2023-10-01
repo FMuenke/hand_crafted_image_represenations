@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 from unittest.mock import patch
-from hand_crafted_image_representations.machine_learning.feature_extractor import FeatureExtractor
-from hand_crafted_image_representations.data_structure.box_tag import BoxTag
+from handcrafted_image_representations.machine_learning.feature_extractor import FeatureExtractor
+from handcrafted_image_representations.data_structure.box_tag import BoxTag
 
 
 def notqdm(iterable, *args, **kwargs):
@@ -45,7 +45,7 @@ class TestFeatureExtractor(unittest.TestCase):
         mock_tag_data = np.random.random((128, 128, 3))  # Mock tag data
         mock_tags = [BoxTag("00", "./tests/test_data/images/img_0.jpg", "0", ["0", 0, 0, 128, 128], {"0": 0, "1": 1})]
         with patch('cv2.resize', return_value=mock_tag_data):
-            with patch('hand_crafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
+            with patch('handcrafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
                 with patch('builtins.print'):
                     x, y = self.feature_extractor.extract_trainings_data(mock_tags)
                     self.assertEqual(len(x), 1)

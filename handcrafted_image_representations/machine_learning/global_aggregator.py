@@ -1,6 +1,6 @@
 import numpy as np
 import logging
-from hand_crafted_image_representations.utils.utils import check_n_make_dir, save_dict, load_dict
+from handcrafted_image_representations.utils.utils import check_n_make_dir, save_dict, load_dict
 import os
 
 

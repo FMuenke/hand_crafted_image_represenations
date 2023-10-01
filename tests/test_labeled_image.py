@@ -1,6 +1,6 @@
 import unittest
 import os
-from hand_crafted_image_representations.data_structure.labeled_image import get_file_name, LabeledImage
+from handcrafted_image_representations.data_structure.labeled_image import get_file_name, LabeledImage
 
 
 class TestFileUtils(unittest.TestCase):

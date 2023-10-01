@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
-from hand_crafted_image_representations.machine_learning.descriptor_set import DescriptorSet
-from hand_crafted_image_representations.machine_learning.key_point_set import KeyPointSet
+from handcrafted_image_representations.machine_learning.descriptor_set import DescriptorSet
+from handcrafted_image_representations.machine_learning.key_point_set import KeyPointSet
 
 
 class TestDescriptorSet(unittest.TestCase):

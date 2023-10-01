@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from unittest.mock import Mock
-from hand_crafted_image_representations.machine_learning.vlad import VLAD
+from handcrafted_image_representations.machine_learning.vlad import VLAD
 
 
 class TestVLAD(unittest.TestCase):

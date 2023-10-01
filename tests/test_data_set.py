@@ -1,6 +1,6 @@
 import unittest
 import os
-from hand_crafted_image_representations.data_structure.data_set import DataSet
+from handcrafted_image_representations.data_structure.data_set import DataSet
 
 
 class TestDataSet(unittest.TestCase):

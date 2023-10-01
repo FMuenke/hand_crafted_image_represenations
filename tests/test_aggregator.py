@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from hand_crafted_image_representations.machine_learning.aggregator import Aggregator
+from handcrafted_image_representations.machine_learning.aggregator import Aggregator
 
 
 class TestAggregator(unittest.TestCase):

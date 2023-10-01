@@ -1,6 +1,6 @@
 import argparse
 import os
-from hand_crafted_image_representations.machine_learning import ClassicImageClassifier
+from handcrafted_image_representations.machine_learning import ClassicImageClassifier
 
 
 def test(mf, df, load_all, dt="cls"):

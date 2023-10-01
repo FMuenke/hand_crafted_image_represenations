@@ -1,8 +1,8 @@
 import numpy as np
 
-from hand_crafted_image_representations.data_structure.matrix_handler import MatrixHandler
-from hand_crafted_image_representations.data_structure.image_handler import ImageHandler
-from hand_crafted_image_representations.machine_learning.feature_map import FeatureMap
+from handcrafted_image_representations.data_structure.matrix_handler import MatrixHandler
+from handcrafted_image_representations.data_structure.image_handler import ImageHandler
+from handcrafted_image_representations.machine_learning.feature_map import FeatureMap
 
 
 class LeungMalik:

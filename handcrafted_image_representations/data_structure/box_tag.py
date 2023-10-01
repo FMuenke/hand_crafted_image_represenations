@@ -3,7 +3,7 @@ import imagesize
 import os
 import numpy as np
 
-from hand_crafted_image_representations.utils.utils import check_n_make_dir
+from handcrafted_image_representations.utils.utils import check_n_make_dir
 
 
 class BoxTag:

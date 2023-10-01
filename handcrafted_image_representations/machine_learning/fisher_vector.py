@@ -6,8 +6,8 @@ import numpy as np
 import json
 from sklearn.mixture import GaussianMixture
 
-from hand_crafted_image_representations.machine_learning.bag_of_words import remove_empty_desc
-from hand_crafted_image_representations.utils.utils import check_n_make_dir
+from handcrafted_image_representations.machine_learning.bag_of_words import remove_empty_desc
+from handcrafted_image_representations.utils.utils import check_n_make_dir
 
 
 class FisherVector:

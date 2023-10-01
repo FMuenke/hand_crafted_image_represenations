@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from hand_crafted_image_representations.machine_learning.fisher_vector import FisherVector
+from handcrafted_image_representations.machine_learning.fisher_vector import FisherVector
 
 
 class TestFisherVector(unittest.TestCase):

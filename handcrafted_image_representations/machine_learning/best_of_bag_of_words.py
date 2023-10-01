@@ -1,8 +1,8 @@
 import os
 import shutil
 from sklearn.model_selection import ParameterGrid
-from hand_crafted_image_representations import machine_learning as ml
-from hand_crafted_image_representations.utils.utils import check_n_make_dir
+from handcrafted_image_representations import machine_learning as ml
+from handcrafted_image_representations.utils.utils import check_n_make_dir
 
 
 class BestOfBagOfWords:

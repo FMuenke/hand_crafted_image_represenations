@@ -1,4 +1,4 @@
-# classic_image_classification
+# Handcrafted Image Representations
 
 ## Setup
 Installation is done by cloning the repository
@@ -30,7 +30,7 @@ python train_image_classifier.py -df PATH_TO_DATA_SET_TRAIN --model_folder PATH_
 The training can be further customized. As shown in the following code snippet:
 
 ````python
-from hand_crafted_image_representations.machine_learning import BestOfBagOfWords
+from handcrafted_image_representations.machine_learning import BestOfBagOfWords
 
 # The Best of Bag of Words Classifier is the most general classifier.
 # It includes an automatic parameter search.
@@ -74,7 +74,7 @@ To further evaluate and use the classifier, simply load it from the folder it wa
 
 ````python
 import os
-from hand_crafted_image_representations.machine_learning import ClassicImageClassifier
+from handcrafted_image_representations.machine_learning import ClassicImageClassifier
 
 MODEL_FOLDER = "/Path/to/model"
 PATH_TO_DATASET = "/Path/to/folder/with/training/data"

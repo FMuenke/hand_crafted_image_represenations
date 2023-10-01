@@ -6,7 +6,7 @@ import numpy as np
 import logging
 
 from sklearn.cluster import KMeans, MiniBatchKMeans
-from hand_crafted_image_representations.utils.utils import check_n_make_dir
+from handcrafted_image_representations.utils.utils import check_n_make_dir
 
 
 def remove_empty_desc(descriptors):

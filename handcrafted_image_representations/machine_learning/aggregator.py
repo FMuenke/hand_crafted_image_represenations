@@ -1,7 +1,7 @@
-from hand_crafted_image_representations.machine_learning.fisher_vector import FisherVector
-from hand_crafted_image_representations.machine_learning.bag_of_words import BagOfWords
-from hand_crafted_image_representations.machine_learning.global_aggregator import GlobalAggregator
-from hand_crafted_image_representations.machine_learning.vlad import VLAD
+from handcrafted_image_representations.machine_learning.fisher_vector import FisherVector
+from handcrafted_image_representations.machine_learning.bag_of_words import BagOfWords
+from handcrafted_image_representations.machine_learning.global_aggregator import GlobalAggregator
+from handcrafted_image_representations.machine_learning.vlad import VLAD
 
 
 def format_aggregator_settings(opt):

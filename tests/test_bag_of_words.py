@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from hand_crafted_image_representations.machine_learning.bag_of_words import BagOfWords
+from handcrafted_image_representations.machine_learning.bag_of_words import BagOfWords
 
 
 class TestBagOfWords(unittest.TestCase):

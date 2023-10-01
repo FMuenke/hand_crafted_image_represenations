@@ -1,6 +1,6 @@
 import numpy as np
 
-from hand_crafted_image_representations.data_structure.matrix_handler import MatrixHandler
+from handcrafted_image_representations.data_structure.matrix_handler import MatrixHandler
 
 
 class FeatureMap:
