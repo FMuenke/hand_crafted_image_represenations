@@ -3,7 +3,7 @@
 ## Setup
 Installation is done by cloning the repository
 ```bash
-git clone https://github.com/FMuenke/classic_image_classification.git
+git clone https://github.com/FMuenke/handcrafted_image_represenations.git
 ```
 All dependency can be installed with
 ````bash
