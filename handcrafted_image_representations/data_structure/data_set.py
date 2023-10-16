@@ -1,5 +1,6 @@
 import os
 import logging
+import imagesize
 from handcrafted_image_representations.data_structure.box_tag import BoxTag
 from handcrafted_image_representations.data_structure.labeled_image import LabeledImage
 
@@ -61,11 +62,36 @@ class DataSet:
                 for t in t_set:
                     self.tags[len(self.tags)] = t
 
+    def load_classes_directly_from_folders(self, path_to_directory):
+        for sub_f in os.listdir(path_to_directory):
+            if not os.path.isdir(os.path.join(path_to_directory, sub_f)):
+                continue
+            for img_f in os.listdir(os.path.join(path_to_directory, sub_f)):
+                try:
+                    image_file = os.path.join(path_to_directory, sub_f, img_f)
+                    if img_f.endswith((".png", ".jpg")):
+                        width, height = imagesize.get(image_file)
+                        tag = BoxTag(
+                            tag_id=len(self.tags),
+                            path_to_image=image_file,
+                            tag_class=[sub_f],
+                            box=[sub_f, 0, 0, width - 1, height - 1],
+                            class_mapping=self.class_mapping
+                        )
+                        if tag.is_valid():
+                            self.tags[len(self.tags)] = tag
+                except Exception as e:
+                    logging.error(e)
+                    logging.error(img_f)
+
     def load_data(self):
         logging.info("[INFO] Loading data...")
-        self.load_directory(self.data_set_dir)
-        for d in os.listdir(self.data_set_dir):
-            self.load_directory(os.path.join(self.data_set_dir, d))
+        if self.tag_type == "folder":
+            self.load_classes_directly_from_folders(self.data_set_dir)
+        else:
+            self.load_directory(self.data_set_dir)
+            for d in os.listdir(self.data_set_dir):
+                self.load_directory(os.path.join(self.data_set_dir, d))
 
     def get_tags(self, classes_to_consider="all"):
         tags_out = []

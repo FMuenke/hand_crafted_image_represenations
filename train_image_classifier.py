@@ -14,11 +14,11 @@ class Config:
 
         self.opt = {
             "data_split_mode": "random",
-            "aggregator": ["vlad"],
-            "complexity": [16, 32, 64],
+            "aggregator": ["bag_of_words"],
+            "complexity": [16, 32, 64, 128, 256, 512],
             "type": ["mlp"],
-            "feature": ["hsv-sift"],
-            "sampling_method": ["dense"],
+            "feature": ["gray-sift"],
+            "sampling_method": ["dense", "sift"],
             "image_size": [
                 {
                     "width": None,
