@@ -3,6 +3,8 @@ __pycache__/
 .idea/
 *.py[cod]
 *$py.class
+.DS_Store
+custom_train.py
 
 tests/dummy_model/*
 

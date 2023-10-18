@@ -7,11 +7,6 @@ import numpy as np
 
 def init_result_dict(class_mapping):
     result_dict = dict()
-    result_dict["overall"] = {
-        "tp": 0,
-        "fp": 0,
-        "fn": 0
-    }
     for cls in class_mapping:
         result_dict[cls] = {
             "tp": 0,

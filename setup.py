@@ -5,15 +5,14 @@ from setuptools import setup, find_packages
 
 REQUIRED_PACKAGES = [
       "opencv-contrib-python",
-      "opencv-python==4.2.0.32",
       "scikit-learn",
-      "xgboost",
+      "imagesize",
       "tqdm",
       "matplotlib",
       "scikit-image",
       "numpy",
       "joblib",
-      "imblearn",
+      "seaborn"
 ]
 
 setup(name='handcrafted_image_representations',
