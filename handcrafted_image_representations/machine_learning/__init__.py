@@ -6,3 +6,4 @@ from handcrafted_image_representations.machine_learning.optimizing_image_classif
 from handcrafted_image_representations.machine_learning.ensemble_image_classifier import EnsembleImageClassifier  # noqa: F401
 from handcrafted_image_representations.machine_learning.image_embedding import ImageEmbedding  # noqa: F401
 from handcrafted_image_representations.machine_learning.best_of_bag_of_words import BestOfBagOfWords  # noqa: F401
+from handcrafted_image_representations.machine_learning.data_sampling import DataSampling  # noqa: F401
