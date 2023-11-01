@@ -25,6 +25,12 @@ class ImageEmbedding:
         self.data_set_repr = None
         self.data_set_tags = None
 
+        if opt is not None:
+            if "sampling_step" not in opt:
+                self.opt["sampling_step"] = 20
+            if "sampling_window" not in opt:
+                self.opt["sampling_window"] = 20
+
     def new(self):
         self.feature_extractor = FeatureExtractor(
             features_to_use=self.opt["feature"],
