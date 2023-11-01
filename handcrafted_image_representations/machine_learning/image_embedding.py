@@ -112,7 +112,7 @@ class ImageEmbedding:
         selected_tags = [self.data_set_tags[i] for i in sampled_indices]
         return selected_tags
 
-    def fit(self, data_path, tag_type, classes_to_consider="all"):
+    def fit_folder(self, data_path, tag_type, classes_to_consider="all"):
         ds = DataSet(data_path, tag_type=tag_type)
         tags = ds.get_tags(classes_to_consider=classes_to_consider)
 
@@ -120,21 +120,23 @@ class ImageEmbedding:
         x, _ = self.feature_extractor.extract_trainings_data(tags)
         self.feature_aggregator.fit(x)
 
-    def transform(self, image):
-        x = self.feature_extractor.extract_x(image)
-        x = self.feature_aggregator.transform(x)
-        return x[0]
+    def fit(self, tags):
+        self.new()
+        x, _ = self.feature_extractor.extract_trainings_data(tags)
+        self.feature_aggregator.fit(x)
 
-    def fit_transform(self, data_path, tag_type, classes_to_consider="all", return_y=False):
-        ds = DataSet(data_path, tag_type=tag_type)
-        tags = ds.get_tags(classes_to_consider=classes_to_consider)
-
+    def fit_transform(self, tags, return_y=False):
         self.new()
         x, y = self.feature_extractor.extract_trainings_data(tags)
         x_trans = self.feature_aggregator.fit_transform(x)
         if return_y:
             return x_trans, y
         return x_trans
+
+    def transform(self, image):
+        x = self.feature_extractor.extract_x(image)
+        x = self.feature_aggregator.transform(x)
+        return x[0]
 
     def save(self, path):
         check_n_make_dir(path)
