@@ -2,6 +2,7 @@ from handcrafted_image_representations.machine_learning.fisher_vector import Fis
 from handcrafted_image_representations.machine_learning.bag_of_words import BagOfWords
 from handcrafted_image_representations.machine_learning.global_aggregator import GlobalAggregator
 from handcrafted_image_representations.machine_learning.vlad import VLAD
+from handcrafted_image_representations.machine_learning.compact_vlad import CompactVLAD
 
 
 def format_aggregator_settings(opt):
@@ -48,6 +49,8 @@ class Aggregator:
             self.aggregator = GlobalAggregator(self.opt["aggregator"])
         elif "vlad" == self.opt["aggregator"]:
             self.aggregator = VLAD(n_words=self.opt["complexity"])
+        elif "c_vlad" == self.opt["aggregator"]:
+            self.aggregator = CompactVLAD(n_words=self.opt["complexity"])
         else:
             raise Exception("Unknown Option for Aggregator: {}".format(self.opt["aggregator"]))
 

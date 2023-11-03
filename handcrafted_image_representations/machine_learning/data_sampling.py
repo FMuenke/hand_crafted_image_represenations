@@ -69,3 +69,11 @@ class DataSampling:
                 tags_cls = [tags[i] for i in indices]
                 sampled_tags += sample_randomly(tags_cls, n_to_sample)
             return sampled_tags
+
+    def get_remaining_tags(self, sampled_tags, tags):
+        sampled_tag_ids = [tag.tag_id for tag in sampled_tags]
+        remaining_tags = []
+        for tag in tags:
+            if tag.tag_id not in sampled_tag_ids:
+                remaining_tags.append(tag)
+        return remaining_tags
