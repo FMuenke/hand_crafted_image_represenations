@@ -113,11 +113,8 @@ class CompactVLAD:
         for i in range(len(residuals)):
             vlad_representation[labels[i]] += np.linalg.norm(residuals[i])
 
-        print(vlad_representation)
-        print(vlad_representation.shape)
         # L2-normalization
         vlad_representation = vlad_representation.flatten()
         vlad_representation /= np.sqrt(np.sum(vlad_representation ** 2))
         vlad_representation = np.reshape(vlad_representation, (1, -1))
-        print(vlad_representation.shape)
         return vlad_representation
