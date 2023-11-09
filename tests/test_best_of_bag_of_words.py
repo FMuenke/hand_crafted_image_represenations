@@ -40,7 +40,7 @@ class TestBestOfBagOfWords(unittest.TestCase):
 
         with patch('handcrafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
             with patch('builtins.print'):
-                best_f1_score = self.best_of_bag_of_words.fit(model_folder, data_path, tag_type, load_all, report_path)
+                best_f1_score = self.best_of_bag_of_words.fit_folder(model_folder, data_path, tag_type, load_all, report_path)
                 self.assertIsNotNone(best_f1_score)
 
 

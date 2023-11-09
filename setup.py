@@ -16,7 +16,7 @@ REQUIRED_PACKAGES = [
 ]
 
 setup(name='handcrafted_image_representations',
-      version='1.0.0',
+      version='1.0.1',
       description='This package is used to classify images using hand-crafted features',
       author='Friedrich Muenke',
       author_email='friedrich.muenke@me.com',

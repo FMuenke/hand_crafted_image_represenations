@@ -1,5 +1,4 @@
 import unittest
-import numpy as np
 from unittest.mock import patch
 from handcrafted_image_representations.machine_learning.classic_image_classifier import ClassicImageClassifier
 
@@ -42,7 +41,7 @@ class TestClassicImageClassifier(unittest.TestCase):
         with patch('handcrafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
             with patch('handcrafted_image_representations.machine_learning.classic_image_classifier.tqdm', notqdm):
                 with patch('builtins.print'):
-                    self.classifier.fit(data_path=self.path, tag_type="cls")
+                    self.classifier.fit_folder(data_path=self.path, tag_type="cls")
                     self.classifier.evaluate(data_path=self.path, tag_type="cls")
 
 

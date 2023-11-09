@@ -51,16 +51,10 @@ class OptimizingImageClassifier:
                 self.aggregator_list.append(ml.Aggregator({"aggregator": agg}))
         self.classifier_list = [ml.Classifier(opt, self.class_mapping) for opt in classifier_opt_list]
 
-    def fit(self, model_folder, data_path, tag_type, load_all=False, report_path=None):
+    def fit(self, model_folder, tags, report_path=None):
         self.new()
         best_f1_score = 0
         best_candidate = None
-
-        ds = DataSet(data_path, tag_type, self.class_mapping)
-        if load_all:
-            tags = ds.get_tags()
-        else:
-            tags = ds.get_tags(self.class_mapping)
 
         train_tags, test_tags = split_tags(tags, mode=self.opt["data_split_mode"])
 
@@ -105,3 +99,11 @@ class OptimizingImageClassifier:
             print("[RESULT] ", k, self.opt[k], " --> ", best_candidate[1].opt[k])
             self.opt[k] = best_candidate[1].opt[k]
         return best_f1_score
+
+    def fit_folder(self, model_folder, data_path, tag_type, load_all=False, report_path=None):
+        ds = DataSet(data_path, tag_type, self.class_mapping)
+        if load_all:
+            tags = ds.get_tags()
+        else:
+            tags = ds.get_tags(self.class_mapping)
+        return self.fit(model_folder, tags, report_path)

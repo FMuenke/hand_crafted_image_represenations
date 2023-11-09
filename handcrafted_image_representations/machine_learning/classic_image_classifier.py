@@ -78,15 +78,10 @@ class ClassicImageClassifier:
     def aggregate(self, x):
         return self.aggregator.transform(x)
 
-    def fit(self, data_path, tag_type, load_all=False, report_path=None):
-        self.new()
-        ds = DataSet(data_path, class_mapping=self.class_mapping, tag_type=tag_type)
-        if load_all:
-            tags = ds.get_tags()
-        else:
-            tags = ds.get_tags(self.class_mapping)
+    def fit(self, tags, report_path=None):
         assert len(tags) != 0, "No Labels were found! Abort..."
 
+        self.new()
         x_train, y_train = self.feature_extractor.extract_trainings_data(tags)
         x_train = self.aggregator.fit_transform(x_train)
         x_train = np.concatenate(x_train, axis=0)
@@ -95,6 +90,14 @@ class ClassicImageClassifier:
         logging.info(self.classifier)
         score = self.classifier.evaluate(x_train, y_train, save_path=report_path)
         return score
+
+    def fit_folder(self, data_path, tag_type, load_all=False, report_path=None):
+        ds = DataSet(data_path, class_mapping=self.class_mapping, tag_type=tag_type)
+        if load_all:
+            tags = ds.get_tags()
+        else:
+            tags = ds.get_tags(self.class_mapping)
+        return self.fit(tags, report_path)
 
     def predict_image(self, image, get_confidence=False):
         x = self.feature_extractor.extract_x(image)

@@ -3,6 +3,7 @@ import shutil
 from sklearn.model_selection import ParameterGrid
 from handcrafted_image_representations import machine_learning as ml
 from handcrafted_image_representations.utils.utils import check_n_make_dir
+from handcrafted_image_representations.data_structure.data_set import DataSet
 
 
 class BestOfBagOfWords:
@@ -31,7 +32,7 @@ class BestOfBagOfWords:
 
         self.image_classifier = [ml.OptimizingImageClassifier(opt, self.class_mapping) for opt in feature_opt_list]
 
-    def fit(self, model_folder, data_path, tag_type="cls", load_all=False, report_path=None):
+    def fit(self, model_folder, tags, report_path=None):
         self.new()
 
         best_f1_score = 0
@@ -42,9 +43,7 @@ class BestOfBagOfWords:
         for i, cls in enumerate(self.image_classifier):
             score = cls.fit(
                 os.path.join(model_folder, "version_{}".format(i)),
-                data_path,
-                tag_type,
-                load_all=load_all,
+                tags,
                 report_path=report_path
             )
 
@@ -58,3 +57,11 @@ class BestOfBagOfWords:
                 os.path.join(model_folder, "version_{}".format(best_candidate), f),
                 os.path.join(model_folder, f))
         return best_f1_score
+
+    def fit_folder(self, model_folder, data_path, tag_type="cls", load_all=False, report_path=None):
+        ds = DataSet(data_path, class_mapping=self.class_mapping, tag_type=tag_type)
+        if load_all:
+            tags = ds.get_tags()
+        else:
+            tags = ds.get_tags(self.class_mapping)
+        return self.fit(model_folder, tags, report_path)
