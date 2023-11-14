@@ -1,11 +1,11 @@
 import argparse
 import os
-from handcrafted_image_representations.machine_learning import ClassicImageClassifier
+from handcrafted_image_representations.machine_learning import ImageClassifier
 
 
 def test(mf, df, load_all, dt="cls"):
 
-    model = ClassicImageClassifier()
+    model = ImageClassifier()
     model.load(mf)
     model.evaluate(df, dt, load_all, os.path.join(mf, "image_classification"))
 

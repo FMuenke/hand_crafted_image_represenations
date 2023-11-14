@@ -74,13 +74,13 @@ To further evaluate and use the classifier, simply load it from the folder it wa
 
 ````python
 import os
-from handcrafted_image_representations.machine_learning import ClassicImageClassifier
+from handcrafted_image_representations.machine_learning import ImageClassifier
 
 MODEL_FOLDER = "/Path/to/model"
 PATH_TO_DATASET = "/Path/to/folder/with/training/data"
 PATH_TO_VISUALIZE_RESULTS = os.path.join(MODEL_FOLDER, "image_classification")
 
-model = ClassicImageClassifier()
+model = ImageClassifier()
 model.load(MODEL_FOLDER)
 model.evaluate(PATH_TO_DATASET, PATH_TO_VISUALIZE_RESULTS)
 ````
