@@ -112,8 +112,6 @@ class ImageClassifier:
 
         self.classifier.fit(x_train, y_train)
         logging.info(self.classifier)
-        score = self.classifier.evaluate(x_train, y_train, save_path=report_path)
-        return score
 
     def fit_folder(self, data_path, tag_type, load_all=False, report_path=None):
         ds = DataSet(data_path, class_mapping=self.class_mapping, tag_type=tag_type)

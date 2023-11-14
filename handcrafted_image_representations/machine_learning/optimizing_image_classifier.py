@@ -92,7 +92,7 @@ class OptimizingImageClassifier:
                         sampling_step=current_opt["sampling_step"],
                         sampling_window=current_opt["sampling_window"],
                         clf_type=current_opt["clf_type"]
-                        )
+                    )
                     self.final_classifier.feature_extractor = self.feature_extractor
                     self.final_classifier.aggregator = aggregator
                     self.final_classifier.classifier = cls
