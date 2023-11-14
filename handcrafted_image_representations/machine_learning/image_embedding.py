@@ -17,19 +17,34 @@ from handcrafted_image_representations.data_structure.data_set import DataSet
 
 
 class ImageEmbedding:
-    def __init__(self, opt):
-        self.opt = opt
+    def __init__(self, 
+                 aggregator="bag_of_words", 
+                 complexity=1024, 
+                 feature="hsv-sift",
+                 sampling_method="dense",
+                 sampling_window=16,
+                 sampling_step=16,
+                 image_size_width=128,
+                 image_size_height=128,
+                 ):
+        
+        self.opt = {
+            "aggregator": aggregator,
+            "complexity": complexity,
+            "feature": feature,
+            "sampling_method": sampling_method,
+            "sampling_window": sampling_window,
+            "sampling_step": sampling_step,
+            "image_size": {
+                "width": image_size_width, 
+                "height": image_size_height
+                }
+        }
         self.feature_extractor = None
         self.feature_aggregator = None
 
         self.data_set_repr = None
         self.data_set_tags = None
-
-        if opt is not None:
-            if "sampling_step" not in opt:
-                self.opt["sampling_step"] = 20
-            if "sampling_window" not in opt:
-                self.opt["sampling_window"] = 20
 
     def new(self):
         self.feature_extractor = FeatureExtractor(

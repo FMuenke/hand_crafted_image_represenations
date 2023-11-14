@@ -1,6 +1,6 @@
 import logging
 import argparse
-from handcrafted_image_representations import ClassicImageClassifier
+from handcrafted_image_representations import ImageClassifier
 from handcrafted_image_representations.utils.utils import load_dict
 
 
@@ -29,7 +29,7 @@ def main(args_):
     df = args_.dataset_folder
     tf = args_.test_folder
 
-    cls = ClassicImageClassifier(opt=opt, class_mapping=class_mapping)
+    cls = ImageClassifier(opt=opt, class_mapping=class_mapping)
     cls.fit(df, tag_type=args_.dataset_type)
     cls.save(mf)
     cls.evaluate(tf, tag_type="cls", report_path=mf)

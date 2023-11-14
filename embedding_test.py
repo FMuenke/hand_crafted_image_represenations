@@ -21,19 +21,7 @@ def main(args_):
     path = args_.dataset_folder
     result_folder = args_.result_folder
 
-    opt = {
-        "aggregator": "bag_of_words",
-        "complexity": 128,
-        "feature": "hsv-sift",
-        "sampling_method": "dense",
-        "sampling_step": 16,
-        "sampling_window": 16,
-        "image_size": {
-            "width": 128,
-            "height": 128,
-        }
-    }
-    img_emb = ImageEmbedding(opt)
+    img_emb = ImageEmbedding()
 
     img_emb.register_data_set(data_path=path, tag_type="cls")
     img_emb.show(os.path.join(result_folder, "plot.jpeg"))

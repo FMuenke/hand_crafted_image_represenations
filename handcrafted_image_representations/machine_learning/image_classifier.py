@@ -16,9 +16,33 @@ from tqdm import tqdm
 from handcrafted_image_representations.utils.statistic_utils import plot_roc
 
 
-class ClassicImageClassifier:
-    def __init__(self, opt=None, class_mapping=None):
-        self.opt = opt
+class ImageClassifier:
+    def __init__(self,
+                 class_mapping=None,
+                 aggregator="bag_of_words", 
+                 complexity=1024,
+                 feature="gray-sift",
+                 sampling_method="dense",
+                 sampling_step=16,
+                 sampling_window=16,
+                 image_size_width=128,
+                 image_size_height=128,
+                 clf_type="rf_100",
+                 ):
+        
+        self.opt = {
+            "aggregator": aggregator,
+            "complexity": complexity,
+            "type": clf_type,
+            "feature": feature,
+            "sampling_method": sampling_method,
+            "sampling_step": sampling_step,
+            "sampling_window": sampling_window,
+            "image_size": {
+                "width": image_size_width,
+                "height": image_size_height,
+            },
+        }
 
         self.class_mapping = class_mapping
         self.class_mapping_inv = None

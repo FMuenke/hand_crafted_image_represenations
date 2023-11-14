@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from handcrafted_image_representations.machine_learning.classic_image_classifier import ClassicImageClassifier
+from handcrafted_image_representations.machine_learning.image_classifier import ImageClassifier
 
 
 def notqdm(iterable, *args, **kwargs):
@@ -11,7 +11,7 @@ def notqdm(iterable, *args, **kwargs):
     return iterable
 
 
-class TestClassicImageClassifier(unittest.TestCase):
+class TestImageClassifier(unittest.TestCase):
 
     def setUp(self):
 
@@ -19,17 +19,18 @@ class TestClassicImageClassifier(unittest.TestCase):
 
         self.opt = {
             "feature": "gray-sift",
-            "image_size": {"height": 64, "width": 64},
+            "image_size_width": 64,
+            "image_size_height": 64,
             "sampling_method": "dense",
             "sampling_step": 8,
             "sampling_window": 8,
             "aggregator": "bag_of_words",
             "complexity": 8,
-            "type": "lr"
+            "clf_type": "lr"
         }
 
         self.class_mapping = {"0": 0, "1": 1}
-        self.classifier = ClassicImageClassifier(self.opt, self.class_mapping)
+        self.classifier = ImageClassifier(self.class_mapping, **self.opt)
 
     def test_new(self):
         self.classifier.new()

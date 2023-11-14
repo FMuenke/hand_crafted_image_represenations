@@ -2,7 +2,7 @@ import os
 import numpy as np
 import logging
 from tqdm import tqdm
-from handcrafted_image_representations.machine_learning.classic_image_classifier import ClassicImageClassifier
+from handcrafted_image_representations.machine_learning.image_classifier import ImageClassifier
 from handcrafted_image_representations.data_structure.data_set import DataSet
 from handcrafted_image_representations.utils.utils import check_n_make_dir
 from handcrafted_image_representations.utils.statistic_utils import init_result_dict, show_results, save_results
@@ -19,7 +19,7 @@ class EnsembleImageClassifier:
 
     def load_model(self, model_path):
         if os.path.isfile(os.path.join(model_path, "classifier.pkl")):
-            c = ClassicImageClassifier(model_path)
+            c = ImageClassifier(model_path)
             c.load(model_path)
             k = "{}_classic".format(len(self.members))
             self.members[k] = c
