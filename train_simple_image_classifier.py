@@ -7,29 +7,11 @@ from handcrafted_image_representations.utils.utils import load_dict
 def main(args_):
 
     class_mapping = load_dict(args_.class_mapping)
-
-    opt = {
-        "data_split_mode": "random",
-        "data_split_ratio": 0.0,
-        "aggregator": "basic_mean",
-        "complexity": 1024,
-        "type": "rf",
-        "n_estimators": 100,
-        "feature": "hsv-hog+32+L2",
-        "sampling_method": "one",
-        "sampling_step": 0,
-        "sampling_window": 0,
-        "image_size": {
-            "width": 32,
-            "height": 32,
-        },
-    }
-
     mf = args_.model_folder
     df = args_.dataset_folder
     tf = args_.test_folder
 
-    cls = ImageClassifier(opt=opt, class_mapping=class_mapping)
+    cls = ImageClassifier(class_mapping=class_mapping)
     cls.fit(df, tag_type=args_.dataset_type)
     cls.save(mf)
     cls.evaluate(tf, tag_type="cls", report_path=mf)

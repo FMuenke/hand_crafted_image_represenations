@@ -20,7 +20,7 @@ class TestBestOfBagOfWords(unittest.TestCase):
             "image_size": {"height": 64, "width": 64},
             "sampling_method": "one",
             "aggregator": "global_avg",
-            "type": "lr"
+            "clf_type": "lr"
         }
 
         self.class_mapping = {

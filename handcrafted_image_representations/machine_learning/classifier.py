@@ -72,14 +72,14 @@ def init_other(clf_type):
 
 
 def init_classifier(opt):
-    if "rf" in opt["type"]:
-        return init_ensembles(opt["type"])
-    elif "mlp" in opt["type"]:
-        return init_mlp(opt["type"])
-    elif "knn" in opt["type"]:
-        return init_knn(opt["type"])
+    if "rf" in opt["clf_type"]:
+        return init_ensembles(opt["clf_type"])
+    elif "mlp" in opt["clf_type"]:
+        return init_mlp(opt["clf_type"])
+    elif "knn" in opt["clf_type"]:
+        return init_knn(opt["clf_type"])
     else:
-        return init_other(opt["type"])
+        return init_other(opt["clf_type"])
 
 
 class Classifier:
@@ -91,18 +91,18 @@ class Classifier:
         self.classifier = None
 
     def __str__(self):
-        return "Classifier: {}".format(self.opt["type"])
+        return "Classifier: {}".format(self.opt["clf_type"])
 
     def fit(self, x_train, y_train):
         self.new()
-        logging.info("Fitting the {} to the training set".format(self.opt["type"]))
+        logging.info("Fitting the {} to the training set".format(self.opt["clf_type"]))
         t0 = time()
         self.classifier.fit(x_train, y_train)
         logging.info("done in %0.3fs" % (time() - t0))
 
     def predict(self, x, get_confidence=False):
         if get_confidence:
-            if self.opt["type"] in ["nc", "svm"]:
+            if self.opt["clf_type"] in ["nc", "svm"]:
                 return self.classifier.predict(x), 1.0
             prob = self.classifier.predict_proba(x)
             return [np.argmax(prob)], np.max(prob)

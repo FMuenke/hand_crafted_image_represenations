@@ -33,7 +33,7 @@ class ImageClassifier:
         self.opt = {
             "aggregator": aggregator,
             "complexity": complexity,
-            "type": clf_type,
+            "clf_type": clf_type,
             "feature": feature,
             "sampling_method": sampling_method,
             "sampling_step": sampling_step,

@@ -120,6 +120,7 @@ As representation for an image they need to be summarized (aggregated) into one 
 - bag_of_words: Summarize all descriptors as a bag of words
 - fisher_vector: Summarize all descriptors as a Fisher Vector
 - vlad: Summarize all descriptors with the VLAD algorithm
+- c_vlad: Compressed version of VLAD.
 - global_avg: Compute the average of all descriptors
 - global_max: Compute the maximum of all descriptors
 

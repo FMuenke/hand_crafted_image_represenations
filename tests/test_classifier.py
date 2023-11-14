@@ -13,20 +13,20 @@ class TestClassifier(unittest.TestCase):
 
     def test_fit(self):
         classifier = Classifier()
-        classifier.opt = {"type": "lr"}
+        classifier.opt = {"clf_type": "lr"}
         classifier.fit(self.x_train, self.y_train)
         self.assertIsNotNone(classifier.classifier)
 
     def test_predict(self):
         classifier = Classifier()
-        classifier.opt = {"type": "lr"}
+        classifier.opt = {"clf_type": "lr"}
         classifier.fit(self.x_train, self.y_train)
         predictions = classifier.predict(self.x_test)
         self.assertEqual(predictions.shape, self.y_test.shape)
 
     def test_evaluate(self):
         classifier = Classifier()
-        classifier.opt = {"type": "lr"}
+        classifier.opt = {"clf_type": "lr"}
         classifier.fit(self.x_train, self.y_train)
         f1_macro = classifier.evaluate(self.x_test, self.y_test, print_results=False)
         self.assertIsInstance(f1_macro, float)
@@ -34,7 +34,7 @@ class TestClassifier(unittest.TestCase):
     def test_new(self):
         classifier = Classifier()
         for clf in ["lr", "knn_3", "mlp_x", "rf"]:
-            classifier.opt = {"type": clf}
+            classifier.opt = {"clf_type": clf}
             classifier.new()
             self.assertIsNotNone(classifier.classifier)
 

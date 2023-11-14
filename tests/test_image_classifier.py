@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import patch
+
 from handcrafted_image_representations.machine_learning.image_classifier import ImageClassifier
 
 
@@ -40,7 +41,7 @@ class TestImageClassifier(unittest.TestCase):
 
     def test_fit_and_eval(self):
         with patch('handcrafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
-            with patch('handcrafted_image_representations.machine_learning.classic_image_classifier.tqdm', notqdm):
+            with patch('handcrafted_image_representations.machine_learning.image_classifier.tqdm', notqdm):
                 with patch('builtins.print'):
                     self.classifier.fit_folder(data_path=self.path, tag_type="cls")
                     self.classifier.evaluate(data_path=self.path, tag_type="cls")

@@ -13,7 +13,7 @@ class OptimizingImageClassifier:
         self.class_mapping = class_mapping
 
         self.aggregator_opt = ["aggregator", "complexity"]
-        self.classifier_opt = ["type"]
+        self.classifier_opt = ["clf_type"]
 
         self.feature_extractor = None
         self.aggregator_list = None
@@ -81,7 +81,18 @@ class OptimizingImageClassifier:
                     for k in cls.opt:
                         current_opt[k] = best_candidate[1].opt[k]
 
-                    self.final_classifier = ml.ClassicImageClassifier(opt=current_opt, class_mapping=self.class_mapping)
+                    self.final_classifier = ml.ImageClassifier(
+                        class_mapping=self.class_mapping,
+                        image_size_height=current_opt["image_size"]["height"],
+                        image_size_width=current_opt["image_size"]["width"],
+                        aggregator=current_opt["aggregator"], 
+                        complexity=current_opt["complexity"],
+                        feature=current_opt["feature"],
+                        sampling_method=current_opt["sampling_method"],
+                        sampling_step=current_opt["sampling_step"],
+                        sampling_window=current_opt["sampling_window"],
+                        clf_type=current_opt["clf_type"]
+                        )
                     self.final_classifier.feature_extractor = self.feature_extractor
                     self.final_classifier.aggregator = aggregator
                     self.final_classifier.classifier = cls
