@@ -41,7 +41,7 @@ opt = {
   "data_split_mode": "random",  # How to split data into train and test
   "aggregator": "bag_of_words",  # Define aggregation ["bag_of_words", "vlad", "glob_avg", ...]
   "complexity": [8, 16, 32, 64, 128, 256, 512],  # Define the complexity (numer of clusters) of the aggregation
-  "type": ["mlp", "mlp_x"],  # Which classifier should be used [mlp, rf, svm, ...]
+  "clf_type": ["mlp", "mlp_x"],  # Which classifier should be used [mlp, rf, svm, ...]
   "feature": ["hsv-sift", "gray-sift"],  # Which Features should be tested
   "sampling_method": "dense",  # How to sample features
   "sampling_step": [16, 32],  # Option for dense-sampling: step size

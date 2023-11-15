@@ -14,14 +14,6 @@ def notqdm(iterable, *args, **kwargs):
 class TestBestOfBagOfWords(unittest.TestCase):
 
     def setUp(self):
-        self.opt = {
-            "data_split_mode": "fixed",
-            "feature": ["gray-sift", "rgb-sift"],
-            "image_size": {"height": 64, "width": 64},
-            "sampling_method": "one",
-            "aggregator": "global_avg",
-            "clf_type": "lr"
-        }
 
         self.class_mapping = {
             "0": 0,
@@ -29,7 +21,14 @@ class TestBestOfBagOfWords(unittest.TestCase):
             # Add more classes
         }
 
-        self.best_of_bag_of_words = BestOfBagOfWords(self.opt, self.class_mapping)
+        self.best_of_bag_of_words = BestOfBagOfWords(
+            self.class_mapping,
+            feature=["gray-sift", "rgb-sift"],
+            image_size={"height": 64, "width": 64},
+            sampling_method="one",
+            aggregator="global_avg",
+            clf_type="lr"
+            )
 
     def test_fit(self):
         model_folder = "./tests/dummy_model"

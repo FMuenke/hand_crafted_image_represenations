@@ -7,8 +7,32 @@ from handcrafted_image_representations.data_structure.data_set import DataSet
 
 
 class BestOfBagOfWords:
-    def __init__(self, opt, class_mapping):
-        self.opt = opt
+    def __init__(self, 
+                 class_mapping,
+                 aggregator="bag_of_words", 
+                 complexity=[64, 128, 256, 512, 1024],
+                 feature=["gray-sift", "hsv-sift"],
+                 sampling_method="dense",
+                 sampling_step=16,
+                 sampling_window=16,
+                 image_size={"width": 128, "height": 128},
+                 clf_type=["rf_100", "mlp"],
+                 data_split_mode="random",
+
+                 ):
+        
+        self.opt = {
+            "aggregator": aggregator, 
+            "complexity": complexity,
+            "feature": feature,
+            "sampling_method": sampling_method,
+            "sampling_step": sampling_step,
+            "sampling_window": sampling_window,
+            "clf_type": clf_type,
+            "image_size": image_size,
+            "data_split_mode": data_split_mode,
+        }
+
         self.class_mapping = class_mapping
 
         self.feature_opt = ["feature", "sampling_method", "sampling_step", "sampling_window", "image_size"]

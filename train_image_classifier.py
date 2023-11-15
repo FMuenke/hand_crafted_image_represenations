@@ -7,32 +7,25 @@ from handcrafted_image_representations.utils.utils import load_dict
 
 class Config:
     def __init__(self, model_folder):
-        self.down_sample = 0.0
-
         self.class_mapping = None
         self.mf = model_folder
-
-        self.opt = {
-            "data_split_mode": "random",
-            "aggregator": ["bag_of_words"],
-            "complexity": [16, 32, 64, 128, 256, 512],
-            "type": ["mlp"],
-            "feature": ["gray-sift"],
-            "sampling_method": ["dense", "sift"],
-            "image_size": [
-                {
-                    "width": None,
-                    "height": None,
-                }
-            ]
-        }
 
 
 def start_training(args_, cfg):
     df = args_.dataset_folder
     mf = cfg.mf
 
-    bob = BestOfBagOfWords(cfg.opt, cfg.class_mapping)
+    bob = BestOfBagOfWords(
+        cfg.class_mapping,
+        aggregator="bag_of_words", 
+        complexity=[64, 128, 256, 512, 1024],
+        feature=["gray-sift", "hsv-sift"],
+        sampling_method=["dense", "sift"],
+        sampling_step=16,
+        sampling_window=16,
+        image_size={"width": 128, "height": 128},
+        clf_type=["rf_100", "mlp"],
+    )
     bob.fit(mf, df, args_.dataset_type, load_all=False)
     if args_.test_folder is not None:
         test(mf, args_.test_folder, load_all=False, dt=args_.dataset_type)
