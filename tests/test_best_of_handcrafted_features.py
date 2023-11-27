@@ -11,7 +11,7 @@ def notqdm(iterable, *args, **kwargs):
     return iterable
 
 
-class TestBestOfBagOfWords(unittest.TestCase):
+class TestBestOfHandcraftedFeatures(unittest.TestCase):
 
     def setUp(self):
 
