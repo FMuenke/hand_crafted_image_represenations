@@ -16,9 +16,9 @@ class GlobalAggregator:
             return True
 
     def aggregate(self, descriptors):
-        if self.variant == "global_avg":
+        if self.variant in ["global_avg", "glob_avg"]:
             return np.mean(descriptors, axis=0)
-        if self.variant == "global_max":
+        if self.variant in ["global_max", "glob_max"]:
             return np.max(descriptors, axis=0)
         if self.variant == "global_std":
             return np.concatenate([

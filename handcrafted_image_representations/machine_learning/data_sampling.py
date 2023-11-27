@@ -25,7 +25,7 @@ def sample_randomly(tags, n_samples):
     return random.sample(tags, n_samples)
 
 
-class DataSampling:
+class DiversitySampling:
     def __init__(self, n_samples):
         self.n_samples = n_samples
 
