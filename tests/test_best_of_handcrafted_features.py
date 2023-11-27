@@ -21,7 +21,7 @@ class TestBestOfHandcraftedFeatures(unittest.TestCase):
             # Add more classes
         }
 
-        self.best_of_bag_of_words = BestOfHandcraftedFeatures(
+        self.best_of_hcf = BestOfHandcraftedFeatures(
             self.class_mapping,
             feature=["gray-sift", "rgb-sift"],
             image_size={"height": 64, "width": 64},
@@ -31,15 +31,15 @@ class TestBestOfHandcraftedFeatures(unittest.TestCase):
             )
 
     def test_fit(self):
-        model_folder = "./tests/dummy_model"
+        model_folder = "./tests/dummy_model_1"
         data_path = "./tests/test_data"
         tag_type = "cls"
         load_all = False
-        report_path = "path/to/reports"
+        report_path = model_folder
 
         with patch('handcrafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
             with patch('builtins.print'):
-                best_f1_score = self.best_of_bag_of_words.fit_folder(model_folder, data_path, tag_type, load_all, report_path)
+                best_f1_score = self.best_of_hcf.fit_folder(model_folder, data_path, tag_type, load_all, report_path)
                 self.assertIsNotNone(best_f1_score)
 
 

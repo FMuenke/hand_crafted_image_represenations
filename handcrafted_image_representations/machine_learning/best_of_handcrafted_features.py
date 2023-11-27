@@ -70,7 +70,7 @@ class BestOfHandcraftedFeatures:
                 report_path=report_path
             )
 
-            if score > best_f1_score:
+            if score >= best_f1_score:
                 best_candidate = i
                 best_f1_score = score
 
