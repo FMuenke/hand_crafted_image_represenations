@@ -6,7 +6,7 @@ from handcrafted_image_representations.utils.utils import check_n_make_dir
 from handcrafted_image_representations.data_structure.data_set import DataSet
 
 
-class BestOfBagOfWords:
+class BestOfHandcraftedFeatures:
     def __init__(self, 
                  class_mapping,
                  aggregator="bag_of_words", 
@@ -18,7 +18,6 @@ class BestOfBagOfWords:
                  image_size={"width": 128, "height": 128},
                  clf_type=["rf_100", "mlp"],
                  data_split_mode="random",
-
                  ):
         
         self.opt = {

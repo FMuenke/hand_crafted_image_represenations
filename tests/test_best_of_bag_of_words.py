@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from handcrafted_image_representations.machine_learning.best_of_bag_of_words import BestOfBagOfWords
+from handcrafted_image_representations.machine_learning.best_of_handcrafted_features import BestOfHandcraftedFeatures
 
 
 def notqdm(iterable, *args, **kwargs):
@@ -21,7 +21,7 @@ class TestBestOfBagOfWords(unittest.TestCase):
             # Add more classes
         }
 
-        self.best_of_bag_of_words = BestOfBagOfWords(
+        self.best_of_bag_of_words = BestOfHandcraftedFeatures(
             self.class_mapping,
             feature=["gray-sift", "rgb-sift"],
             image_size={"height": 64, "width": 64},
