@@ -32,7 +32,7 @@ The training can be further customized. As shown in the following code snippet:
 ````python
 from handcrafted_image_representations.machine_learning import BestOfBagOfWords
 
-# The Best of Bag of Words Classifier is the most general classifier.
+# The Best of Handcrafted Features Classifier is the most general classifier.
 # It includes an automatic parameter search.
 
 # 1. Define options
@@ -65,8 +65,8 @@ class_mapping = {
 MODEL_FOLDER = "/Path/to/model"
 PATH_TO_DATASET = "/Path/to/folder/with/training/data"
 
-bob = BestOfBagOfWords(opt, class_mapping)
-bob.fit(MODEL_FOLDER, PATH_TO_DATASET)
+bohcf = BestOfHandcraftedFeatures(opt, class_mapping)
+bohcf.fit(MODEL_FOLDER, PATH_TO_DATASET)
 ````
 
 The provided code generates a set of image classifiers and automatically selects the best one. 
