@@ -27,7 +27,8 @@ class TestBestOfHandcraftedFeatures(unittest.TestCase):
             image_size={"height": 64, "width": 64},
             sampling_method="one",
             aggregator="global_avg",
-            clf_type="lr"
+            clf_type="lr",
+            data_split_mode="fixed",
             )
 
     def test_fit(self):
