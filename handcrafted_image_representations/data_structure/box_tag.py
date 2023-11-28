@@ -42,12 +42,6 @@ class BoxTag:
             print("Tag not valid: {}".format(self.image_id))
             return False
 
-        data = self.load_data()
-        height, width = data.shape[:2]
-        if height < 1 or width < 1:
-            print("Tag not valid: {}".format(self.image_id))
-            return False
-
         return True
 
     def compile_classes(self):

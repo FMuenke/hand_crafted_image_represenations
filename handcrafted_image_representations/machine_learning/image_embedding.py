@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import os
 
 from sklearn.decomposition import PCA
+from umap import UMAP
 from sklearn.cluster import MiniBatchKMeans
 
 from handcrafted_image_representations.utils.utils import save_dict, load_dict, check_n_make_dir
@@ -81,7 +82,7 @@ class ImageEmbedding:
         assert self.data_set_tags is not None, "No Tags are registered."
         assert self.data_set_repr is not None, "No Representations are computed."
 
-        projection = PCA(n_components=2)
+        projection = UMAP(n_components=2)
         x_proj = projection.fit_transform(self.data_set_repr)
 
         df = {"name": []}

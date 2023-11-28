@@ -1,5 +1,6 @@
 opencv-contrib-python
 scikit-learn
+umap-learn
 imagesize
 tqdm
 matplotlib
