@@ -16,18 +16,24 @@ class TestBagOfWords(unittest.TestCase):
         bow.fit([self.descriptors, None])
         self.assertTrue(bow.is_fitted())
 
+    def test_fit_tfidf(self):
+        bow = BagOfWords(n_words=self.n_words, tf_idf=True)
+        bow.fit([self.descriptors, None])
+        self.assertTrue(bow.is_fitted())
+
     def test_transform(self):
         bow = BagOfWords(n_words=self.n_words)
         bow.fit([self.descriptors])
         transformed = bow.transform([self.descriptors, None])
         self.assertEqual(len(transformed), 2)
         self.assertEqual(transformed[0].shape, (1, self.n_words))
-
-    def test_normalize_word_bag(self):
-        bow = BagOfWords(n_words=self.n_words, normalize=True)
-        word_bag = np.random.rand(1, self.n_words)
-        normalized_word_bag = bow._normalize_word_bag(word_bag)
-        self.assertTrue(np.allclose(np.sum(normalized_word_bag, axis=1), 1))
+    
+    def test_transform_tfidf(self):
+        bow = BagOfWords(n_words=self.n_words, tf_idf=True)
+        bow.fit([self.descriptors])
+        transformed = bow.transform([self.descriptors, None])
+        self.assertEqual(len(transformed), 2)
+        self.assertEqual(transformed[0].shape, (1, self.n_words))
 
 
 if __name__ == "__main__":

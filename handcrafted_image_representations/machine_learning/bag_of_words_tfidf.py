@@ -27,17 +27,15 @@ def remove_empty_desc(descriptors):
     return descriptors_out
 
 
-class BagOfWords:
-    def __init__(self, n_words=100, cluster_method="MiniBatchKMeans", normalize=False, tf_idf=False):
+class BagOfWordsTfidf:
+    def __init__(self, n_words=100, cluster_method="MiniBatchKMeans"):
 
         self.n_words = n_words
         self.parameters = dict()
         self.cluster_method = cluster_method
         self.parameters["normalize"] = normalize
-        self.parameters["tf_idf"] = tf_idf
 
         self.k_means_clustering = None
-        self.tf_idf_word_counts = None
 
     def _init_cluster_method(self, cluster_method):
         if cluster_method == "MiniBatchKMeans":
@@ -62,20 +60,15 @@ class BagOfWords:
         check_n_make_dir(model_path)
         save_file_cluster = os.path.join(model_path, "bag_of_words.pkl")
         save_file_parameters = os.path.join(model_path, "parameters.json")
-        save_file_tf_idf = os.path.join(model_path, "tf_idf_word_counts.npy")
-
         joblib.dump(self.k_means_clustering, save_file_cluster)
 
         with open(save_file_parameters, "w") as f:
             j_file = json.dumps(self.parameters)
             f.write(j_file)
-        
-        np.save(save_file_tf_idf, self.tf_idf_word_counts)
 
     def load(self, model_path):
         save_file_cluster = os.path.join(model_path, "bag_of_words.pkl")
         save_file_parameters = os.path.join(model_path, "parameters.json")
-        save_file_tf_idf = os.path.join(model_path, "tf_idf_word_counts.npy")
         if os.path.isfile(save_file_cluster):
             self.k_means_clustering = joblib.load(save_file_cluster)
             self.n_words = self.k_means_clustering.n_clusters
@@ -85,45 +78,54 @@ class BagOfWords:
         if os.path.isfile(save_file_parameters):
             with open(save_file_parameters) as json_file:
                 self.parameters = json.load(json_file)
-        
-        if os.path.isfile(save_file_tf_idf):
-            self.tf_idf_word_counts = np.load(save_file_tf_idf)
-        else:
-            self.parameters["tf_idf"] = False
 
     def fit(self, descriptors):
         self.k_means_clustering = self._init_cluster_method(self.cluster_method)
         descriptors = remove_empty_desc(descriptors)
-        all_descriptors = np.concatenate(descriptors, axis=0)
-        all_descriptors = all_descriptors.astype("double")
-        logging.info("Fitting Bag of Words (n_words={}) to feature space...".format(self.n_words))
-        logging.info("Feature Vectors to be fitted: {}".format(all_descriptors.shape[0]))
-        logging.info("Each Vector with {} features".format(all_descriptors.shape[1]))
+        descriptors = np.concatenate(descriptors, axis=0)
+        logging.info("Fitting Bag of Words (Tf-idf) (n_words={}) to feature space...".format(self.n_words))
+        logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
+        logging.info("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()
-        self.k_means_clustering.fit(all_descriptors)
+        self.k_means_clustering.fit(descriptors.astype("double"))
         logging.info("done in %0.3fs" % (time() - t0))
 
-        if self.parameters["tf_idf"]:
-            logging.info("Computing Tf-idf...")
-            self.parameters["tf_idf"] = False # Deactivate Temporarily
-            word_bags = self.transform(descriptors)
-            self.parameters["tf_idf"] = True # Deactivate Temporarily
-            word_bags = np.concatenate(word_bags, axis=0)
-            number_of_images = len(descriptors)
-            self.tf_idf_word_counts = np.log(number_of_images /np.sum(word_bags > 0, axis=0))
+    def partial_fit(self, descriptors):
+        if self.k_means_clustering is None:
+            self.k_means_clustering = self._init_cluster_method(self.cluster_method)
+        descriptors = np.concatenate(descriptors, axis=0)
+        logging.info("Fitting Bag of Words to feature space...")
+        logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
+        logging.info("Each Vector with {} features".format(descriptors.shape[1]))
+        t0 = time()
+        self.k_means_clustering.partial_fit(descriptors)
+        logging.info("done in %0.3fs" % (time() - t0))
+
+    def _translate_to_visual_words(self, vector):
+        word = self.k_means_clustering.predict(vector)
+        return word
+
+    def _normalize_word_bag(self, word_bag):
+        if self.parameters["normalize"]:
+            sum_words = np.sum(word_bag, axis=1)
+            return np.divide(word_bag, sum_words)
+        else:
+            return word_bag
 
     def _bag_up_descriptors(self, descriptors):
         word_bag = np.zeros((1, self.n_words))
         if descriptors is not None:
-            words = self.k_means_clustering.predict(descriptors.astype("double"))
+            descriptors = descriptors.astype("double")
+            words = self.k_means_clustering.predict(descriptors)
             for word in words:
                 word_bag[0, word] += 1
-        if self.parameters["tf_idf"]:
-            return word_bag * self.tf_idf_word_counts
         return word_bag
 
     def transform(self, desc_sets):
         if type(desc_sets) is not list:
             desc_sets = [desc_sets]
-        word_bags = [self._bag_up_descriptors(descriptors) for descriptors in desc_sets]
+        word_bags = []
+        for descriptors in desc_sets:
+            word_bag = self._bag_up_descriptors(descriptors)
+            word_bags.append(word_bag)
         return word_bags

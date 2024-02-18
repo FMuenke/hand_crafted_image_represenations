@@ -43,6 +43,8 @@ class Aggregator:
     def new(self):
         if "bag_of_words" == self.opt["aggregator"]:
             self.aggregator = BagOfWords(n_words=self.opt["complexity"])
+        elif "bag_of_words_tfidf" == self.opt["aggregator"]:
+            self.aggregator = BagOfWords(n_words=self.opt["complexity"], tf_idf=True)
         elif "fisher_vector" == self.opt["aggregator"]:
             self.aggregator = FisherVector(n_components=self.opt["complexity"])
         elif self.opt["aggregator"] in ["global_avg", "glob_avg", "global_max", "glob_max"]:

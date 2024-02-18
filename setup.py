@@ -5,7 +5,8 @@ from setuptools import setup, find_packages
 
 REQUIRED_PACKAGES = [
       "opencv-contrib-python",
-      "scikit-learn",
+      "scikit-learn>=1.3.0",
+      "umap-learn",
       "imagesize",
       "tqdm",
       "matplotlib",
