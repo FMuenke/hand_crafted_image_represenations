@@ -92,6 +92,8 @@ class VLAD:
         return word
 
     def transform(self, desc_sets):
+        if type(desc_sets) is not list:
+            desc_sets = [desc_sets]
         word_bags = []
         for descriptors in desc_sets:
             word_bag = self.transform_single(descriptors)
