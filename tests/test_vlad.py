@@ -32,6 +32,8 @@ class TestVLAD(unittest.TestCase):
         self.assertEqual(len(transformed), 2)
         self.assertEqual(transformed[0].shape, (1, self.n_words * self.descriptor_dim))
 
+        transformed = vlad.transform(self.descriptors)
+        self.assertEqual(len(transformed), 1)
 
 if __name__ == "__main__":
     unittest.main()

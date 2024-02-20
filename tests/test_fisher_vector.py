@@ -23,6 +23,9 @@ class TestFisherVector(unittest.TestCase):
         self.assertEqual(len(transformed), 2)
         self.assertEqual(transformed[0].shape, (1, self.n_components * self.descriptor_dim * 2))
 
+        transformed = fv.transform(self.descriptors)
+        self.assertEqual(len(transformed), 1)
+
     def test_fisher_vector(self):
         fv = FisherVector(n_components=self.n_components)
         fv.fit([self.descriptors])
