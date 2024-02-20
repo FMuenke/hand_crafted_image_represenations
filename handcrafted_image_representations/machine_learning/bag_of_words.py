@@ -87,7 +87,7 @@ class BagOfWords:
                 self.parameters = json.load(json_file)
         
         if os.path.isfile(save_file_tf_idf):
-            self.tf_idf_word_counts = np.load(save_file_tf_idf)
+            self.tf_idf_word_counts = np.load(save_file_tf_idf, allow_pickle=True)
         else:
             self.parameters["tf_idf"] = False
 
