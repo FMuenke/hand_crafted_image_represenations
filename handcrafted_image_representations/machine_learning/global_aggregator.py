@@ -28,6 +28,8 @@ class GlobalAggregator:
         raise "UNKNOWN AGGREGATOR : {}".format(self.variant)
 
     def transform(self, desc_sets):
+        if type(desc_sets) is not list:
+            desc_sets = [desc_sets]
         aggregates = []
 
         for descriptors in desc_sets:

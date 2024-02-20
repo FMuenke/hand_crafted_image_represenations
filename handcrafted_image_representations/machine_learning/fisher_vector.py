@@ -87,6 +87,8 @@ class FisherVector:
         return np.reshape(fv, (1, -1))
 
     def transform(self, desc_sets):
+        if type(desc_sets) is not list:
+            desc_sets = [desc_sets]
         assert self.gmm is not None, "Abort: Fit or load Model First"
 
         fisher_vectors = []

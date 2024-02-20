@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 .DS_Store
 custom_train.py
+custom_*
 Untitled.ipynb
 
 tests/dummy_model/*

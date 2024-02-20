@@ -80,7 +80,7 @@ class CompactVLAD:
         if self.k_means_clustering is None:
             self.k_means_clustering = self._init_cluster_method(self.cluster_method)
         descriptors = np.concatenate(descriptors, axis=0)
-        logging.info("Fitting VLAD to feature space...")
+        logging.info("Fitting C-VLAD to feature space...")
         logging.info("Feature Vectors to be fitted: {}".format(descriptors.shape[0]))
         logging.info("Each Vector with {} features".format(descriptors.shape[1]))
         t0 = time()
@@ -92,6 +92,8 @@ class CompactVLAD:
         return word
 
     def transform(self, desc_sets):
+        if type(desc_sets) is not list:
+            desc_sets = [desc_sets]
         word_bags = []
         for descriptors in desc_sets:
             word_bag = self.transform_single(descriptors)
@@ -101,6 +103,9 @@ class CompactVLAD:
     def transform_single(self, descriptors):
         if descriptors is None:
             return np.zeros((1, self.n_words))
+        if len(descriptors.shape) ==1:
+            descriptors = descriptors.reshape((1, -1))
+        
         descriptors = np.array(descriptors, dtype=np.float64)
         visual_words = self.k_means_clustering.cluster_centers_
 
