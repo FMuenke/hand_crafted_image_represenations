@@ -7,3 +7,4 @@ from handcrafted_image_representations.machine_learning.ensemble_image_classifie
 from handcrafted_image_representations.machine_learning.image_embedding import ImageEmbedding  # noqa: F401
 from handcrafted_image_representations.machine_learning.best_of_handcrafted_features import BestOfHandcraftedFeatures  # noqa: F401
 from handcrafted_image_representations.machine_learning.data_sampling import DiversitySampling  # noqa: F401
+from handcrafted_image_representations.machine_learning.embedding_repository import EmbeddingRepository  # noqa: F401
