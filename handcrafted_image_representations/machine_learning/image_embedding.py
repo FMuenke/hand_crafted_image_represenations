@@ -1,5 +1,7 @@
 import logging
 import os
+import numpy as np
+from sklearn.cluster import MiniBatchKMeans
 
 from handcrafted_image_representations.utils.utils import save_dict, load_dict, check_n_make_dir
 
@@ -75,6 +77,31 @@ class ImageEmbedding:
         if return_y:
             return x_trans, y
         return x_trans
+    
+    def fit_and_sort_folder(self, data_path, export_path, tag_type, n_clusters, classes_to_consider="all"):
+        ds = DataSet(data_path, tag_type=tag_type)
+        tags = ds.get_tags(classes_to_consider=classes_to_consider)
+        sorted_tags = self.fit_and_sort(tags, n_clusters)
+        os.makedirs(export_path, exist_ok=True)
+        for cl in sorted_tags:
+            cluster_path = os.path.join(export_path, str(cl))
+            os.makedirs(cluster_path, exist_ok=True)
+            for tag in sorted_tags[cl]:
+                tag.export_box(cluster_path)
+    
+    def fit_and_sort(self, tags, n_clusters):
+        self.new()
+        x, _ = self.feature_extractor.extract_trainings_data(tags)
+        x_trans = self.feature_aggregator.fit_transform(x)
+        x_trans = np.concatenate(x_trans, axis=0)
+        kmean = MiniBatchKMeans(n_clusters=n_clusters, n_init="auto")
+        y = kmean.fit_predict(x_trans)
+        sorted_tags = {}
+        for cl, tag in zip(y, tags):
+            if cl not in sorted_tags:
+                sorted_tags[cl] = []
+            sorted_tags[cl].append(tag)
+        return sorted_tags
 
     def transform(self, image):
         x = self.feature_extractor.extract_x(image)

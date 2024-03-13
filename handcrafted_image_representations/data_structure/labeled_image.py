@@ -88,8 +88,8 @@ class LabeledImage:
             return
         if self.label_file is None:
             return
-
-        if self.label_file.endswith(".txt"):
+        
+        elif self.label_file.endswith(".txt"):
             return read_txt_file(self.label_file, self.image_file)
         elif self.label_file.endswith(".xml"):
             return read_xml_file(self.label_file, self.image_file)
@@ -97,7 +97,9 @@ class LabeledImage:
             raise Exception("UNEXPECTED EXTENSION: {}".format(self.label_file))
 
     def load_classes(self):
-        if self.label_file.endswith(".txt"):
+        if self.label_file is None:
+            return ["bg"]
+        elif self.label_file.endswith(".txt"):
             return read_classification_label_file(self.label_file)
         else:
             raise Exception("UNEXPECTED EXTENSION: {}".format(self.label_file))

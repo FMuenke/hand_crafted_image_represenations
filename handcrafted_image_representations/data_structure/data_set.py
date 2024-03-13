@@ -20,7 +20,7 @@ class DataSet:
         base_dir, img_f = args
         tags = []
         l_img = LabeledImage(base_dir, img_f[:-4])
-        if l_img.image_file is None or l_img.label_file is None:
+        if l_img.image_file is None:
             return []
         if self.tag_type == "box":
             boxes = l_img.load_boxes()
