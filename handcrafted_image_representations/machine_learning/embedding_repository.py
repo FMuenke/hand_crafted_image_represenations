@@ -61,6 +61,8 @@ class EmbeddingRepository:
         self.model.load(model_path)
 
     def load(self):
+        if self.path is None:
+            return
         if os.path.isdir(self.model_path) and self.model is not None:
             self.model.load(self.model_path)
 
