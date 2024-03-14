@@ -15,7 +15,7 @@ from handcrafted_image_representations.utils.utils import load_dict, save_dict
 
 class EmbeddingRepository:
     def __init__(self, 
-                 path_to_store,
+                 path_to_store=None,
                  update_cycle=100,
                  aggregator="bag_of_words", 
                  complexity=1024, 
@@ -33,14 +33,13 @@ class EmbeddingRepository:
             os.makedirs(self.path, exist_ok=True)
             self.db_path = os.path.join(self.path, "db.json")
             self.data_path = os.path.join(self.path, "data.npy")
-            
+            self.model_path = os.path.join(self.path, "model")
+
         self.update_cycle = update_cycle
 
         self.db = None
         self.data = None
         self.length = 0
-
-        self.model_path = os.path.join(self.path, "model")
 
         self.model = ImageEmbedding(
             aggregator=aggregator, 
