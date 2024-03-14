@@ -15,6 +15,7 @@ class BoxTag:
                  tag_class,
                  box,
                  class_mapping):
+        self.id = tag_id
         self.tag_id = tag_id
         self.image_id = path_to_image
         self.box = box
