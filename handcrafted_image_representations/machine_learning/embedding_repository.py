@@ -146,6 +146,8 @@ class EmbeddingRepository:
         return self.data[self.db[identifier], :]
     
     def transform(self, identifier, image):
+        if identifier is None:
+            return self.model.transform(image)[0, :]
         if not self.identifier_exists(identifier):
             return self.register_sample(identifier, image)
         return self.load_sample(identifier)
@@ -185,7 +187,7 @@ class EmbeddingRepository:
     def query(self, image, n=3):
         assert self.data is not None, "No Representations are computed."
         inv_db = {v: k for k, v in self.db.items()}
-        x_trans = self.transform(image)
+        x_trans = self.transform(None, image)
         distances = np.sqrt(np.sum(np.square(self.data - x_trans), axis=1))
         sorted_indices = np.argsort(distances)
         return [inv_db[i] for i in sorted_indices[:n]]
