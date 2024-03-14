@@ -176,7 +176,7 @@ class EmbeddingRepository:
         })
 
         plt.title("Distribution")
-        sns.scatterplot(data=df, x="x1", y="x2", hue="name")
+        sns.scatterplot(data=df, x="x1", y="x2", hue="cls")
         if path_to_store is None:
             plt.show()
         else:
