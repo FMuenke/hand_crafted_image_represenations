@@ -31,10 +31,10 @@ class EmbeddingRepository:
         self.path = path_to_store
         if path_to_store is not None:
             os.makedirs(self.path, exist_ok=True)
+            self.db_path = os.path.join(self.path, "db.json")
+            self.data_path = os.path.join(self.path, "data.npy")
+            
         self.update_cycle = update_cycle
-
-        self.db_path = os.path.join(self.path, "db.json")
-        self.data_path = os.path.join(self.path, "data.npy")
 
         self.db = None
         self.data = None
