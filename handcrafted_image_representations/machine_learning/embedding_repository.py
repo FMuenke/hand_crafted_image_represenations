@@ -185,11 +185,20 @@ class EmbeddingRepository:
             plt.savefig(path_to_store)
             plt.close()
 
-    def query(self, image, n=3):
+    def query(self, image, n=3, sim="euclidean"):
         assert self.data is not None, "No Representations are computed."
         inv_db = {v: k for k, v in self.db.items()}
         x_trans = self.transform(None, image)
-        distances = np.sqrt(np.sum(np.square(self.data - x_trans), axis=1))
+        if sim == "euclidean":
+            distances = np.sqrt(np.sum(np.square(self.data - x_trans), axis=1))
+        elif sim == "manhattan":
+            distances = np.sqrt(np.sum(np.abs(self.data - x_trans), axis=1))
+        elif sim == "cosine":
+            norm_x = np.linalg.norm(self.data) * np.linalg.norm(x_trans, axis=1)
+            norm_x[norm_x == 0] = 1e-6
+            distances = np.dot(self.data, x_trans.T)/(norm_x)
+        else:
+            raise ValueError("Unknown Similarity Metric")
         sorted_indices = np.argsort(distances)
         return [inv_db[i] for i in sorted_indices[:n]]
     
