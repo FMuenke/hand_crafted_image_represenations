@@ -194,7 +194,7 @@ class EmbeddingRepository:
         elif sim == "manhattan":
             distances = np.sqrt(np.sum(np.abs(self.data - x_trans), axis=1))
         elif sim == "cosine":
-            norm_x = np.linalg.norm(self.data) * np.linalg.norm(x_trans, axis=1)
+            norm_x = np.linalg.norm(self.data, axis=1) * np.linalg.norm(x_trans)
             norm_x[norm_x == 0] = 1e-6
             distances = np.dot(self.data, x_trans.T)/(norm_x)
         else:
