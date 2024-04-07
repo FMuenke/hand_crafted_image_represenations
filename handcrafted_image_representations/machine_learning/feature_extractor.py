@@ -1,9 +1,9 @@
+import cv2
 import numpy as np
 from tqdm import tqdm
 
 from handcrafted_image_representations.machine_learning.descriptor_set import DescriptorSet
 from handcrafted_image_representations.machine_learning.key_point_set import KeyPointSet
-from handcrafted_image_representations.data_structure.image_handler import ImageHandler
 
 
 def validate_feature_extraction_settings(sampling_method, features_to_use):
@@ -44,9 +44,6 @@ class FeatureExtractor:
         self.img_height = image_height
         self.img_width = image_width
 
-        self.min_height = 16
-        self.min_width = 16
-
     def describe_sampling(self):
         if self.sampling_method == "dense":
             return "{} - IMG:{}/{} DENSE: W:{}/S:{}".format(
@@ -64,21 +61,33 @@ class FeatureExtractor:
                 self.sampling_method
             )
 
-    def resize(self, image, image_size):
-        img_h = ImageHandler(image)
-        if None in image_size:
-            height, width = image.shape[:2]
-            if height < self.min_height:
-                height = self.min_height
+    def resize(self, image, height, width):
+        if height is None and width is None:
+            return image
+        
+        o_height, o_width = image.shape[:2]
 
-            if width < self.min_width:
-                width = self.min_width
-            return img_h.resize(height=height, width=width)
-        return img_h.resize(height=image_size[0], width=image_size[1])
+        if height < 1 or width < 1:
+            height = int(o_height * height)
+            width = int(o_width * width)
+            return cv2.resize(
+                image,
+                (int(width), int(height)),
+                interpolation=cv2.INTER_CUBIC
+            )
+        
+        if height is None:
+            height = int(o_height * (width / o_width))
+        if width is None:
+            width = int(o_width * (height / o_height))
+        return cv2.resize(
+            image,
+            (int(width), int(height)),
+            interpolation=cv2.INTER_CUBIC
+        )
 
     def extract_trainings_data(self, tags):
-        x = []
-        y = []
+        x, y = [], []
         print("[INFO] Extracting Features: [{}] for Tags".format(self.describe_sampling()))
         for tag in tqdm(tags):
             tag_data = tag.load_data()
@@ -92,7 +101,7 @@ class FeatureExtractor:
 
     def extract_x(self, image):
         kp_set = KeyPointSet(self.sampling_method, self.sampling_steps, self.sampling_window)
-        image = self.resize(image, [self.img_height, self.img_width])
+        image = self.resize(image, self.img_height, self.img_width)
         x = []
         for feature in self.features_to_use:
             dc_set = DescriptorSet(feature)

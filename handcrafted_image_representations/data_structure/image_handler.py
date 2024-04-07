@@ -87,10 +87,21 @@ class ImageHandler:
         return img_norm.astype(np.uint8)
 
     def resize(self, height, width):
-        return cv2.resize(self.image,
-                          (int(width), int(height)),
-                          interpolation=cv2.INTER_CUBIC)
-
+        print(height, width, self.image.shape[:2])
+        if height is None and width is None:
+            return self.image
+        o_height, o_width = self.image.shape[:2]
+        if height is None:
+            height = int(o_height * (width / o_width))
+        if width is None:
+            width = int(o_width * (height / o_height))
+        print(height, width)
+        return cv2.resize(
+            self.image,
+            (int(width), int(height)),
+            interpolation=cv2.INTER_CUBIC
+        )
+    
     def _scale_image_to_octave(self, octave):
         image = np.copy(self.image)
         height, width = image.shape[:2]
