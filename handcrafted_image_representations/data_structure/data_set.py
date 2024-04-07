@@ -11,6 +11,8 @@ class DataSet:
     def __init__(self, data_set_dir, tag_type, class_mapping=None):
         self.tags = dict()
         self.data_set_dir = data_set_dir
+        if class_mapping is None:
+            class_mapping = {}
         self.class_mapping = class_mapping
         self.tag_type = tag_type
 
@@ -26,7 +28,6 @@ class DataSet:
             boxes = l_img.load_boxes()
             for box in boxes:
                 t = BoxTag(
-                    tag_id=len(self.tags),
                     path_to_image=l_img.image_file,
                     tag_class=[box[0]],
                     box=box,
@@ -39,7 +40,6 @@ class DataSet:
             height, width = l_img.get_image_size()
             box = [class_names, 0, 0, width - 1, height - 1]
             tags.append(BoxTag(
-                tag_id=len(self.tags),
                 path_to_image=l_img.image_file,
                 tag_class=class_names,
                 box=box,
@@ -72,7 +72,6 @@ class DataSet:
                     if img_f.endswith((".png", ".jpg")):
                         width, height = imagesize.get(image_file)
                         tag = BoxTag(
-                            tag_id=len(self.tags),
                             path_to_image=image_file,
                             tag_class=[sub_f],
                             box=[sub_f, 0, 0, width - 1, height - 1],

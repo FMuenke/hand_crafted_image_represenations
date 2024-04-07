@@ -2,6 +2,7 @@ import cv2
 import imagesize
 import os
 import numpy as np
+import logging
 
 from handcrafted_image_representations.utils.utils import check_n_make_dir
 
@@ -10,13 +11,10 @@ class BoxTag:
     tag_type = "box"
 
     def __init__(self,
-                 tag_id,
                  path_to_image,
                  tag_class,
                  box,
                  class_mapping):
-        self.id = tag_id
-        self.tag_id = tag_id
         self.image_id = path_to_image
         self.box = box
         self.tag_class = tag_class
@@ -29,8 +27,11 @@ class BoxTag:
 
         self.compile_classes()
 
+        self.id = str(self)
+        self.tag_id = str(self)
+
     def __str__(self):
-        return "Tag: {}\n - Img: {}\n - Box: {}".format(self.tag_id, self.image_id, self.box)
+        return "{}--{}".format(self.image_id, self.box)
 
     def is_valid(self):
         if not os.path.isfile(self.image_id):
@@ -70,7 +71,6 @@ class BoxTag:
         return data
 
     def load_y(self):
-        assert len(self.tag_class) == 1, "Multi Classification not supported {}".format(self.tag_class)
         y_tag = -1
         if self.tag_class[0] in self.class_mapping:
             y_tag = self.class_mapping[self.tag_class[0]]

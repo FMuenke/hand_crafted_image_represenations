@@ -158,6 +158,21 @@ class EmbeddingRepository:
             return self.register_sample(tag.id, self.load_data(tag))
         return self.load_sample(tag.id)
     
+    def project_tag(self, tag):
+        x_tag = self.transform_tag(tag)
+        projection = UMAP(n_components=2)
+        x_proj = projection.fit_transform(self.data)
+        x_tag = projection.transform(x_tag.reshape(1, -1))
+
+        df = pd.DataFrame({"cls": "bg", "x1": x_proj[:, 0], "x2": x_proj[:, 1]})
+        df_tag = pd.DataFrame({"cls": "Tag", "x1": x_tag[0, 0], "x2": x_tag[0, 1]}, index=[0])
+        df = pd.concat([df, df_tag])
+        print(df)
+
+        plt.title("Distribution")
+        sns.scatterplot(data=df, x="x1", y="x2", hue="cls")
+        plt.show()
+    
     def show(self, tag_id_to_class=None, path_to_store=None):
         assert self.data is not None, "No Representations are computed."
 
