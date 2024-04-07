@@ -167,7 +167,6 @@ class EmbeddingRepository:
         df = pd.DataFrame({"cls": "bg", "x1": x_proj[:, 0], "x2": x_proj[:, 1]})
         df_tag = pd.DataFrame({"cls": "Tag", "x1": x_tag[0, 0], "x2": x_tag[0, 1]}, index=[0])
         df = pd.concat([df, df_tag])
-        print(df)
 
         plt.title("Distribution")
         sns.scatterplot(data=df, x="x1", y="x2", hue="cls")
