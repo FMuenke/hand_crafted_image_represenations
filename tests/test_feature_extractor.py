@@ -43,7 +43,7 @@ class TestFeatureExtractor(unittest.TestCase):
 
     def test_extract_trainings_data(self):
         mock_tag_data = np.random.random((128, 128, 3))  # Mock tag data
-        mock_tags = [BoxTag("00", "./tests/test_data/images/img_0.jpg", "0", ["0", 0, 0, 128, 128], {"0": 0, "1": 1})]
+        mock_tags = [BoxTag("./tests/test_data/images/img_0.jpg", "0", ["0", 0, 0, 128, 128], {"0": 0, "1": 1})]
         with patch('cv2.resize', return_value=mock_tag_data):
             with patch('handcrafted_image_representations.machine_learning.feature_extractor.tqdm', notqdm):
                 with patch('builtins.print'):

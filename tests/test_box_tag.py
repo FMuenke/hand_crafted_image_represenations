@@ -10,7 +10,7 @@ class TestBoxTag(unittest.TestCase):
         image_path = "./tests/test_data/images/img_0.jpg"
 
         # Create a BoxTag instance
-        tag = BoxTag(tag_id=1, path_to_image=image_path, tag_class=["class1"], box=[0, 0, 0, 20, 20],
+        tag = BoxTag(path_to_image=image_path, tag_class=["class1"], box=[0, 0, 0, 20, 20],
                      class_mapping=None)
 
         # Load data and check shape
@@ -19,7 +19,7 @@ class TestBoxTag(unittest.TestCase):
 
     def test_load_y(self):
         # Create a BoxTag instance
-        tag = BoxTag(tag_id=1, path_to_image="./tests/test_data/images/img_0.jpg", tag_class=["class1"],
+        tag = BoxTag(path_to_image="./tests/test_data/images/img_0.jpg", tag_class=["class1"],
                      box=[0, 10, 0, 20, 20],
                      class_mapping={"class1": 0})
 
@@ -29,7 +29,7 @@ class TestBoxTag(unittest.TestCase):
 
     def test_has_relevant_classes(self):
         # Create a BoxTag instance
-        tag = BoxTag(tag_id=1, path_to_image="./tests/test_data/images/img_0.jpg",
+        tag = BoxTag(path_to_image="./tests/test_data/images/img_0.jpg",
                      tag_class=["class1"], box=["0", 10, 0, 20, 20],
                      class_mapping={"class1": 0})
 
