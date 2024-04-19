@@ -7,7 +7,7 @@ from handcrafted_image_representations.machine_learning.key_point_set import Key
 class TestDescriptorSet(unittest.TestCase):
     def setUp(self):
         self.image = np.random.randint(0, 255, size=(300, 300, 3)).astype(np.uint8)
-        self.key_point_set = KeyPointSet("dense", sampling_steps=50, sampling_window=10)
+        self.key_point_set = KeyPointSet("dense", sampling_steps=50, sampling_window=32)
 
     def test_compute_lbp(self):
         descriptor_set = DescriptorSet("opponent-lbp+24+7")
