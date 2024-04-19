@@ -26,13 +26,14 @@ class OpenCvDescriptor:
         for target in list_of_targets:
             target = target.astype(np.uint8)
             kp, desc = open_cv_descriptors[self.descriptor_type].compute(target, open_cv_key_points)
+            if desc is None:
+                continue
             dc_sets.append(desc)
         return dc_sets
 
     def compute(self, image, open_cv_key_points):
         list_of_targets = self._prepare_image(image)
         dc_sets = self._apply_open_cv_descriptor(list_of_targets, open_cv_key_points)
-
         if len(dc_sets) == 0:
             return None
         elif len(dc_sets) == 1:
