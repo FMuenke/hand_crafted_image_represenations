@@ -65,6 +65,17 @@ class ImageEmbedding:
         x, _ = self.feature_extractor.extract_trainings_data(tags)
         self.feature_aggregator.fit(x)
 
+    def fit_transform_folder(self, data_path, tag_type, classes_to_consider="all", return_y=False):
+        ds = DataSet(data_path, tag_type=tag_type)
+        tags = ds.get_tags(classes_to_consider=classes_to_consider)
+
+        self.new()
+        x, y = self.feature_extractor.extract_trainings_data(tags)
+        x_trans = self.feature_aggregator.fit_transform(x)
+        if return_y:
+            return x_trans, y
+        return x_trans
+
     def fit(self, tags):
         self.new()
         x, _ = self.feature_extractor.extract_trainings_data(tags)

@@ -7,7 +7,7 @@ import logging
 from sklearn.svm import SVC
 from sklearn.gaussian_process import GaussianProcessClassifier, kernels
 from sklearn.linear_model import LogisticRegressionCV, LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, HistGradientBoostingClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
 
@@ -78,6 +78,8 @@ def init_classifier(opt):
         return init_mlp(opt["clf_type"])
     elif "knn" in opt["clf_type"]:
         return init_knn(opt["clf_type"])
+    elif "hgb" in opt["clf_type"]:
+        return HistGradientBoostingClassifier(class_weight="balanced")
     else:
         return init_other(opt["clf_type"])
 
