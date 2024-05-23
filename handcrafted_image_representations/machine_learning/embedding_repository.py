@@ -236,4 +236,23 @@ class EmbeddingRepository:
             sampled_indices.append(np.random.choice(indices))
 
         return [inv_db[i] for i in sampled_indices]
+    
+    def split(self, percentage=0.1):
+        assert self.data is not None, "No Representations are computed."
+        assert len(self.db) > 1, "Not enough data to split"
+        inv_db = {v: k for k, v in self.db.items()}
 
+        n_clusters = int(1/percentage)
+        if n_clusters >= len(self.db):
+            logging.warning("Too few samples ({}) for split percentage {}".format(percentage))
+            n_clusters = len(self.db / 2)
+
+        clustering = MiniBatchKMeans(n_clusters=n_clusters, n_init="auto")
+        clustering.fit(self.data)
+        cluster_assignments = clustering.labels_
+
+        sampled_indices = []
+        for idx, label in enumerate(cluster_assignments):
+            if label < 1:
+                sampled_indices.append(idx)
+        return [inv_db[i] for i in sampled_indices]
