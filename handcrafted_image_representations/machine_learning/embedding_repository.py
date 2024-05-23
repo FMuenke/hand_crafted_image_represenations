@@ -246,7 +246,7 @@ class EmbeddingRepository:
         if n_clusters >= len(self.db):
             logging.warning("Too few samples ({}) for split percentage {}".format(
                 len(self.db), percentage))
-            n_clusters = len(self.db / 2)
+            n_clusters = int(len(self.db) / 2)
 
         clustering = MiniBatchKMeans(n_clusters=n_clusters, n_init="auto")
         clustering.fit(self.data)
