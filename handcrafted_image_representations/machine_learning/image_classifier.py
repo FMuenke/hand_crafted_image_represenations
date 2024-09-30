@@ -127,14 +127,17 @@ class ImageClassifier:
             x = self.aggregator.transform([x])
             x = x[0]
         return self.classifier.predict(x, get_confidence)
-
-    def evaluate(self, data_path, tag_type, load_all=False, report_path=None):
+    
+    def evaluate_folder(self, data_path, tag_type, load_all=False, report_path=None):
         ds = DataSet(data_set_dir=data_path, class_mapping=self.class_mapping, tag_type=tag_type)
         if load_all:
             tags = ds.get_tags()
         else:
             tags = ds.get_tags(self.class_mapping)
         assert len(tags) != 0, "No Labels were found! Abort..."
+        self.evaluate(tags, report_path)
+
+    def evaluate(self, tags, report_path=None):
 
         if report_path is not None:
             check_n_make_dir(report_path, clean=True)

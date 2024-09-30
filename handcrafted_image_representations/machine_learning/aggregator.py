@@ -47,7 +47,7 @@ class Aggregator:
             self.aggregator = BagOfWords(n_words=self.opt["complexity"], tf_idf=True)
         elif "fisher_vector" == self.opt["aggregator"]:
             self.aggregator = FisherVector(n_components=self.opt["complexity"])
-        elif self.opt["aggregator"] in ["global_avg", "glob_avg", "global_max", "glob_max"]:
+        elif "glob" in self.opt["aggregator"]:
             self.aggregator = GlobalAggregator(self.opt["aggregator"])
         elif "vlad" == self.opt["aggregator"]:
             self.aggregator = VLAD(n_words=self.opt["complexity"])

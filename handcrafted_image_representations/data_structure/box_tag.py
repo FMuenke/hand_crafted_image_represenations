@@ -123,7 +123,7 @@ class BoxTag:
             if p in self.class_mapping_inv:
                 p_string += str(self.class_mapping_inv[p])
             else:
-                p_string += p
+                p_string += str(p)
             p_string += "_"
         p_string = p_string[:-1]
 

@@ -20,7 +20,7 @@ class GlobalAggregator:
             return np.mean(descriptors, axis=0)
         if self.variant in ["global_max", "glob_max"]:
             return np.max(descriptors, axis=0)
-        if self.variant == "global_std":
+        if self.variant in ["global_std", "glob_std"]:
             return np.concatenate([
                 np.mean(descriptors, axis=0),
                 np.std(descriptors, axis=0)
@@ -37,7 +37,7 @@ class GlobalAggregator:
                 x = np.zeros((1, self.n_features))
             elif len(descriptors) == 1:
                 x = np.zeros((1, self.n_features))
-                if self.variant == "global_std":
+                if self.variant in ["global_std", "glob_std"]:
                     x[0, :] = np.concatenate([descriptors[0], np.zeros(int(self.n_features / 2))])
                 else:
                     x[0, :] = descriptors[0]
@@ -51,7 +51,7 @@ class GlobalAggregator:
     def fit(self, descriptors):
         logging.info("Global Aggregator is fitting...")
         descriptor = descriptors[0]
-        if self.variant == "global_std":
+        if self.variant in ["global_std", "glob_std"]:
             self.n_features = descriptor.shape[1] * 2
         else:
             self.n_features = descriptor.shape[1]
