@@ -44,7 +44,7 @@ class TestImageClassifier(unittest.TestCase):
             with patch('handcrafted_image_representations.machine_learning.image_classifier.tqdm', notqdm):
                 with patch('builtins.print'):
                     self.classifier.fit_folder(data_path=self.path, tag_type="cls")
-                    self.classifier.evaluate(data_path=self.path, tag_type="cls")
+                    self.classifier.evaluate_folder(data_path=self.path, tag_type="cls")
 
 
 if __name__ == "__main__":
